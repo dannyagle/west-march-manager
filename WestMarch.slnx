@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WestMarch.Application/WestMarch.Application.csproj" />
+    <Project Path="src/WestMarch.Domain/WestMarch.Domain.csproj" />
+    <Project Path="src/WestMarch.Infrastructure/WestMarch.Infrastructure.csproj" />
+    <Project Path="src/WestMarch.Web/WestMarch.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WestMarch.Tests/WestMarch.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,192 @@
+@page "/Account/ExternalLogin"
+
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using WestMarch.Infrastructure.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject IdentityRedirectManager RedirectManager
+@inject ILogger<ExternalLogin> Logger
+
+<PageTitle>Almost there</PageTitle>
+
+<div class="auth-page">
+    <div class="auth-panel">
+        <StatusMessage Message="@message" />
+        <h1 class="auth-title">Almost there</h1>
+        <p class="auth-subtitle">
+            You've arrived via <strong>@ProviderDisplayName</strong>. We just need an email
+            address to finish creating your account.
+        </p>
+
+        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.DisplayName" id="Input.DisplayName" class="form-control" autocomplete="nickname" placeholder="How the table knows you" />
+                <label for="Input.DisplayName" class="form-label">Display name</label>
+                <ValidationMessage For="() => Input.DisplayName" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email." />
+                <label for="Input.Email" class="form-label">Email</label>
+                <ValidationMessage For="() => Input.Email" />
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Finish signing up</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    public const string LoginCallbackAction = "LoginCallback";
+
+    private const string DiscordDisplayNameClaim = "urn:discord:displayname";
+    private const string DiscordAvatarClaim = "urn:discord:avatar";
+
+    private string? message;
+    private ExternalLoginInfo? externalLoginInfo;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private string? RemoteError { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? Action { get; set; }
+
+    private string? ProviderDisplayName => externalLoginInfo?.ProviderDisplayName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Input ??= new();
+
+        if (RemoteError is not null)
+        {
+            RedirectManager.RedirectToWithStatus("Account/Login", $"Error from external provider: {RemoteError}", HttpContext);
+            return;
+        }
+
+        var info = await SignInManager.GetExternalLoginInfoAsync();
+        if (info is null)
+        {
+            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
+            return;
+        }
+
+        externalLoginInfo = info;
+
+        if (HttpMethods.IsGet(HttpContext.Request.Method))
+        {
+            if (Action == LoginCallbackAction)
+            {
+                await OnLoginCallbackAsync();
+                return;
+            }
+
+            // We should only reach this page via the login callback, so redirect back to
+            // the login page if we get here some other way.
+            RedirectManager.RedirectTo("Account/Login");
+        }
+    }
+
+    private async Task OnLoginCallbackAsync()
+    {
+        // Sign in the user with this external login provider if the user already has a login.
+        var result = await SignInManager.ExternalLoginSignInAsync(
+            externalLoginInfo!.LoginProvider,
+            externalLoginInfo.ProviderKey,
+            isPersistent: false,
+            bypassTwoFactor: true);
+
+        if (result.Succeeded)
+        {
+            RedirectManager.RedirectTo(ReturnUrl);
+            return;
+        }
+        else if (result.IsLockedOut)
+        {
+            RedirectManager.RedirectTo("Account/Lockout");
+            return;
+        }
+
+        // New arrival. When the provider gave us an email (Discord with the email scope does),
+        // create the account on the spot — a Discord user should land ready to play,
+        // with no username/password step.
+        var email = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            await CreateAccountAsync(email, ProviderDisplayNameClaim());
+            return;
+        }
+
+        // No email from the provider: fall through to the one-field confirmation form.
+        Input.DisplayName = ProviderDisplayNameClaim() ?? "";
+    }
+
+    private async Task OnValidSubmitAsync()
+    {
+        if (externalLoginInfo is null)
+        {
+            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information during confirmation.", HttpContext);
+            return;
+        }
+
+        await CreateAccountAsync(Input.Email, Input.DisplayName);
+    }
+
+    private async Task CreateAccountAsync(string email, string? displayName)
+    {
+        var user = new ApplicationUser
+        {
+            DisplayName = string.IsNullOrWhiteSpace(displayName)
+                ? email[..email.IndexOf('@')]
+                : displayName.Trim(),
+            AvatarUrl = externalLoginInfo!.Principal.FindFirstValue(DiscordAvatarClaim),
+            EmailConfirmed = true, // vouched for by the external provider
+        };
+
+        await UserStore.SetUserNameAsync(user, email, CancellationToken.None);
+        await ((IUserEmailStore<ApplicationUser>)UserStore).SetEmailAsync(user, email, CancellationToken.None);
+
+        var result = await UserManager.CreateAsync(user);
+        if (result.Succeeded)
+        {
+            result = await UserManager.AddLoginAsync(user, externalLoginInfo);
+            if (result.Succeeded)
+            {
+                Logger.LogInformation("User created an account using {Name} provider.", externalLoginInfo.LoginProvider);
+                await SignInManager.SignInAsync(user, isPersistent: false, externalLoginInfo.LoginProvider);
+                RedirectManager.RedirectTo(ReturnUrl);
+                return;
+            }
+        }
+
+        message = $"Error: {string.Join(", ", result.Errors.Select(error => error.Description))}";
+    }
+
+    private string? ProviderDisplayNameClaim() =>
+        externalLoginInfo!.Principal.FindFirstValue(DiscordDisplayNameClaim)
+        ?? externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+
+    private sealed class InputModel
+    {
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Display name")]
+        public string DisplayName { get; set; } = "";
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+    }
+}

@@ -1,0 +1,81 @@
+@* Best-effort D&D Beyond stat header for the DM session view.
+   Degrades to the character's DDB link whenever the adapter is off,
+   the character id is missing, or the fetch fails. *@
+
+@using WestMarch.Application.Ddb
+
+@inject IDdbCharacterAdapter Ddb
+
+<div class="wm-card stat-card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem">
+        <span class="stat-name">@Character.Name</span>
+        <a class="meta" href="@Character.DdbUrl" target="_blank" rel="noopener">D&amp;D Beyond ↗</a>
+    </div>
+
+    @if (loading)
+    {
+        <div class="stat-class">Consulting the archives…</div>
+    }
+    else if (header is null)
+    {
+        <div class="stat-class">
+            @(Character.Summary ?? "Sheet not available here") · Level @Character.Level
+        </div>
+    }
+    else
+    {
+        <div class="stat-class">@(header.ClassSummary ?? Character.Summary)</div>
+        <div class="stat-vitals">
+            @if (header.ArmorClass is not null)
+            {
+                <span class="vital"><span class="v-num">@header.ArmorClass</span><span class="v-label">AC</span></span>
+            }
+            @if (header.MaxHitPoints is not null)
+            {
+                <span class="vital"><span class="v-num">@header.MaxHitPoints</span><span class="v-label">Max HP</span></span>
+            }
+            @if (header.PassivePerception is not null)
+            {
+                <span class="vital"><span class="v-num">@header.PassivePerception</span><span class="v-label">Pass. Perc.</span></span>
+            }
+            @if (header.Gold is not null)
+            {
+                <span class="vital"><span class="v-num">@header.Gold</span><span class="v-label">Gold</span></span>
+            }
+        </div>
+        @if (header.SavingThrows is not null)
+        {
+            <div class="stat-saves">
+                @foreach (var (ability, bonus) in header.SavingThrows)
+                {
+                    <span>@ability <b>@(bonus >= 0 ? "+" : "")@bonus</b></span>
+                }
+            </div>
+        }
+        @if (header.MagicItems is { Count: > 0 })
+        {
+            <div class="stat-lists"><b>Magic items:</b> @string.Join(", ", header.MagicItems)</div>
+        }
+        @if (header.Spells is { Count: > 0 })
+        {
+            <div class="stat-lists"><b>Spells:</b> @string.Join(", ", header.Spells.Take(14))@(header.Spells.Count > 14 ? "…" : "")</div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public Character Character { get; set; } = default!;
+
+    private DdbStatHeader? header;
+    private bool loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Character.DdbCharacterId is not null)
+        {
+            header = await Ddb.TryGetStatHeaderAsync(Character.DdbCharacterId.Value);
+        }
+
+        loading = false;
+    }
+}

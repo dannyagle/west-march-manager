@@ -1,0 +1,102 @@
+@page "/adventures"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Adventures
+
+@inject IAdventureService Adventures
+@inject ICurrentUser CurrentUser
+
+<PageTitle>Adventures</PageTitle>
+
+<div class="page-heading">
+    <h1>Adventure Archive</h1>
+    <a class="btn btn-primary" href="adventures/new">Author an adventure</a>
+</div>
+
+<div class="cal-toolbar">
+    <div class="cal-filters" style="margin-left:0">
+        @foreach (var (label, value) in FilterOptions)
+        {
+            <button class="filter-pill @(filter == value ? "active" : null)" @onclick="() => filter = value">@label</button>
+        }
+    </div>
+    @if (allTags.Count > 0)
+    {
+        <div class="cal-filters">
+            @foreach (var tag in allTags)
+            {
+                <button class="filter-pill @(tagFilter == tag ? "active" : null)"
+                        @onclick="() => tagFilter = tagFilter == tag ? null : tag">#@tag</button>
+            }
+        </div>
+    }
+</div>
+
+@if (adventures is null)
+{
+    <p class="meta">Unrolling the archive…</p>
+}
+else if (!Filtered.Any())
+{
+    <div class="empty-state">Nothing here matches. The archive hungers for new legends.</div>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var a in Filtered)
+        {
+            <a class="wm-card quest-card" href="adventures/@a.Id">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem">
+                    <span class="quest-date">Levels @a.MinLevel–@a.MaxLevel · @a.TargetPlayersMin–@a.TargetPlayersMax seats</span>
+                    <AdventureSeal Status="a.Status" />
+                </div>
+                <div class="quest-title">@a.Title</div>
+                <div class="quest-desc">@a.ShortDescription</div>
+                <div class="quest-foot">
+                    <span class="tag-row">
+                        @foreach (var tag in a.Tags)
+                        {
+                            <span class="tag-chip">@tag.Name</span>
+                        }
+                    </span>
+                    @if (a.AuthorUserId == CurrentUser.UserId)
+                    {
+                        <span style="margin-left:auto">by you</span>
+                    }
+                </div>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private static readonly (string, string)[] FilterOptions =
+    [
+        ("All", "all"),
+        ("Mine", "mine"),
+        ("Awaiting review", "review"),
+        ("Approved", "approved"),
+    ];
+
+    private IReadOnlyList<Adventure>? adventures;
+    private List<string> allTags = [];
+    private string filter = "all";
+    private string? tagFilter;
+
+    private IEnumerable<Adventure> Filtered => (adventures ?? [])
+        .Where(a => filter switch
+        {
+            "mine" => a.AuthorUserId == CurrentUser.UserId,
+            "review" => a.Status == AdventureStatus.ReadyForReview,
+            "approved" => a.Status == AdventureStatus.Approved,
+            _ => true,
+        })
+        .Where(a => tagFilter is null || a.Tags.Any(t => t.Name == tagFilter));
+
+    protected override async Task OnInitializedAsync()
+    {
+        adventures = await Adventures.ListForAuthoringAsync();
+        allTags = adventures.SelectMany(a => a.Tags.Select(t => t.Name)).Distinct().OrderBy(t => t).ToList();
+    }
+}

@@ -1,0 +1,177 @@
+@page "/admin/announcements/new"
+@page "/admin/announcements/{Id:guid}/edit"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using Markdig
+@using WestMarch.Application.Announcements
+@using WestMarch.Application.Storage
+
+@inject IAnnouncementService Announcements
+@inject IImageStore Images
+@inject NavigationManager Nav
+
+<PageTitle>@(IsNew ? "New Proclamation" : "Edit Proclamation")</PageTitle>
+
+<div class="wm-panel" style="max-width:860px;margin:0 auto">
+    <h1>@(IsNew ? "Draft a proclamation" : "Edit proclamation")</h1>
+
+    @if (errors is not null)
+    {
+        <div class="alert alert-danger">@string.Join(" ", errors)</div>
+    }
+
+    <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="announcement-editor">
+        <DataAnnotationsValidator />
+
+        <div class="field">
+            <label>Title</label>
+            <InputText @bind-Value="model.Title" />
+            <ValidationMessage For="() => model.Title" />
+        </div>
+
+        <div class="field">
+            <label>Body <span class="meta">(Markdown — bold, lists, images)</span></label>
+            <InputTextArea @bind-Value="model.Body" rows="10" />
+            <ValidationMessage For="() => model.Body" />
+        </div>
+
+        <div class="field">
+            <label>Add an image</label>
+            <InputFile OnChange="UploadImageAsync" accept="image/png,image/jpeg,image/gif,image/webp" />
+            @if (uploadNote is not null)
+            {
+                <div class="meta" style="margin-top:0.3rem">@uploadNote</div>
+            }
+        </div>
+
+        <div class="field-row">
+            <div class="field">
+                <label>Display from</label>
+                <InputDate @bind-Value="model.ActiveFrom" />
+            </div>
+            <div class="field">
+                <label>Display until <span class="meta">(blank = indefinitely)</span></label>
+                <InputDate @bind-Value="model.ActiveUntil" />
+            </div>
+            <div class="field">
+                <label>Ordering <span class="meta">(lower first; blank = by date)</span></label>
+                <InputNumber @bind-Value="model.SortOrder" />
+            </div>
+        </div>
+
+        <div style="display:flex;gap:0.8rem;margin-top:1.4rem">
+            <button type="submit" class="btn btn-primary" disabled="@saving">@(IsNew ? "Publish" : "Save changes")</button>
+            <a class="btn" href="admin/announcements">Cancel</a>
+        </div>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(model.Body))
+    {
+        <div class="rule-title">Preview</div>
+        <article class="proclamation">
+            <div class="proc-title">@model.Title</div>
+            <div class="proc-body">@((MarkupString)Markdown.ToHtml(model.Body, Pipeline))</div>
+        </article>
+    }
+</div>
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+
+    private static readonly MarkdownPipeline Pipeline =
+        new MarkdownPipelineBuilder().DisableHtml().Build();
+
+    private bool IsNew => Id is null;
+    private FormModel model = new();
+    private IReadOnlyList<string>? errors;
+    private string? uploadNote;
+    private bool saving;
+    private bool loaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null && !loaded)
+        {
+            loaded = true;
+            var a = await Announcements.GetAsync(Id.Value);
+            model = new FormModel
+            {
+                Title = a.Title,
+                Body = a.Body,
+                ActiveFrom = DateOnly.FromDateTime(a.ActiveFrom.LocalDateTime),
+                ActiveUntil = a.ActiveUntil is null ? null : DateOnly.FromDateTime(a.ActiveUntil.Value.LocalDateTime),
+                SortOrder = a.SortOrder,
+            };
+        }
+    }
+
+    private async Task UploadImageAsync(InputFileChangeEventArgs e)
+    {
+        uploadNote = null;
+        try
+        {
+            var file = e.File;
+            await using var stream = file.OpenReadStream(maxAllowedSize: 8 * 1024 * 1024);
+            var url = await Images.SaveAsync(stream, file.Name, file.ContentType);
+            model.Body += $"\n\n![{file.Name}]({url})\n";
+            uploadNote = $"Uploaded — a Markdown image reference was appended to the body.";
+        }
+        catch (AppValidationException ex)
+        {
+            uploadNote = ex.Message;
+        }
+        catch (IOException)
+        {
+            uploadNote = "That image is too large (8 MB max).";
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        saving = true;
+        errors = null;
+        try
+        {
+            var input = new AnnouncementInput(
+                model.Title,
+                model.Body,
+                new DateTimeOffset(model.ActiveFrom, TimeOnly.MinValue, DateTimeOffset.Now.Offset),
+                model.ActiveUntil is null ? null : new DateTimeOffset(model.ActiveUntil.Value, new TimeOnly(23, 59), DateTimeOffset.Now.Offset),
+                model.SortOrder);
+
+            if (IsNew)
+            {
+                await Announcements.CreateAsync(input);
+            }
+            else
+            {
+                await Announcements.UpdateAsync(Id!.Value, input);
+            }
+
+            Nav.NavigateTo("admin/announcements");
+        }
+        catch (AppValidationException ex)
+        {
+            errors = ex.Errors;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private sealed class FormModel
+    {
+        [Required, StringLength(200)]
+        public string Title { get; set; } = "";
+
+        [Required]
+        public string Body { get; set; } = "";
+
+        public DateOnly ActiveFrom { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+        public DateOnly? ActiveUntil { get; set; }
+        public int? SortOrder { get; set; }
+    }
+}

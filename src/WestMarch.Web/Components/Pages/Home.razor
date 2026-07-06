@@ -1,0 +1,222 @@
+@page "/"
+@rendermode InteractiveServer
+
+@using Markdig
+@using WestMarch.Application.Announcements
+@using WestMarch.Application.Sessions
+@using WestMarch.Application.Users
+
+@inject IAnnouncementService Announcements
+@inject ISessionService Sessions
+@inject IUserDirectory Users
+@inject ICurrentUser CurrentUser
+
+<PageTitle>The West Marches — Expedition Board</PageTitle>
+
+@* ================= hero ================= *@
+<section class="hero">
+    <div class="hero-kicker">An open-table campaign · every session a new expedition</div>
+    <h1>Beyond this hall, the map is blank.</h1>
+    <p class="hero-tagline">
+        Muster a party, pick an adventure from the archive, and ride out.
+        The frontier doesn't explore itself — and the ink on the map is yours to lay down.
+    </p>
+    <AuthorizeView>
+        <Authorized>
+            <div class="hero-actions">
+                <a class="btn btn-primary btn-lg" href="sessions/new">Call an expedition</a>
+                <a class="btn btn-lg" href="characters">My characters</a>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="hero-actions">
+                <a class="btn btn-primary btn-lg" href="Account/Register">Join the expedition</a>
+                <a class="btn btn-lg" href="Account/Login">Sign in</a>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</section>
+
+@* ================= announcements ================= *@
+@if (announcements is { Count: > 0 })
+{
+    <div class="rule-title">Proclamations</div>
+    @foreach (var a in announcements)
+    {
+        <article class="proclamation">
+            <div class="proc-title">@a.Title</div>
+            <div class="proc-meta">Posted @a.ActiveFrom.LocalDateTime.ToString("MMMM d, yyyy")</div>
+            <div class="proc-body">@((MarkupString)Markdown.ToHtml(a.Body, MarkdownPipeline))</div>
+        </article>
+    }
+}
+
+@* ================= needs-a-DM strip (DMs only) ================= *@
+<AuthorizeView Policy="@AuthPolicies.RequireDm">
+    @if (needsDmCount > 0)
+    {
+        <a class="wm-card" href="sessions/needs-dm" style="display:flex;align-items:center;gap:1rem;margin-top:2rem;border-color:var(--ember)">
+            <span class="seal seal-needsdm">Needs a DM</span>
+            <span><b>@needsDmCount</b> @(needsDmCount == 1 ? "expedition is" : "expeditions are") waiting for someone to take the head of the table.</span>
+            <span style="margin-left:auto;color:var(--ember-bright)">View the board →</span>
+        </a>
+    }
+</AuthorizeView>
+
+@* ================= calendar ================= *@
+<div class="rule-title">The expedition calendar</div>
+
+<div class="cal-toolbar">
+    <button class="btn btn-sm" @onclick="() => ChangeMonth(-1)">◀</button>
+    <span class="cal-month">@monthStart.ToString("MMMM yyyy")</span>
+    <button class="btn btn-sm" @onclick="() => ChangeMonth(1)">▶</button>
+
+    <div class="cal-filters">
+        <button class="filter-pill @(filter == CalFilter.All ? "active" : null)" @onclick="() => filter = CalFilter.All">All sessions</button>
+        <button class="filter-pill @(filter == CalFilter.OpenSeats ? "active" : null)" @onclick="() => filter = CalFilter.OpenSeats">Open seats</button>
+        <AuthorizeView Context="authCtx">
+            <button class="filter-pill @(filter == CalFilter.Mine ? "active" : null)" @onclick="() => filter = CalFilter.Mine">My expeditions</button>
+        </AuthorizeView>
+    </div>
+</div>
+
+<div class="cal-grid">
+    @foreach (var day in new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" })
+    {
+        <div class="cal-head">@day</div>
+    }
+    @foreach (var cell in CalendarCells)
+    {
+        <div class="cal-cell @(cell.InMonth ? null : "dim") @(cell.Date == DateOnly.FromDateTime(DateTime.Today) ? "today" : null)">
+            <div class="cal-daynum">@cell.Date.Day</div>
+            @foreach (var s in FilteredSessions.Where(s => DateOnly.FromDateTime(s.ScheduledAt.LocalDateTime.Date) == cell.Date))
+            {
+                <a class="cal-event @EventCss(s)" href="sessions/@s.Id" title="@EventTooltip(s)">
+                    @s.ScheduledAt.LocalDateTime.ToString("h:mm") @s.Adventure.Title
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<div class="cal-legend">
+    <span class="key"><span class="swatch" style="background:rgba(92,148,105,0.7)"></span> scheduled</span>
+    <span class="key"><span class="swatch" style="background:rgba(201,106,42,0.8)"></span> needs a DM</span>
+    <AuthorizeView Context="authCtx">
+        <span class="key"><span class="swatch" style="background:rgba(201,162,39,0.8)"></span> you're signed on</span>
+    </AuthorizeView>
+</div>
+
+@* ================= looking for players ================= *@
+<div class="rule-title">Parties looking for more blades</div>
+
+@if (lookingForPlayers.Count == 0)
+{
+    <div class="empty-state">Every mustering party is full. Call your own expedition!</div>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var s in lookingForPlayers)
+        {
+            <a class="wm-card quest-card" href="sessions/@s.Id">
+                <div style="display:flex;justify-content:space-between;gap:0.5rem;align-items:center">
+                    <span class="quest-date">@s.ScheduledAt.LocalDateTime.ToString("ddd, MMM d · h:mm tt")</span>
+                    <SessionSeal Session="s" />
+                </div>
+                <div class="quest-title">@s.Adventure.Title</div>
+                <div class="quest-desc">@s.Adventure.ShortDescription</div>
+                <div class="quest-foot">
+                    <span>Levels @s.Adventure.MinLevel–@s.Adventure.MaxLevel</span>
+                    <SeatPips Filled="s.Signups.Count" Max="s.Adventure.TargetPlayersMax" />
+                    <span style="margin-left:auto">DM: @(s.DmUserId is null ? "wanted!" : DmName(s.DmUserId))</span>
+                </div>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private static readonly MarkdownPipeline MarkdownPipeline =
+        new MarkdownPipelineBuilder().DisableHtml().Build();
+
+    private enum CalFilter { All, OpenSeats, Mine }
+
+    private IReadOnlyList<Announcement>? announcements;
+    private IReadOnlyList<GameSession> monthSessions = [];
+    private List<GameSession> lookingForPlayers = [];
+    private Dictionary<string, string> dmNames = [];
+    private int needsDmCount;
+
+    private DateOnly monthStart = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private CalFilter filter = CalFilter.All;
+
+    private IEnumerable<GameSession> FilteredSessions => filter switch
+    {
+        CalFilter.OpenSeats => monthSessions.Where(s =>
+            s.Status == SessionStatus.Scheduled && s.Signups.Count < s.Adventure.TargetPlayersMax),
+        CalFilter.Mine => monthSessions.Where(IsMine),
+        _ => monthSessions,
+    };
+
+    private bool IsMine(GameSession s) =>
+        CurrentUser.UserId is not null &&
+        (s.DmUserId == CurrentUser.UserId
+         || s.Signups.Any(su => su.Character.OwnerUserId == CurrentUser.UserId));
+
+    private string EventCss(GameSession s) =>
+        IsMine(s) ? "mine"
+        : s.DmUserId is null ? "needs-dm"
+        : s.Signups.Count >= s.Adventure.TargetPlayersMax ? "full"
+        : "";
+
+    private string DmName(string userId) => dmNames.GetValueOrDefault(userId, "assigned");
+
+    private static string EventTooltip(GameSession s) =>
+        $"{s.Adventure.Title} — {s.ScheduledAt.LocalDateTime:h:mm tt}{(s.DmUserId is null ? " · needs a DM" : "")}";
+
+    private IEnumerable<(DateOnly Date, bool InMonth)> CalendarCells
+    {
+        get
+        {
+            var first = monthStart;
+            var start = first.AddDays(-(int)first.ToDateTime(TimeOnly.MinValue).DayOfWeek);
+            var last = first.AddMonths(1).AddDays(-1);
+            var end = last.AddDays(6 - (int)last.ToDateTime(TimeOnly.MinValue).DayOfWeek);
+
+            for (var d = start; d <= end; d = d.AddDays(1))
+            {
+                yield return (d, d.Month == first.Month);
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        announcements = await Announcements.ListActiveAsync();
+        await LoadMonthAsync();
+
+        var horizon = DateTimeOffset.Now.AddDays(60);
+        var upcoming = await Sessions.ListScheduledAsync(DateTimeOffset.Now, horizon);
+        lookingForPlayers = [.. upcoming
+            .Where(s => s.Status == SessionStatus.Scheduled && s.Signups.Count < s.Adventure.TargetPlayersMax)
+            .Take(9)];
+        needsDmCount = upcoming.Count(s => s.Status == SessionStatus.Scheduled && s.DmUserId is null);
+
+        var dmIds = lookingForPlayers.Where(s => s.DmUserId is not null).Select(s => s.DmUserId!).Distinct();
+        dmNames = new Dictionary<string, string>(await Users.GetDisplayNamesAsync(dmIds));
+    }
+
+    private async Task LoadMonthAsync()
+    {
+        var from = new DateTimeOffset(monthStart.AddDays(-7), TimeOnly.MinValue, DateTimeOffset.Now.Offset);
+        var until = new DateTimeOffset(monthStart.AddMonths(1).AddDays(7), TimeOnly.MinValue, DateTimeOffset.Now.Offset);
+        monthSessions = await Sessions.ListScheduledAsync(from, until);
+    }
+
+    private async Task ChangeMonth(int delta)
+    {
+        monthStart = monthStart.AddMonths(delta);
+        await LoadMonthAsync();
+    }
+}

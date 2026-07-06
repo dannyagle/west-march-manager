@@ -1,0 +1,301 @@
+@page "/adventures/new"
+@page "/adventures/{Id:guid}/edit"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using WestMarch.Application.Adventures
+
+@inject IAdventureService Adventures
+@inject NavigationManager Nav
+
+<PageTitle>@(IsNew ? "Author an Adventure" : "Edit Adventure")</PageTitle>
+
+<div class="wm-panel" style="max-width:860px;margin:0 auto">
+    <h1>@(IsNew ? "Author an adventure" : $"Edit: {model.Title}")</h1>
+    <p class="meta">Drafts are visible only to you (and Campaign Admins) until you mark them ready for review.</p>
+
+    @if (errors is not null)
+    {
+        <div class="alert alert-danger">@string.Join(" ", errors)</div>
+    }
+
+    <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="adventure-editor">
+        <DataAnnotationsValidator />
+
+        <div class="field">
+            <label>Title</label>
+            <InputText @bind-Value="model.Title" placeholder="e.g. The Sunken Vault of Aldremir" />
+            <ValidationMessage For="() => model.Title" />
+        </div>
+
+        <div class="field-row">
+            <div class="field">
+                <label>Min level</label>
+                <InputNumber @bind-Value="model.MinLevel" />
+            </div>
+            <div class="field">
+                <label>Max level</label>
+                <InputNumber @bind-Value="model.MaxLevel" />
+            </div>
+            <div class="field">
+                <label>Seats (min)</label>
+                <InputNumber @bind-Value="model.TargetPlayersMin" />
+            </div>
+            <div class="field">
+                <label>Seats (max)</label>
+                <InputNumber @bind-Value="model.TargetPlayersMax" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Short description <span class="meta">(public teaser on the quest board)</span></label>
+            <InputTextArea @bind-Value="model.ShortDescription" rows="2" />
+            <ValidationMessage For="() => model.ShortDescription" />
+        </div>
+
+        <div class="field">
+            <label>Long description <span class="meta">(public)</span></label>
+            <InputTextArea @bind-Value="model.LongDescription" rows="5" />
+            <ValidationMessage For="() => model.LongDescription" />
+        </div>
+
+        <div class="field">
+            <label>DM notes <span class="meta">(DMs &amp; CAs only)</span></label>
+            <InputTextArea @bind-Value="model.DmNotes" rows="4" />
+        </div>
+
+        <div class="field">
+            <label>Monster stat blocks <span class="meta">(DMs &amp; CAs only)</span></label>
+            <InputTextArea @bind-Value="model.MonsterStatBlocks" rows="5" placeholder="e.g. 8× Goblin (MM p.166)…" />
+        </div>
+
+        <div class="field-row">
+            <div class="field">
+                <label>Active from</label>
+                <InputDate @bind-Value="model.ActiveFrom" />
+            </div>
+            <div class="field">
+                <label>Active until <span class="meta">(blank = forever)</span></label>
+                <InputDate @bind-Value="model.ActiveUntil" />
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Tags <span class="meta">(comma-separated, e.g. horror, epic event)</span></label>
+            <InputText @bind-Value="model.TagsText" placeholder="wilderness, mystery" />
+        </div>
+
+        <div class="rule-title">Guaranteed rewards</div>
+        <p class="meta">Every character who completes the session receives all of these.</p>
+        @foreach (var reward in model.GuaranteedRewards)
+        {
+            var r = reward;
+            <div class="reward-block">
+                <div class="field-row">
+                    <div class="field" style="max-width:140px">
+                        <label>Kind</label>
+                        <InputSelect @bind-Value="r.Kind">
+                            <option value="@RewardKind.Gold">Gold</option>
+                            <option value="@RewardKind.Item">Item</option>
+                            <option value="@RewardKind.Other">Other</option>
+                        </InputSelect>
+                    </div>
+                    @if (r.Kind == RewardKind.Gold)
+                    {
+                        <div class="field" style="max-width:140px">
+                            <label>Amount (gp)</label>
+                            <InputNumber @bind-Value="r.GoldAmount" />
+                        </div>
+                    }
+                    <div class="field">
+                        <label>Description</label>
+                        <InputText @bind-Value="r.Description" placeholder="e.g. 150 gp Warden bounty" />
+                    </div>
+                    <div class="field" style="max-width:90px;align-self:flex-end">
+                        <button type="button" class="btn btn-sm btn-danger" @onclick="() => model.GuaranteedRewards.Remove(r)">Remove</button>
+                    </div>
+                </div>
+            </div>
+        }
+        <button type="button" class="btn btn-sm" @onclick="() => model.GuaranteedRewards.Add(new())">+ Add guaranteed reward</button>
+
+        <div class="rule-title">Choice rewards ("choose 1 of N")</div>
+        <p class="meta">
+            Options are free text for now; each can carry a link (D&amp;D Beyond, dnd2024.wikidot.com, a sourcebook page).
+            When the item catalog arrives, options will reference it directly.
+        </p>
+        @foreach (var set in model.OptionSets)
+        {
+            var s = set;
+            <div class="reward-block">
+                <div class="field-row">
+                    <div class="field">
+                        <label>Choice prompt</label>
+                        <InputText @bind-Value="s.Name" placeholder="e.g. Choose one relic of the vault" />
+                    </div>
+                    <div class="field" style="max-width:120px;align-self:flex-end">
+                        <button type="button" class="btn btn-sm btn-danger" @onclick="() => model.OptionSets.Remove(s)">Remove set</button>
+                    </div>
+                </div>
+                @foreach (var option in s.Options)
+                {
+                    var o = option;
+                    <div class="field-row" style="margin-left:1rem">
+                        <div class="field">
+                            <label>Option</label>
+                            <InputText @bind-Value="o.Description" placeholder="e.g. Wand of Secrets" />
+                        </div>
+                        <div class="field">
+                            <label>Link <span class="meta">(optional)</span></label>
+                            <InputText @bind-Value="o.ExternalUrl" placeholder="https://…" />
+                        </div>
+                        <div class="field" style="max-width:90px;align-self:flex-end">
+                            <button type="button" class="btn btn-sm btn-danger" @onclick="() => s.Options.Remove(o)">×</button>
+                        </div>
+                    </div>
+                }
+                <button type="button" class="btn btn-sm" style="margin-left:1rem" @onclick="() => s.Options.Add(new())">+ Add option</button>
+            </div>
+        }
+        <button type="button" class="btn btn-sm" @onclick="AddOptionSet">+ Add choice set</button>
+
+        <div style="display:flex;gap:0.8rem;margin-top:1.8rem">
+            <button type="submit" class="btn btn-primary" disabled="@saving">@(IsNew ? "Create draft" : "Save changes")</button>
+            <a class="btn" href="@(IsNew ? "adventures" : $"adventures/{Id}")">Cancel</a>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+
+    private bool IsNew => Id is null;
+    private FormModel model = new();
+    private IReadOnlyList<string>? errors;
+    private bool saving;
+    private bool loaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null && !loaded)
+        {
+            loaded = true;
+            var a = await Adventures.GetAsync(Id.Value);
+            model = new FormModel
+            {
+                Title = a.Title,
+                MinLevel = a.MinLevel,
+                MaxLevel = a.MaxLevel,
+                TargetPlayersMin = a.TargetPlayersMin,
+                TargetPlayersMax = a.TargetPlayersMax,
+                ShortDescription = a.ShortDescription,
+                LongDescription = a.LongDescription,
+                DmNotes = a.DmNotes,
+                MonsterStatBlocks = a.MonsterStatBlocks,
+                ActiveFrom = DateOnly.FromDateTime(a.ActiveFrom.LocalDateTime),
+                ActiveUntil = a.ActiveUntil is null ? null : DateOnly.FromDateTime(a.ActiveUntil.Value.LocalDateTime),
+                TagsText = string.Join(", ", a.Tags.Select(t => t.Name)),
+                GuaranteedRewards = [.. a.GuaranteedRewards.Select(r => new RewardRow
+                {
+                    Kind = r.Kind, GoldAmount = r.GoldAmount, Description = r.Description,
+                })],
+                OptionSets = [.. a.RewardOptionSets.Select(s => new OptionSetRow
+                {
+                    Name = s.Name,
+                    Options = [.. s.Options.Select(o => new OptionRow { Description = o.Description, ExternalUrl = o.ExternalUrl })],
+                })],
+            };
+        }
+    }
+
+    private void AddOptionSet() =>
+        model.OptionSets.Add(new OptionSetRow { Options = [new(), new()] });
+
+    private async Task SaveAsync()
+    {
+        saving = true;
+        errors = null;
+        try
+        {
+            var input = new AdventureInput(
+                model.Title,
+                model.MinLevel,
+                model.MaxLevel,
+                model.TargetPlayersMin,
+                model.TargetPlayersMax,
+                model.ShortDescription,
+                model.LongDescription,
+                model.DmNotes,
+                model.MonsterStatBlocks,
+                new DateTimeOffset(model.ActiveFrom, TimeOnly.MinValue, DateTimeOffset.Now.Offset),
+                model.ActiveUntil is null ? null : new DateTimeOffset(model.ActiveUntil.Value, new TimeOnly(23, 59), DateTimeOffset.Now.Offset),
+                [.. model.TagsText.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)],
+                [.. model.GuaranteedRewards.Select(r => new RewardComponentInput(r.Kind, r.GoldAmount, r.Description))],
+                [.. model.OptionSets.Select(s => new RewardOptionSetInput(
+                    s.Name,
+                    [.. s.Options.Select(o => new RewardOptionInput(o.Description, o.ExternalUrl))]))]);
+
+            var saved = IsNew
+                ? await Adventures.CreateAsync(input)
+                : await Adventures.UpdateAsync(Id!.Value, input);
+
+            Nav.NavigateTo($"adventures/{saved.Id}");
+        }
+        catch (AppValidationException ex)
+        {
+            errors = ex.Errors;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private sealed class FormModel
+    {
+        [Required, StringLength(150)]
+        public string Title { get; set; } = "";
+
+        public int MinLevel { get; set; } = 3;
+        public int MaxLevel { get; set; } = 5;
+        public int TargetPlayersMin { get; set; } = 4;
+        public int TargetPlayersMax { get; set; } = 6;
+
+        [Required, StringLength(500)]
+        public string ShortDescription { get; set; } = "";
+
+        [Required]
+        public string LongDescription { get; set; } = "";
+
+        public string? DmNotes { get; set; }
+        public string? MonsterStatBlocks { get; set; }
+
+        public DateOnly ActiveFrom { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+        public DateOnly? ActiveUntil { get; set; }
+
+        public string TagsText { get; set; } = "";
+
+        public List<RewardRow> GuaranteedRewards { get; set; } = [];
+        public List<OptionSetRow> OptionSets { get; set; } = [];
+    }
+
+    private sealed class RewardRow
+    {
+        public RewardKind Kind { get; set; } = RewardKind.Gold;
+        public int? GoldAmount { get; set; }
+        public string Description { get; set; } = "";
+    }
+
+    private sealed class OptionSetRow
+    {
+        public string Name { get; set; } = "";
+        public List<OptionRow> Options { get; set; } = [];
+    }
+
+    private sealed class OptionRow
+    {
+        public string Description { get; set; } = "";
+        public string? ExternalUrl { get; set; }
+    }
+}

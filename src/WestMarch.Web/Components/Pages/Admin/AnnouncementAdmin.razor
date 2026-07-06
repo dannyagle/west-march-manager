@@ -1,0 +1,68 @@
+@page "/admin/announcements"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Announcements
+
+@inject IAnnouncementService Announcements
+
+<PageTitle>Announcements</PageTitle>
+
+<div class="page-heading">
+    <h1>Proclamations</h1>
+    <a class="btn btn-primary" href="admin/announcements/new">Draft a proclamation</a>
+</div>
+
+@if (items is null)
+{
+    <p class="meta">Fetching the herald's ledger…</p>
+}
+else if (items.Count == 0)
+{
+    <div class="empty-state">The notice board is bare.</div>
+}
+else
+{
+    <table class="wm-table">
+        <thead>
+            <tr><th>Title</th><th>Displayed</th><th>Order</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var a in items)
+            {
+                <tr>
+                    <td><a href="admin/announcements/@a.Id/edit">@a.Title</a></td>
+                    <td class="meta">
+                        @a.ActiveFrom.LocalDateTime.ToString("MMM d, yyyy")
+                        – @(a.ActiveUntil?.LocalDateTime.ToString("MMM d, yyyy") ?? "forever")
+                    </td>
+                    <td>@(a.SortOrder?.ToString() ?? "—")</td>
+                    <td>
+                        @if (a.IsActiveOn(DateTimeOffset.Now))
+                        {
+                            <span class="seal seal-approved">Live</span>
+                        }
+                        else
+                        {
+                            <span class="seal seal-draft">Dormant</span>
+                        }
+                    </td>
+                    <td><button class="btn btn-sm btn-danger" @onclick="() => DeleteAsync(a.Id)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Announcement>? items;
+
+    protected override async Task OnInitializedAsync() =>
+        items = await Announcements.ListAllAsync();
+
+    private async Task DeleteAsync(Guid id)
+    {
+        await Announcements.DeleteAsync(id);
+        items = await Announcements.ListAllAsync();
+    }
+}

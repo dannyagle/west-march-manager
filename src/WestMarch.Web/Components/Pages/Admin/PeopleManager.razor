@@ -1,0 +1,110 @@
+@page "/admin/people"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Users
+
+@inject IPeopleService People
+
+<PageTitle>People of the March</PageTitle>
+
+<div class="page-heading">
+    <h1>People of the March</h1>
+</div>
+<p class="meta">
+    Every member is a Player. Grant or revoke the additive DM and Campaign Admin roles here.
+    Role changes take effect at the member's next sign-in or session refresh.
+</p>
+
+<div class="field" style="max-width:380px">
+    <input type="text" placeholder="Search by name or email…" @bind="query" @bind:event="oninput" @onkeyup="SearchAsync" />
+</div>
+
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+@if (users is null)
+{
+    <p class="meta">Opening the census…</p>
+}
+else
+{
+    <table class="wm-table">
+        <thead>
+            <tr><th>Member</th><th>Email</th><th>Sign-in methods</th><th>Roles</th><th>Joined</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var u in users)
+            {
+                <tr>
+                    <td><b>@u.DisplayName</b></td>
+                    <td class="meta">@u.Email</td>
+                    <td class="meta">@string.Join(", ", u.LoginProviders)</td>
+                    <td>
+                        <span class="tag-row">
+                            <span class="tag-chip">Player</span>
+                            @foreach (var role in u.Roles)
+                            {
+                                <span class="tag-chip" style="color:var(--gold-bright);border-color:var(--gold-deep)">
+                                    @(role == Roles.CampaignAdmin ? "Campaign Admin" : role)
+                                </span>
+                            }
+                        </span>
+                    </td>
+                    <td class="meta">@u.CreatedAt.LocalDateTime.ToString("MMM yyyy")</td>
+                    <td style="white-space:nowrap">
+                        @if (u.Roles.Contains(Roles.DungeonMaster))
+                        {
+                            <button class="btn btn-sm" @onclick="() => RevokeAsync(u.Id, Roles.DungeonMaster)">Revoke DM</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm" @onclick="() => GrantAsync(u.Id, Roles.DungeonMaster)">Make DM</button>
+                        }
+                        @if (u.Roles.Contains(Roles.CampaignAdmin))
+                        {
+                            <button class="btn btn-sm btn-danger" @onclick="() => RevokeAsync(u.Id, Roles.CampaignAdmin)">Revoke CA</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm" @onclick="() => GrantAsync(u.Id, Roles.CampaignAdmin)">Make CA</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<UserSummary>? users;
+    private string query = "";
+    private string? error;
+
+    protected override Task OnInitializedAsync() => SearchAsync();
+
+    private async Task SearchAsync()
+    {
+        users = await People.SearchAsync(string.IsNullOrWhiteSpace(query) ? null : query);
+    }
+
+    private async Task GrantAsync(string userId, string role) => await MutateAsync(() => People.GrantRoleAsync(userId, role));
+
+    private async Task RevokeAsync(string userId, string role) => await MutateAsync(() => People.RevokeRoleAsync(userId, role));
+
+    private async Task MutateAsync(Func<Task> action)
+    {
+        error = null;
+        try
+        {
+            await action();
+            await SearchAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+    }
+}

@@ -1,0 +1,474 @@
+@page "/sessions/{Id:guid}"
+@attribute [Authorize]
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+
+@using WestMarch.Application.Characters
+@using WestMarch.Application.Sessions
+@using WestMarch.Application.Users
+
+@inject ISessionService Sessions
+@inject ICharacterService Characters
+@inject IUserDirectory Users
+@inject ICurrentUser CurrentUser
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<PageTitle>@(session?.Adventure.Title ?? "Session")</PageTitle>
+
+@if (session is null)
+{
+    <p class="meta">Reading the muster roll…</p>
+}
+else
+{
+    <div class="page-heading">
+        <h1>@session.Adventure.Title</h1>
+        <SessionSeal Session="session" />
+    </div>
+
+    <p class="meta">
+        @session.ScheduledAt.LocalDateTime.ToString("dddd, MMMM d, yyyy · h:mm tt")
+        @if (session.Location is not null)
+        {
+            <span> · @session.Location</span>
+        }
+        · run by <b>@(session.DmUserId is null ? "no one yet" : DisplayName(session.DmUserId))</b>
+        · called by @DisplayName(session.CreatedByUserId)
+    </p>
+
+    @if (error is not null)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+    @if (notice is not null)
+    {
+        <div class="alert alert-success">@notice</div>
+    }
+
+    <div class="wm-panel" style="margin-bottom:1.25rem">
+        <p style="font-style:italic;color:var(--parchment-dim);margin-bottom:0.5rem">@session.Adventure.ShortDescription</p>
+        <p style="white-space:pre-wrap;margin-bottom:0.4rem">@session.Adventure.LongDescription</p>
+        <div class="tag-row">
+            @foreach (var tag in session.Adventure.Tags)
+            {
+                <span class="tag-chip">@tag.Name</span>
+            }
+        </div>
+    </div>
+
+    @* ---------- rewards ---------- *@
+    @if (session.Adventure.GuaranteedRewards.Count > 0 || session.Adventure.RewardOptionSets.Count > 0)
+    {
+        <div class="rule-title">Promised rewards</div>
+        @if (session.Adventure.GuaranteedRewards.Count > 0)
+        {
+            <div class="reward-block">
+                <div class="reward-kicker">Guaranteed</div>
+                <ul>
+                    @foreach (var r in session.Adventure.GuaranteedRewards)
+                    {
+                        <li>
+                            @if (r.Kind == RewardKind.Gold && r.GoldAmount is not null)
+                            {
+                                <span class="reward-gold">@r.GoldAmount gp </span>
+                            }
+                            @r.Description
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        @foreach (var set in session.Adventure.RewardOptionSets)
+        {
+            <div class="reward-block">
+                <div class="reward-kicker">Choose one — @set.Name</div>
+                <ul>
+                    @foreach (var o in set.Options)
+                    {
+                        <li>
+                            @o.Description
+                            @if (o.ExternalUrl is not null)
+                            {
+                                <a href="@o.ExternalUrl" target="_blank" rel="noopener">↗</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+
+    @* ---------- roster ---------- *@
+    <div class="rule-title">The party</div>
+    <p class="meta">
+        Target: @session.Adventure.TargetPlayersMin–@session.Adventure.TargetPlayersMax characters,
+        levels @session.Adventure.MinLevel–@session.Adventure.MaxLevel
+        &nbsp;<SeatPips Filled="session.Signups.Count" Max="session.Adventure.TargetPlayersMax" />
+    </p>
+
+    @if (session.Signups.Count == 0)
+    {
+        <div class="empty-state">No one has signed on yet. Be the first name on the roll.</div>
+    }
+    else
+    {
+        <table class="wm-table">
+            <thead><tr><th>Character</th><th>Level</th><th>Player</th><th></th><th></th></tr></thead>
+            <tbody>
+                @foreach (var signup in session.Signups)
+                {
+                    <tr>
+                        <td><a href="characters/@signup.CharacterId">@signup.Character.Name</a> <span class="meta">@signup.Character.Summary</span></td>
+                        <td>
+                            @signup.Character.Level
+                            @if (!session.Adventure.IsLevelInRange(signup.Character.Level))
+                            {
+                                <span class="seal seal-needsdm" title="Outside the adventure's level range">off-range</span>
+                            }
+                        </td>
+                        <td>@DisplayName(signup.Character.OwnerUserId)</td>
+                        <td>
+                            @if (session.Status == SessionStatus.Completed && signup.ReceivedCredit == true)
+                            {
+                                <span class="seal seal-completed">credited</span>
+                            }
+                        </td>
+                        <td>
+                            @if (session.Status == SessionStatus.Scheduled &&
+                                (signup.Character.OwnerUserId == CurrentUser.UserId || IsSessionDm || CurrentUser.IsCa))
+                            {
+                                <button class="btn btn-sm btn-danger" @onclick="() => WithdrawAsync(signup.CharacterId)">Withdraw</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @* ---------- signup ---------- *@
+    @if (session.Status == SessionStatus.Scheduled && AvailableCharacters.Any())
+    {
+        <div class="wm-panel" style="margin-top:1rem">
+            <h3>Sign on</h3>
+            <div class="field-row" style="align-items:flex-end">
+                <div class="field" style="max-width:340px">
+                    <label>Character</label>
+                    <select @onchange="OnSignupCharacterChanged">
+                        <option value="">— choose —</option>
+                        @foreach (var c in AvailableCharacters)
+                        {
+                            <option value="@c.Id">@c.Name (level @c.Level)</option>
+                        }
+                    </select>
+                </div>
+                <div class="field" style="max-width:160px">
+                    <button class="btn btn-primary" disabled="@(signupCharacterId is null)" @onclick="SignUpAsync">Join the party</button>
+                </div>
+            </div>
+            @foreach (var warning in signupWarnings)
+            {
+                <div class="warn-note">⚠ @warning.Message — you can still sign up; the DM will see the flag.</div>
+            }
+        </div>
+    }
+
+    @* ---------- DM seat ---------- *@
+    @if (session.Status == SessionStatus.Scheduled && CurrentUser.IsDm)
+    {
+        <div style="display:flex;gap:0.8rem;margin-top:1.2rem;flex-wrap:wrap">
+            @if (session.DmUserId is null)
+            {
+                <button class="btn btn-primary" @onclick="ClaimDmAsync">Take the DM seat</button>
+            }
+            else if (IsSessionDm || CurrentUser.IsCa)
+            {
+                <button class="btn" @onclick="ReleaseDmAsync">Release the DM seat</button>
+            }
+        </div>
+    }
+
+    @* ---------- DM view ---------- *@
+    @if (CurrentUser.IsDm && (IsSessionDm || CurrentUser.IsCa) && session.Status != SessionStatus.Cancelled)
+    {
+        <div class="dm-only">
+            <div class="dm-kicker">⚔ Dungeon Master's table</div>
+
+            @if (session.Signups.Count > 0)
+            {
+                <h3>The party at a glance</h3>
+                <div class="stat-strip">
+                    @foreach (var signup in session.Signups)
+                    {
+                        <DdbStatCard Character="signup.Character" />
+                    }
+                </div>
+            }
+
+            @if (session.Adventure.DmNotes is not null)
+            {
+                <h3 style="margin-top:1rem">Notes</h3>
+                <p style="white-space:pre-wrap">@session.Adventure.DmNotes</p>
+            }
+            @if (session.Adventure.MonsterStatBlocks is not null)
+            {
+                <h3>Monsters</h3>
+                <pre>@session.Adventure.MonsterStatBlocks</pre>
+            }
+
+            @if (session.Status == SessionStatus.Scheduled)
+            {
+                <h3 style="margin-top:1rem">Conclude the expedition</h3>
+                <p class="meta">Check every character that completed the session successfully — they earn a session credit toward their next level.</p>
+                @foreach (var signup in session.Signups)
+                {
+                    var characterId = signup.CharacterId;
+                    <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal;margin-bottom:0.3rem">
+                        <input type="checkbox" checked="@completionPicks.Contains(characterId)"
+                               @onchange="e => ToggleCompletion(characterId, (bool)e.Value!)" />
+                        @signup.Character.Name (level @signup.Character.Level)
+                    </label>
+                }
+                <div style="display:flex;gap:0.8rem;margin-top:0.8rem">
+                    <button class="btn btn-primary" @onclick="CompleteAsync" disabled="@(session.Signups.Count == 0)">
+                        Mark completed &amp; award credits
+                    </button>
+                    <button class="btn btn-danger" @onclick="CancelAsync">Cancel session</button>
+                </div>
+            }
+        </div>
+    }
+    else if (session.Status == SessionStatus.Scheduled && session.CreatedByUserId == CurrentUser.UserId)
+    {
+        <div style="margin-top:1.2rem">
+            <button class="btn btn-danger btn-sm" @onclick="CancelAsync">Cancel this session</button>
+        </div>
+    }
+
+    @* ---------- message board ---------- *@
+    <div class="rule-title" style="display:flex">
+        Table talk
+        <span class="board-live @(boardLive ? null : "off")" style="margin-left:auto">
+            <span class="pulse"></span> @(boardLive ? "live" : "offline")
+        </span>
+    </div>
+
+    <div class="board" @ref="boardElement" style="max-height:420px;overflow-y:auto;padding-right:0.3rem">
+        @if (messages.Count == 0)
+        {
+            <div class="empty-state">Silence at the table. Say something.</div>
+        }
+        @foreach (var m in messages)
+        {
+            <div class="board-msg @(m.AuthorUserId == CurrentUser.UserId ? "mine" : null)">
+                <span class="msg-rune">@Initial(m.AuthorName)</span>
+                <div class="msg-body">
+                    <div class="msg-head">
+                        <span class="msg-author">@m.AuthorName</span>
+                        <span class="msg-time">@m.PostedAt.LocalDateTime.ToString("MMM d, h:mm tt")</span>
+                    </div>
+                    <div class="msg-text">@m.Body</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (CanPost)
+    {
+        <div class="board-compose">
+            <textarea @bind="draft" @bind:event="oninput" placeholder="Coordinate, scheme, boast…" maxlength="4000"></textarea>
+            <button class="btn btn-primary" @onclick="PostAsync" disabled="@(string.IsNullOrWhiteSpace(draft))">Post</button>
+        </div>
+    }
+    else
+    {
+        <p class="meta" style="margin-top:0.6rem">Join the session to post on its board.</p>
+    }
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private GameSession? session;
+    private IReadOnlyList<Character> myCharacters = [];
+    private Dictionary<string, string> names = [];
+    private List<BoardMessage> messages = [];
+    private HashSet<Guid> completionPicks = [];
+
+    private Guid? signupCharacterId;
+    private IReadOnlyList<SignupWarning> signupWarnings = [];
+    private string draft = "";
+    private string? error;
+    private string? notice;
+    private bool boardLive;
+    private ElementReference boardElement;
+    private DotNetObjectReference<SessionDetail>? selfRef;
+    private bool boardConnected;
+
+    private bool IsSessionDm => session?.DmUserId == CurrentUser.UserId;
+
+    private bool CanPost => session is not null && (
+        IsSessionDm
+        || CurrentUser.IsCa
+        || session.CreatedByUserId == CurrentUser.UserId
+        || session.Signups.Any(s => s.Character.OwnerUserId == CurrentUser.UserId));
+
+    private IEnumerable<Character> AvailableCharacters => myCharacters
+        .Where(c => session!.Signups.All(s => s.CharacterId != c.Id))
+        .Where(_ => session!.Signups.All(s => s.Character.OwnerUserId != CurrentUser.UserId));
+
+    private string DisplayName(string userId) => names.GetValueOrDefault(userId, "someone");
+
+    private static string Initial(string name) => name.Length > 0 ? name[..1].ToUpperInvariant() : "?";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+        myCharacters = await Characters.GetMyCharactersAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !boardConnected)
+        {
+            boardConnected = true;
+            selfRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeAsync<bool>("sessionBoard.connect", Id, selfRef);
+                boardLive = true;
+                StateHasChanged();
+            }
+            catch
+            {
+                // Board still works read-only via the initial load; posts refresh it.
+                boardLive = false;
+            }
+
+            await JS.InvokeVoidAsync("sessionBoard.scrollToEnd", boardElement);
+        }
+    }
+
+    private async Task LoadAsync()
+    {
+        session = await Sessions.GetAsync(Id);
+
+        var stored = await Sessions.GetMessagesAsync(Id);
+        var userIds = stored.Select(m => m.AuthorUserId)
+            .Concat(session.Signups.Select(s => s.Character.OwnerUserId))
+            .Append(session.CreatedByUserId)
+            .Concat(session.DmUserId is null ? [] : new[] { session.DmUserId })
+            .Distinct();
+        names = new Dictionary<string, string>(await Users.GetDisplayNamesAsync(userIds));
+
+        messages = [.. stored.Select(m => new BoardMessage(
+            m.Id, m.SessionId, m.AuthorUserId, DisplayName(m.AuthorUserId), m.Body, m.PostedAt))];
+
+        completionPicks = [.. session.Signups.Select(s => s.CharacterId)];
+    }
+
+    [JSInvokable]
+    public async Task OnMessagePosted(BoardMessage message)
+    {
+        if (messages.All(m => m.Id != message.Id))
+        {
+            messages.Add(message);
+            StateHasChanged();
+            await JS.InvokeVoidAsync("sessionBoard.scrollToEnd", boardElement);
+        }
+    }
+
+    [JSInvokable]
+    public void OnLiveState(bool live)
+    {
+        boardLive = live;
+        StateHasChanged();
+    }
+
+    private async Task PostAsync()
+    {
+        error = null;
+        try
+        {
+            var posted = await Sessions.PostMessageAsync(Id, draft);
+            draft = "";
+            await OnMessagePosted(posted); // the hub echo is de-duplicated by id
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+    }
+
+    private async Task OnSignupCharacterChanged(ChangeEventArgs e)
+    {
+        signupWarnings = [];
+        signupCharacterId = Guid.TryParse(e.Value?.ToString(), out var id) ? id : null;
+        if (signupCharacterId is not null)
+        {
+            signupWarnings = await Sessions.GetSignupWarningsAsync(Id, signupCharacterId.Value);
+        }
+    }
+
+    private Task SignUpAsync() => DoAsync(async () =>
+    {
+        await Sessions.SignUpAsync(Id, signupCharacterId!.Value);
+        signupCharacterId = null;
+        signupWarnings = [];
+    });
+
+    private Task WithdrawAsync(Guid characterId) => DoAsync(() => Sessions.WithdrawAsync(Id, characterId));
+
+    private Task ClaimDmAsync() => DoAsync(() => Sessions.ClaimDmSeatAsync(Id));
+
+    private Task ReleaseDmAsync() => DoAsync(() => Sessions.ReleaseDmSeatAsync(Id));
+
+    private Task CancelAsync() => DoAsync(() => Sessions.CancelAsync(Id));
+
+    private Task CompleteAsync() => DoAsync(async () =>
+    {
+        await Sessions.CompleteAsync(Id, completionPicks);
+        notice = "Expedition concluded — session credits awarded.";
+    });
+
+    private void ToggleCompletion(Guid characterId, bool picked)
+    {
+        if (picked)
+        {
+            completionPicks.Add(characterId);
+        }
+        else
+        {
+            completionPicks.Remove(characterId);
+        }
+    }
+
+    private async Task DoAsync(Func<Task> action)
+    {
+        error = null;
+        notice = null;
+        try
+        {
+            await action();
+            await LoadAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        selfRef?.Dispose();
+        try
+        {
+            await JS.InvokeVoidAsync("sessionBoard.disconnect");
+        }
+        catch
+        {
+            // circuit is tearing down; the browser connection dies with the page
+        }
+    }
+}

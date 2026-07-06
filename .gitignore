@@ -1,0 +1,36 @@
+## .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.user
+*.suo
+
+## Visual Studio / Rider
+.vs/
+.idea/
+*.userprefs
+
+## Test results / coverage
+[Tt]est[Rr]esult*/
+coverage*.json
+*.coverage
+*.trx
+
+## Runtime image uploads (local IImageStore target)
+src/WestMarch.Web/wwwroot/media/
+
+## Local secrets & environment overrides
+appsettings.*.Local.json
+*.env
+
+## OS noise
+Thumbs.db
+.DS_Store
+
+## Claude Code local tooling (machine-specific paths)
+.claude/

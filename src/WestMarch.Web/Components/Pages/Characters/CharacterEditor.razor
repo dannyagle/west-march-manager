@@ -1,0 +1,103 @@
+@page "/characters/new"
+@page "/characters/{Id:guid}/edit"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using WestMarch.Application.Characters
+
+@inject ICharacterService Characters
+@inject NavigationManager Nav
+
+<PageTitle>@(IsNew ? "New Character" : "Edit Character")</PageTitle>
+
+<div class="wm-panel" style="max-width:640px;margin:0 auto">
+    <h1>@(IsNew ? "Pen a new character" : $"Edit {model.Name}")</h1>
+    @if (IsNew)
+    {
+        <p class="meta">New characters join the campaign at level @LevelingEngine.StartingLevel.</p>
+    }
+
+    @if (errors is not null)
+    {
+        <div class="alert alert-danger">@string.Join(" ", errors)</div>
+    }
+
+    <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="character-editor">
+        <DataAnnotationsValidator />
+
+        <div class="field">
+            <label>Name</label>
+            <InputText @bind-Value="model.Name" placeholder="e.g. Bramblefoot" />
+            <ValidationMessage For="() => model.Name" />
+        </div>
+
+        <div class="field">
+            <label>Summary <span class="meta">(optional — species &amp; class, shown on rosters)</span></label>
+            <InputText @bind-Value="model.Summary" placeholder="e.g. Halfling Rogue" />
+        </div>
+
+        <div class="field">
+            <label>D&amp;D Beyond character link <span class="meta">(required)</span></label>
+            <InputText @bind-Value="model.DdbUrl" placeholder="https://www.dndbeyond.com/characters/12345678" />
+            <ValidationMessage For="() => model.DdbUrl" />
+        </div>
+
+        <div style="display:flex;gap:0.8rem;margin-top:1.4rem">
+            <button type="submit" class="btn btn-primary" disabled="@saving">@(IsNew ? "Create character" : "Save changes")</button>
+            <a class="btn" href="@(IsNew ? "characters" : $"characters/{Id}")">Cancel</a>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public Guid? Id { get; set; }
+
+    private bool IsNew => Id is null;
+    private FormModel model = new();
+    private IReadOnlyList<string>? errors;
+    private bool saving;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var c = await Characters.GetAsync(Id.Value);
+            model = new FormModel { Name = c.Name, Summary = c.Summary, DdbUrl = c.DdbUrl };
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        saving = true;
+        errors = null;
+        try
+        {
+            var input = new CharacterInput(model.Name, model.Summary, model.DdbUrl);
+            var saved = IsNew
+                ? await Characters.CreateAsync(input)
+                : await Characters.UpdateAsync(Id!.Value, input);
+            Nav.NavigateTo($"characters/{saved.Id}");
+        }
+        catch (AppValidationException ex)
+        {
+            errors = ex.Errors;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private sealed class FormModel
+    {
+        [Required, StringLength(100)]
+        public string Name { get; set; } = "";
+
+        [StringLength(200)]
+        public string? Summary { get; set; }
+
+        [Required]
+        public string DdbUrl { get; set; } = "";
+    }
+}

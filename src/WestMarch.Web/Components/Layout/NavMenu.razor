@@ -1,0 +1,81 @@
+@using WestMarch.Web.Services
+@implements IDisposable
+
+@inject NavigationManager NavigationManager
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="/">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="24" cy="24" r="16.5" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.5" />
+                <path d="M24 5.5 L26.6 19 L40 24 L26.6 29 L24 42.5 L21.4 29 L8 24 L21.4 19 Z" fill="currentColor" />
+                <circle cx="24" cy="24" r="2.5" fill="var(--ink-deep, #101613)" />
+            </svg>
+            <span class="brand-text">
+                <span class="brand-title">The West Marches</span>
+                <span class="brand-sub">Cartographers' Hall</span>
+            </span>
+        </a>
+
+        <input type="checkbox" title="Navigation menu" class="nav-toggle" id="nav-toggle" />
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav class="topnav">
+            <NavLink class="topnav-link" href="/" Match="NavLinkMatch.All">Expedition Board</NavLink>
+            <AuthorizeView>
+                <NavLink class="topnav-link" href="characters">My Characters</NavLink>
+            </AuthorizeView>
+            <AuthorizeView Policy="@AuthPolicies.RequireDm">
+                <NavLink class="topnav-link" href="adventures">Adventures</NavLink>
+                <NavLink class="topnav-link topnav-link-attn" href="sessions/needs-dm">Needs a DM</NavLink>
+            </AuthorizeView>
+            <AuthorizeView Policy="@AuthPolicies.RequireCa">
+                <NavLink class="topnav-link" href="admin/announcements">Announcements</NavLink>
+                <NavLink class="topnav-link" href="admin/people">People</NavLink>
+            </AuthorizeView>
+
+            <span class="topnav-spacer"></span>
+
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="topnav-link topnav-user" href="Account/Manage">
+                        <span class="user-dot"></span>@context.User.Identity?.Name
+                    </NavLink>
+                    <form action="Account/Logout" method="post" class="logout-form">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                        <button type="submit" class="topnav-link topnav-button">Depart</button>
+                    </form>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="topnav-link" href="Account/Login">Sign in</NavLink>
+                    <NavLink class="topnav-link topnav-cta" href="Account/Register">Join the expedition</NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </nav>
+    </div>
+</header>
+
+@code {
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

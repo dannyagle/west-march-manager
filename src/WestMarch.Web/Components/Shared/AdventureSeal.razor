@@ -1,0 +1,20 @@
+@* Wax-seal status badge for the adventure authoring lifecycle. *@
+<span class="seal @Css">@Label</span>
+
+@code {
+    [Parameter, EditorRequired] public AdventureStatus Status { get; set; }
+
+    private string Css => Status switch
+    {
+        AdventureStatus.Draft => "seal-draft",
+        AdventureStatus.ReadyForReview => "seal-review",
+        AdventureStatus.Approved => "seal-approved",
+        _ => "seal-draft",
+    };
+
+    private string Label => Status switch
+    {
+        AdventureStatus.ReadyForReview => "Ready for review",
+        _ => Status.ToString(),
+    };
+}

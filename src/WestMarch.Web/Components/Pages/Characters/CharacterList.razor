@@ -1,0 +1,68 @@
+@page "/characters"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Characters
+
+@inject ICharacterService Characters
+@inject NavigationManager Nav
+
+<PageTitle>My Characters</PageTitle>
+
+<div class="page-heading">
+    <h1>My Characters</h1>
+    <a class="btn btn-primary" href="characters/new">Pen a new character</a>
+</div>
+
+@if (characters is null)
+{
+    <p class="meta">Consulting the rolls…</p>
+}
+else if (characters.Count == 0)
+{
+    <div class="empty-state">
+        No characters yet. Every legend starts at level @LevelingEngine.StartingLevel — pen your first.
+    </div>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var c in characters)
+        {
+            <a class="wm-card quest-card" href="characters/@c.Id">
+                <div class="quest-date">Level @c.Level @(c.IsRetired ? "· retired" : null)</div>
+                <div class="quest-title">@c.Name</div>
+                @if (c.Summary is not null)
+                {
+                    <div class="quest-desc">@c.Summary</div>
+                }
+                <div class="quest-foot">
+                    <LevelProgressRunes Progress="LevelingEngine.GetProgress(c)" />
+                </div>
+            </a>
+        }
+    </div>
+
+    @if (!showRetired)
+    {
+        <p class="meta" style="margin-top:1rem">
+            <button class="btn btn-ghost btn-sm" @onclick="ShowRetired">Show retired characters</button>
+        </p>
+    }
+}
+
+@code {
+    private IReadOnlyList<Character>? characters;
+    private bool showRetired;
+
+    protected override Task OnInitializedAsync() => LoadAsync();
+
+    private async Task LoadAsync() =>
+        characters = await Characters.GetMyCharactersAsync(includeRetired: showRetired);
+
+    private async Task ShowRetired()
+    {
+        showRetired = true;
+        await LoadAsync();
+    }
+}

@@ -1,0 +1,22 @@
+@* Status badge for a session; "needs a DM" takes precedence while scheduled. *@
+<span class="seal @Css">@Label</span>
+
+@code {
+    [Parameter, EditorRequired] public GameSession Session { get; set; } = default!;
+
+    private string Css => Session.Status switch
+    {
+        SessionStatus.Scheduled when Session.DmUserId is null => "seal-needsdm",
+        SessionStatus.Scheduled => "seal-approved",
+        SessionStatus.Completed => "seal-completed",
+        _ => "seal-cancelled",
+    };
+
+    private string Label => Session.Status switch
+    {
+        SessionStatus.Scheduled when Session.DmUserId is null => "Needs a DM",
+        SessionStatus.Scheduled => "Scheduled",
+        SessionStatus.Completed => "Completed",
+        _ => "Cancelled",
+    };
+}

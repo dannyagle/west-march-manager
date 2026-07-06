@@ -1,0 +1,26 @@
+@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <NavMenu />
+
+    <main class="app-main">
+        @Body
+    </main>
+
+    <footer class="app-footer">
+        <div class="app-footer-inner">
+            <svg class="footer-compass" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6" />
+                <path d="M24 6 L27 21 L42 24 L27 27 L24 42 L21 27 L6 24 L21 21 Z" fill="currentColor" opacity="0.8" />
+                <circle cx="24" cy="24" r="3" fill="currentColor" />
+            </svg>
+            <span>The West Marches &mdash; here the map ends, and the ink begins.</span>
+        </div>
+    </footer>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

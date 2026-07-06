@@ -1,0 +1,48 @@
+@page "/sessions/needs-dm"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Sessions
+
+@inject ISessionService Sessions
+
+<PageTitle>Expeditions Needing a DM</PageTitle>
+
+<div class="page-heading">
+    <h1>Expeditions without a guide</h1>
+</div>
+<p class="meta">These parties are mustered — or mustering — and waiting on a Dungeon Master. Claim a seat at the head of the table.</p>
+
+@if (sessions is null)
+{
+    <p class="meta">Scanning the muster rolls…</p>
+}
+else if (sessions.Count == 0)
+{
+    <div class="empty-state">Every scheduled expedition has a DM. The frontier thanks you.</div>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var s in sessions)
+        {
+            <a class="wm-card quest-card" href="sessions/@s.Id">
+                <div class="quest-date">@s.ScheduledAt.LocalDateTime.ToString("ddd, MMM d · h:mm tt")</div>
+                <div class="quest-title">@s.Adventure.Title</div>
+                <div class="quest-desc">@s.Adventure.ShortDescription</div>
+                <div class="quest-foot">
+                    <span>Levels @s.Adventure.MinLevel–@s.Adventure.MaxLevel</span>
+                    <SeatPips Filled="s.Signups.Count" Max="s.Adventure.TargetPlayersMax" />
+                    <span class="seal seal-needsdm" style="margin-left:auto">Needs a DM</span>
+                </div>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<GameSession>? sessions;
+
+    protected override async Task OnInitializedAsync() =>
+        sessions = await Sessions.ListNeedingDmAsync();
+}

@@ -1,0 +1,107 @@
+@page "/characters/{Id:guid}"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Characters
+
+@inject ICharacterService Characters
+@inject ICurrentUser CurrentUser
+@inject NavigationManager Nav
+
+<PageTitle>@(character?.Name ?? "Character")</PageTitle>
+
+@if (character is null)
+{
+    <p class="meta">Consulting the rolls…</p>
+}
+else
+{
+    <div class="page-heading">
+        <h1>@character.Name</h1>
+        @if (character.IsRetired)
+        {
+            <span class="seal seal-cancelled">Retired</span>
+        }
+        @if (IsOwner)
+        {
+            <span class="meta">
+                <a class="btn btn-sm" href="characters/@character.Id/edit">Edit</a>
+                <button class="btn btn-sm btn-danger" @onclick="ToggleRetiredAsync">
+                    @(character.IsRetired ? "Un-retire" : "Retire")
+                </button>
+            </span>
+        }
+    </div>
+
+    <div class="wm-panel" style="margin-bottom:1.25rem">
+        <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:center">
+            <div class="vital" style="min-width:80px">
+                <span class="v-num">@character.Level</span>
+                <span class="v-label">Level</span>
+            </div>
+            <div>
+                @if (character.Summary is not null)
+                {
+                    <div style="font-style:italic;color:var(--parchment-dim)">@character.Summary</div>
+                }
+                <LevelProgressRunes Progress="progress" />
+            </div>
+            <div style="margin-left:auto">
+                <a class="btn" href="@character.DdbUrl" target="_blank" rel="noopener">
+                    Open on D&amp;D Beyond ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="rule-title">Deeds &amp; advancement</div>
+    @if (character.Credits.Count == 0)
+    {
+        <div class="empty-state">No sessions in the record yet. The frontier awaits.</div>
+    }
+    else
+    {
+        <table class="wm-table">
+            <thead>
+                <tr><th>When</th><th>Credited at level</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var credit in character.Credits)
+                {
+                    <tr>
+                        <td>@credit.AwardedAt.LocalDateTime.ToString("ddd, MMM d yyyy")</td>
+                        <td>Level @credit.LevelAtAward</td>
+                        <td>
+                            @if (credit.TriggeredLevelUp)
+                            {
+                                <span class="seal seal-completed">Leveled up!</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private Character? character;
+    private LevelProgress progress = default!;
+
+    private bool IsOwner => character is not null &&
+        (character.OwnerUserId == CurrentUser.UserId || CurrentUser.IsCa);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        character = await Characters.GetAsync(Id);
+        progress = LevelingEngine.GetProgress(character);
+    }
+
+    private async Task ToggleRetiredAsync()
+    {
+        await Characters.RetireAsync(Id, !character!.IsRetired);
+        character = await Characters.GetAsync(Id);
+    }
+}

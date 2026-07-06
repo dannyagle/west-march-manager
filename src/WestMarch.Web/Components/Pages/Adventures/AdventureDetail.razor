@@ -1,0 +1,171 @@
+@page "/adventures/{Id:guid}"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Adventures
+@using WestMarch.Application.Users
+
+@inject IAdventureService Adventures
+@inject IUserDirectory Users
+@inject ICurrentUser CurrentUser
+@inject NavigationManager Nav
+
+<PageTitle>@(adventure?.Title ?? "Adventure")</PageTitle>
+
+@if (adventure is null)
+{
+    <p class="meta">Unrolling the scroll…</p>
+}
+else
+{
+    <div class="page-heading">
+        <h1>@adventure.Title</h1>
+        <AdventureSeal Status="adventure.Status" />
+    </div>
+
+    <p class="meta">
+        Levels @adventure.MinLevel–@adventure.MaxLevel · @adventure.TargetPlayersMin–@adventure.TargetPlayersMax seats
+        · by @authorName
+        · active @adventure.ActiveFrom.LocalDateTime.ToString("MMM d, yyyy")@(adventure.ActiveUntil is null ? " onward" : $" – {adventure.ActiveUntil.Value.LocalDateTime:MMM d, yyyy}")
+    </p>
+
+    <div class="tag-row" style="margin-bottom:1.2rem">
+        @foreach (var tag in adventure.Tags)
+        {
+            <span class="tag-chip">@tag.Name</span>
+        }
+    </div>
+
+    @if (error is not null)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+
+    <div class="wm-panel" style="margin-bottom:1.25rem">
+        <p style="font-style:italic;color:var(--parchment-dim)">@adventure.ShortDescription</p>
+        <hr />
+        <p style="white-space:pre-wrap">@adventure.LongDescription</p>
+    </div>
+
+    @if (adventure.GuaranteedRewards.Count > 0 || adventure.RewardOptionSets.Count > 0)
+    {
+        <div class="rule-title">Rewards</div>
+        @if (adventure.GuaranteedRewards.Count > 0)
+        {
+            <div class="reward-block">
+                <div class="reward-kicker">Guaranteed</div>
+                <ul>
+                    @foreach (var r in adventure.GuaranteedRewards)
+                    {
+                        <li>
+                            @if (r.Kind == RewardKind.Gold && r.GoldAmount is not null)
+                            {
+                                <span class="reward-gold">@r.GoldAmount gp</span>
+                            }
+                            @r.Description
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        @foreach (var set in adventure.RewardOptionSets)
+        {
+            <div class="reward-block">
+                <div class="reward-kicker">Choose one — @set.Name</div>
+                <ul>
+                    @foreach (var o in set.Options)
+                    {
+                        <li>
+                            @o.Description
+                            @if (o.ExternalUrl is not null)
+                            {
+                                <a href="@o.ExternalUrl" target="_blank" rel="noopener">↗</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+
+    @if (adventure.DmNotes is not null || adventure.MonsterStatBlocks is not null)
+    {
+        <div class="dm-only">
+            <div class="dm-kicker">⚔ For the Dungeon Master's eyes only</div>
+            @if (adventure.DmNotes is not null)
+            {
+                <h3>Notes</h3>
+                <p style="white-space:pre-wrap">@adventure.DmNotes</p>
+            }
+            @if (adventure.MonsterStatBlocks is not null)
+            {
+                <h3>Monsters</h3>
+                <pre>@adventure.MonsterStatBlocks</pre>
+            }
+        </div>
+    }
+
+    <div style="display:flex;gap:0.8rem;margin-top:1.8rem;flex-wrap:wrap">
+        @if (CanEdit)
+        {
+            <a class="btn" href="adventures/@adventure.Id/edit">Edit</a>
+        }
+        @if (adventure.Status == AdventureStatus.Draft && (IsAuthor || CurrentUser.IsCa))
+        {
+            <button class="btn btn-primary" @onclick="() => DoAsync(() => Adventures.SubmitForReviewAsync(Id))">
+                Mark ready for review
+            </button>
+        }
+        @if (adventure.Status == AdventureStatus.ReadyForReview && CurrentUser.IsCa)
+        {
+            <button class="btn btn-primary" @onclick="() => DoAsync(() => Adventures.ApproveAsync(Id))">
+                Approve for play
+            </button>
+        }
+        @if (adventure.Status != AdventureStatus.Draft && (CurrentUser.IsCa || (IsAuthor && adventure.Status == AdventureStatus.ReadyForReview)))
+        {
+            <button class="btn" @onclick="() => DoAsync(() => Adventures.ReturnToDraftAsync(Id))">
+                Return to draft
+            </button>
+        }
+        @if (adventure.Status == AdventureStatus.Approved)
+        {
+            <a class="btn btn-primary" href="sessions/new?adventure=@adventure.Id">Schedule a session</a>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private Adventure? adventure;
+    private string authorName = "…";
+    private string? error;
+
+    private bool IsAuthor => adventure?.AuthorUserId == CurrentUser.UserId;
+    private bool CanEdit => adventure is not null &&
+        (CurrentUser.IsCa || (IsAuthor && adventure.Status != AdventureStatus.Approved));
+
+    protected override Task OnParametersSetAsync() => LoadAsync();
+
+    private async Task LoadAsync()
+    {
+        adventure = await Adventures.GetAsync(Id);
+        var names = await Users.GetDisplayNamesAsync([adventure.AuthorUserId]);
+        authorName = names.GetValueOrDefault(adventure.AuthorUserId, "unknown");
+    }
+
+    private async Task DoAsync(Func<Task> action)
+    {
+        error = null;
+        try
+        {
+            await action();
+            await LoadAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+    }
+}

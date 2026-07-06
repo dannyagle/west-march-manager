@@ -1,0 +1,17 @@
+@* "1 of 4 sessions toward level 12" as lit rune pips + label. *@
+<div class="progress-runes" title="@Progress.Display">
+    @if (!Progress.IsMaxLevel)
+    {
+        <span class="runes">
+            @for (var i = 0; i < Progress.CreditsRequired; i++)
+            {
+                <span class="rune @(i < Progress.CreditsEarned ? "lit" : null)"></span>
+            }
+        </span>
+    }
+    <span class="progress-label">@Progress.Display</span>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public LevelProgress Progress { get; set; } = default!;
+}

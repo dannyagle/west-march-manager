@@ -1,0 +1,312 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using WestMarch.Domain.Adventures;
+using WestMarch.Domain.Announcements;
+using WestMarch.Domain.Characters;
+using WestMarch.Domain.Sessions;
+using WestMarch.Domain.Users;
+using WestMarch.Infrastructure.Identity;
+using WestMarch.Infrastructure.Persistence;
+
+namespace WestMarch.Infrastructure.Seeding;
+
+/// <summary>
+/// Development seed: applies migrations, ensures roles, and populates a believable
+/// campaign so every screen has something to show. Idempotent — runs only into an empty DB.
+/// All local accounts use the password "Passw0rd!".
+/// </summary>
+public static class DevDataSeeder
+{
+    public const string DevPassword = "Passw0rd!";
+
+    public static async Task SeedAsync(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DevDataSeeder");
+
+        await db.Database.MigrateAsync();
+
+        foreach (var role in Roles.All)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        if (await db.Users.AnyAsync())
+        {
+            return;
+        }
+
+        logger.LogInformation("Seeding development data…");
+
+        async Task<ApplicationUser> AddUser(string email, string displayName, params string[] roles)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true,
+                DisplayName = displayName,
+            };
+            await userManager.CreateAsync(user, DevPassword);
+            if (roles.Length > 0)
+            {
+                await userManager.AddToRolesAsync(user, roles);
+            }
+            return user;
+        }
+
+        var admin = await AddUser("admin@westmarch.local", "Mira the Cartographer", Roles.CampaignAdmin, Roles.DungeonMaster);
+        var dmGareth = await AddUser("dm@westmarch.local", "Gareth Ironquill", Roles.DungeonMaster);
+        var dmSable = await AddUser("dm2@westmarch.local", "Sable", Roles.DungeonMaster);
+        var pOwen = await AddUser("player1@westmarch.local", "Owen Underbough");
+        var pKira = await AddUser("player2@westmarch.local", "Kira Dawnwhisper");
+        var pTobin = await AddUser("player3@westmarch.local", "Tobin Blackwater");
+        var pElsa = await AddUser("player4@westmarch.local", "Elsariel");
+
+        Character MakeCharacter(ApplicationUser owner, string name, string summary, int level, int credits) => new()
+        {
+            OwnerUserId = owner.Id,
+            Name = name,
+            Summary = summary,
+            Level = level,
+            CreditsAtCurrentLevel = credits,
+            DdbUrl = "https://www.dndbeyond.com/characters/12345678",
+            DdbCharacterId = 12345678,
+        };
+
+        var chars = new[]
+        {
+            MakeCharacter(pOwen, "Bramblefoot", "Halfling Rogue", 3, 1),
+            MakeCharacter(pOwen, "Sir Percival", "Human Paladin", 4, 0),
+            MakeCharacter(pKira, "Kirael", "Elf Druid", 3, 0),
+            MakeCharacter(pTobin, "Grimjaw", "Half-orc Barbarian", 5, 1),
+            MakeCharacter(pElsa, "Elsariel Moonshadow", "Elf Wizard", 11, 1),
+            MakeCharacter(admin, "Thornwick", "Gnome Artificer", 3, 0),
+        };
+        db.Characters.AddRange(chars);
+
+        var tags = new Dictionary<string, Tag>();
+        Tag T(string name) => tags.TryGetValue(name, out var t) ? t : tags[name] = new Tag { Name = name };
+
+        var now = DateTimeOffset.Now;
+
+        var goblinWatch = new Adventure
+        {
+            Title = "The Goblin Watchtower",
+            AuthorUserId = dmGareth.Id,
+            MinLevel = 3,
+            MaxLevel = 5,
+            ShortDescription = "Smoke rises from the old border watchtower. The goblins of the Bent Fang have claimed it — and something is organizing them.",
+            LongDescription = "The watchtower on the Elderline has stood empty since the retreat. Now travellers report drums at dusk and green fires on its crown. The Wardens will pay for its recapture, and pay better for whoever — or whatever — taught the Bent Fang discipline.",
+            DmNotes = "The 'organizer' is a hobgoblin exile, Vex. She will parley if cornered. The tower basement hides a Warden supply cache (map to The Sunken Vault).",
+            MonsterStatBlocks = "8× Goblin (MM p.166)\n2× Goblin Boss (MM p.166)\n1× Hobgoblin Captain 'Vex' (MM p.186) — AC 17, HP 39, parley DC 14",
+            Status = AdventureStatus.Approved,
+            ApprovedByUserId = admin.Id,
+            ApprovedAt = now.AddDays(-20),
+            ActiveFrom = now.AddDays(-30),
+            Tags = [T("wilderness"), T("classic")],
+            GuaranteedRewards =
+            [
+                new RewardComponent { Kind = RewardKind.Gold, GoldAmount = 150, Description = "150 gp Warden bounty", SortOrder = 0 },
+            ],
+            RewardOptionSets =
+            [
+                new RewardOptionSet
+                {
+                    Name = "Spoils of the tower",
+                    SortOrder = 0,
+                    Options =
+                    [
+                        new RewardOption { Description = "Cloak of Billowing (common)", ExternalUrl = "https://www.dndbeyond.com/magic-items/4581-cloak-of-billowing", SortOrder = 0 },
+                        new RewardOption { Description = "Potion of Hill Giant Strength", SortOrder = 1 },
+                        new RewardOption { Description = "Vex's map satchel (three unexplored hex leads)", SortOrder = 2 },
+                    ],
+                },
+            ],
+        };
+
+        var sunkenVault = new Adventure
+        {
+            Title = "The Sunken Vault of Aldremir",
+            AuthorUserId = dmGareth.Id,
+            MinLevel = 4,
+            MaxLevel = 6,
+            ShortDescription = "A drowned dwarven vault has surfaced in the fen. Its doors are open. They were not opened from outside.",
+            LongDescription = "When the marsh receded after the storm, the vault's spire broke the waterline for the first time in two centuries. The Cartographers' Guild wants its ledgers; the vault wants visitors. Bring rope, bring light, and mind the water level.",
+            DmNotes = "Water rises one 'step' every 30 real minutes — track it visibly. The ledgers implicate a founding family of the town.",
+            MonsterStatBlocks = "4× Ghoul (MM p.148)\n1× Water Weird (MM p.299)\n1× Flameskull 'the Archivist' (MM p.134) — will trade answers for fire",
+            Status = AdventureStatus.ReadyForReview,
+            ActiveFrom = now.AddDays(-5),
+            Tags = [T("dungeon"), T("horror")],
+            GuaranteedRewards =
+            [
+                new RewardComponent { Kind = RewardKind.Gold, GoldAmount = 250, Description = "250 gp in vault coinage", SortOrder = 0 },
+                new RewardComponent { Kind = RewardKind.Other, GoldAmount = null, Description = "Guild favor: one free identify per character", SortOrder = 1 },
+            ],
+            RewardOptionSets =
+            [
+                new RewardOptionSet
+                {
+                    Name = "Choose one relic",
+                    SortOrder = 0,
+                    Options =
+                    [
+                        new RewardOption { Description = "Mariner's Armor (uncommon)", ExternalUrl = "https://www.dndbeyond.com/magic-items/4623-mariners-armor", SortOrder = 0 },
+                        new RewardOption { Description = "Wand of Secrets", SortOrder = 1 },
+                    ],
+                },
+            ],
+        };
+
+        var kingInAmber = new Adventure
+        {
+            Title = "The King in Amber",
+            AuthorUserId = admin.Id,
+            MinLevel = 9,
+            MaxLevel = 12,
+            ShortDescription = "Deep in the Elderwood, woodcutters found a hall swallowed by amber — and a crowned figure inside it, watching them.",
+            LongDescription = "An epic-tier expedition into the Elderwood's oldest grove. The amber hall predates every map the Guild holds. Whatever royal court was frozen there, its heraldry matches nothing in the archives — except one seal in the town founder's crypt.",
+            DmNotes = "Part 1 of the 'Amber Court' epic. The king wakes if the amber is damaged. He speaks only in questions.",
+            MonsterStatBlocks = "1× Treant (MM p.289)\n6× Blight assortment\n'The King in Amber' — use Archmage chassis (MM p.342), lair actions: amber grasp (DC 16 STR).",
+            Status = AdventureStatus.Approved,
+            ApprovedByUserId = admin.Id,
+            ApprovedAt = now.AddDays(-7),
+            ActiveFrom = now.AddDays(-7),
+            ActiveUntil = now.AddDays(60),
+            Tags = [T("epic event"), T("mystery"), T("wilderness")],
+            GuaranteedRewards =
+            [
+                new RewardComponent { Kind = RewardKind.Gold, GoldAmount = 900, Description = "900 gp: Guild expedition purse", SortOrder = 0 },
+            ],
+            RewardOptionSets =
+            [
+                new RewardOptionSet
+                {
+                    Name = "Boon of the Amber Court",
+                    SortOrder = 0,
+                    Options =
+                    [
+                        new RewardOption { Description = "Staff of Withering (rare)", ExternalUrl = "https://www.dndbeyond.com/magic-items/5451-staff-of-withering", SortOrder = 0 },
+                        new RewardOption { Description = "Amber shard: once, ask the King one question (DM adjudicates)", SortOrder = 1 },
+                        new RewardOption { Description = "Ring of Resistance (poison)", ExternalUrl = "http://dnd2024.wikidot.com/wondrous-items:ring-of-resistance", SortOrder = 2 },
+                    ],
+                },
+            ],
+        };
+
+        var draftIdea = new Adventure
+        {
+            Title = "Rats in the Granary (draft)",
+            AuthorUserId = dmSable.Id,
+            MinLevel = 3,
+            MaxLevel = 4,
+            ShortDescription = "The harvest stores are vanishing overnight. The miller blames rats. The rats, if asked, blame the miller.",
+            LongDescription = "Work in progress — a one-night mystery for fresh level-3 characters.",
+            DmNotes = "TODO: stat the wererat, decide who's lying.",
+            Status = AdventureStatus.Draft,
+            ActiveFrom = now,
+            Tags = [T("mystery"), T("town")],
+        };
+
+        db.Adventures.AddRange(goblinWatch, sunkenVault, kingInAmber, draftIdea);
+
+        DateTimeOffset NextEvening(int daysOut) =>
+            new(DateOnly.FromDateTime(now.LocalDateTime.Date.AddDays(daysOut)), new TimeOnly(18, 30), now.Offset);
+
+        var s1 = new GameSession
+        {
+            Adventure = goblinWatch,
+            ScheduledAt = NextEvening(3),
+            DmUserId = dmGareth.Id,
+            CreatedByUserId = dmGareth.Id,
+            Location = "The Dragon's Hoard — back table",
+            Signups =
+            [
+                new SessionSignup { Character = chars[0] },
+                new SessionSignup { Character = chars[2] },
+            ],
+        };
+
+        var s2 = new GameSession
+        {
+            Adventure = kingInAmber,
+            ScheduledAt = NextEvening(6),
+            DmUserId = null, // needs a DM — shows on the DM board
+            CreatedByUserId = pElsa.Id,
+            Location = "The Dragon's Hoard — main hall",
+            Signups = [new SessionSignup { Character = chars[4] }],
+        };
+
+        var s3 = new GameSession
+        {
+            Adventure = goblinWatch,
+            ScheduledAt = NextEvening(10),
+            DmUserId = dmSable.Id,
+            CreatedByUserId = dmSable.Id,
+            Signups =
+            [
+                new SessionSignup { Character = chars[1] },
+                new SessionSignup { Character = chars[3] }, // level 5 — in range, table fine
+            ],
+        };
+
+        // A completed session in the past explains existing credit counters.
+        var past = new GameSession
+        {
+            Adventure = goblinWatch,
+            ScheduledAt = now.AddDays(-9),
+            DmUserId = dmGareth.Id,
+            CreatedByUserId = dmGareth.Id,
+            Status = SessionStatus.Completed,
+            CompletedAt = now.AddDays(-9).AddHours(4),
+            Signups =
+            [
+                new SessionSignup { Character = chars[0], ReceivedCredit = true },
+                new SessionSignup { Character = chars[3], ReceivedCredit = true },
+                new SessionSignup { Character = chars[4], ReceivedCredit = true },
+            ],
+        };
+
+        db.Sessions.AddRange(s1, s2, s3, past);
+
+        db.SessionCredits.AddRange(
+            new SessionCredit { Character = chars[0], SessionId = past.Id, LevelAtAward = 3 },
+            new SessionCredit { Character = chars[3], SessionId = past.Id, LevelAtAward = 5 },
+            new SessionCredit { Character = chars[4], SessionId = past.Id, LevelAtAward = 11 });
+
+        db.SessionMessages.AddRange(
+            new SessionMessage { Session = s1, AuthorUserId = dmGareth.Id, Body = "Bring a climber's kit if you have one — the tower is four storeys and the stairs are 'optional'.", PostedAt = now.AddHours(-30) },
+            new SessionMessage { Session = s1, AuthorUserId = pOwen.Id, Body = "Bramblefoot has rope, a grappling hook, and unearned confidence.", PostedAt = now.AddHours(-28) },
+            new SessionMessage { Session = s2, AuthorUserId = pElsa.Id, Body = "I've wanted to get back to the amber hall for weeks. Who's brave enough to join, and which of you can heal?", PostedAt = now.AddHours(-10) });
+
+        db.Announcements.AddRange(
+            new Announcement
+            {
+                Title = "Season 3 of the West Marches begins!",
+                AuthorUserId = admin.Id,
+                Body = "The maps are redrawn, the frontier is open, and **the Elderwood is stirring**.\n\nNew this season:\n\n- Characters now start at **level 3** — bring a fresh sheet or promote a retainer.\n- The *Amber Court* epic runs through the summer. Watch for tagged adventures.\n- Sessions at The Dragon's Hoard every Tuesday and Thursday evening.\n\nSee you on the frontier.",
+                ActiveFrom = now.AddDays(-10),
+                SortOrder = 1,
+            },
+            new Announcement
+            {
+                Title = "New DMs wanted — the frontier is bigger than we are",
+                AuthorUserId = admin.Id,
+                Body = "Three sessions went up this week and one still needs a DM. If you've been curious about running a table, the Cartographers will pair you with a veteran for your first outing. Ask **Mira** at the store or post on any session board.",
+                ActiveFrom = now.AddDays(-3),
+                ActiveUntil = now.AddDays(30),
+                SortOrder = 2,
+            });
+
+        await db.SaveChangesAsync();
+        logger.LogInformation("Development data seeded.");
+    }
+}

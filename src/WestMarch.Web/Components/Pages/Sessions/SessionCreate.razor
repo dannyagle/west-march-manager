@@ -1,0 +1,132 @@
+@page "/sessions/new"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using WestMarch.Application.Adventures
+@using WestMarch.Application.Sessions
+
+@inject IAdventureService Adventures
+@inject ISessionService Sessions
+@inject ICurrentUser CurrentUser
+@inject NavigationManager Nav
+
+<PageTitle>Call an Expedition</PageTitle>
+
+<div class="wm-panel" style="max-width:640px;margin:0 auto">
+    <h1>Call an expedition</h1>
+    <p class="meta">
+        Anyone can propose a session — pick an approved adventure and a time.
+        If no DM volunteers at creation, the session is posted to the DM board.
+    </p>
+
+    @if (errors is not null)
+    {
+        <div class="alert alert-danger">@string.Join(" ", errors)</div>
+    }
+
+    <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="session-create">
+        <DataAnnotationsValidator />
+
+        <div class="field">
+            <label>Adventure</label>
+            <InputSelect @bind-Value="model.AdventureId">
+                <option value="">— choose an approved adventure —</option>
+                @foreach (var a in adventures)
+                {
+                    <option value="@a.Id">@a.Title (levels @a.MinLevel–@a.MaxLevel)</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="() => model.AdventureId" />
+        </div>
+
+        @if (Selected is not null)
+        {
+            <p class="quest-desc" style="font-style:italic">@Selected.ShortDescription</p>
+        }
+
+        <div class="field-row">
+            <div class="field">
+                <label>Date &amp; time</label>
+                <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="model.ScheduledAt" />
+            </div>
+            <div class="field">
+                <label>Where <span class="meta">(optional)</span></label>
+                <InputText @bind-Value="model.Location" placeholder="e.g. The Dragon's Hoard — back table" />
+            </div>
+        </div>
+
+        <AuthorizeView Policy="@AuthPolicies.RequireDm" Context="dmContext">
+            <div class="field">
+                <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal">
+                    <InputCheckbox @bind-Value="model.VolunteerAsDm" />
+                    I'll run this one myself
+                </label>
+            </div>
+        </AuthorizeView>
+
+        <div style="display:flex;gap:0.8rem;margin-top:1.4rem">
+            <button type="submit" class="btn btn-primary" disabled="@saving">Post the expedition</button>
+            <a class="btn" href="/">Cancel</a>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "adventure")]
+    public Guid? PreselectedAdventure { get; set; }
+
+    private IReadOnlyList<Adventure> adventures = [];
+    private FormModel model = new();
+    private IReadOnlyList<string>? errors;
+    private bool saving;
+
+    private Adventure? Selected =>
+        adventures.FirstOrDefault(a => a.Id == model.AdventureId);
+
+    protected override async Task OnInitializedAsync()
+    {
+        adventures = await Adventures.ListSchedulableAsync(DateTimeOffset.Now);
+        if (PreselectedAdventure is not null)
+        {
+            model.AdventureId = PreselectedAdventure;
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        saving = true;
+        errors = null;
+        try
+        {
+            var session = await Sessions.CreateAsync(new SessionInput(
+                model.AdventureId!.Value,
+                new DateTimeOffset(model.ScheduledAt, DateTimeOffset.Now.Offset),
+                model.Location,
+                model.VolunteerAsDm));
+
+            Nav.NavigateTo($"sessions/{session.Id}");
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            errors = ex is AppValidationException ave ? ave.Errors : [ex.Message];
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private sealed class FormModel
+    {
+        [Required(ErrorMessage = "Choose an adventure.")]
+        public Guid? AdventureId { get; set; }
+
+        public DateTime ScheduledAt { get; set; } = DateTime.Today.AddDays(1).AddHours(18.5);
+
+        [StringLength(200)]
+        public string? Location { get; set; }
+
+        public bool VolunteerAsDm { get; set; }
+    }
+}

@@ -1,0 +1,6 @@
+# Normalize line endings on checkin; let git manage the working tree.
+* text=auto
+
+# Keep vendored minified assets untouched.
+*.min.js binary
+*.min.css binary

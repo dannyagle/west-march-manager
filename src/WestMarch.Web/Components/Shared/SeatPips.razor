@@ -1,0 +1,12 @@
+@* Party seats as pips: filled, open (to target max), and over-target. *@
+<span class="seats" title="@Filled of @Max seats filled">
+    @for (var i = 0; i < Math.Max(Max, Filled); i++)
+    {
+        <span class="seat @(i < Filled ? (i >= Max ? "filled over" : "filled") : null)"></span>
+    }
+</span>
+
+@code {
+    [Parameter, EditorRequired] public int Filled { get; set; }
+    [Parameter, EditorRequired] public int Max { get; set; }
+}
