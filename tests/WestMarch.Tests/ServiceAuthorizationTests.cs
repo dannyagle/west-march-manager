@@ -21,7 +21,12 @@ public class ServiceAuthorizationTests : IDisposable
         new CharacterService(new CharacterRepository(_t.Db), _t.Db, _t.CurrentUser);
 
     private IAdventureService Adventures() =>
-        new AdventureService(new AdventureRepository(_t.Db), new TagRepository(_t.Db), _t.Db, _t.CurrentUser);
+        new AdventureService(
+            new AdventureRepository(_t.Db),
+            new TagRepository(_t.Db),
+            new WestMarch.Infrastructure.Items.CatalogRepository(_t.Db),
+            _t.Db,
+            _t.CurrentUser);
 
     private ISessionService Sessions() =>
         new SessionService(

@@ -1,0 +1,289 @@
+@page "/catalog"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using WestMarch.Application.Items
+@using WestMarch.Domain.Items
+
+@inject ICatalogService Catalog
+@inject ICurrentUser CurrentUser
+
+<PageTitle>Item Catalog</PageTitle>
+
+<div class="page-heading">
+    <h1>The Vault Ledger</h1>
+    <AuthorizeView Policy="@AuthPolicies.RequireCa">
+        <span class="meta">
+            <button class="btn btn-sm" @onclick="() => showCustomForm = !showCustomForm">+ Custom item</button>
+            <a class="btn btn-sm" href="catalog/import">Import a file</a>
+        </span>
+    </AuthorizeView>
+</div>
+<p class="meta">
+    Every item the campaign knows — imported reference lists plus custom creations.
+    @if (CurrentUser.IsCa)
+    {
+        <span>Click a price to set a campaign override; it survives file re-imports.</span>
+    }
+</p>
+
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+@if (showCustomForm)
+{
+    <div class="wm-panel" style="margin-bottom:1.25rem">
+        <h3>Forge a custom item</h3>
+        <EditForm Model="customModel" OnValidSubmit="CreateCustomAsync" FormName="custom-item">
+            <DataAnnotationsValidator />
+            <div class="field-row">
+                <div class="field"><label>Name</label><InputText @bind-Value="customModel.Name" /></div>
+                <div class="field" style="max-width:130px">
+                    <label>Kind</label>
+                    <InputSelect @bind-Value="customModel.Kind">
+                        <option value="@ItemKind.Magic">Magic</option>
+                        <option value="@ItemKind.Mundane">Mundane</option>
+                    </InputSelect>
+                </div>
+                @if (customModel.Kind == ItemKind.Magic)
+                {
+                    <div class="field" style="max-width:150px">
+                        <label>Rarity</label>
+                        <InputSelect @bind-Value="customModel.Rarity">
+                            @foreach (var r in Rarities)
+                            {
+                                <option value="@r">@r.Display()</option>
+                            }
+                        </InputSelect>
+                    </div>
+                }
+                <div class="field" style="max-width:170px"><label>Category</label><InputText @bind-Value="customModel.Category" placeholder="Wondrous Item" /></div>
+                <div class="field" style="max-width:120px"><label>Price (gp)</label><InputNumber @bind-Value="customModel.PriceGp" /></div>
+            </div>
+            <div class="field-row">
+                <div class="field"><label>Link <span class="meta">(optional)</span></label><InputText @bind-Value="customModel.ExternalUrl" placeholder="https://…" /></div>
+                <div class="field" style="max-width:180px;align-self:flex-end">
+                    <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal">
+                        <InputCheckbox @bind-Value="customModel.RequiresAttunement" /> Requires attunement
+                    </label>
+                </div>
+                <div class="field" style="max-width:130px;align-self:flex-end">
+                    <button type="submit" class="btn btn-primary btn-sm">Create</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<div class="cal-toolbar">
+    <div class="cal-filters" style="margin-left:0">
+        <button class="filter-pill @(kind == ItemKind.Magic ? "active" : null)" @onclick="() => SetKind(ItemKind.Magic)">Magic (@CountOf(ItemKind.Magic))</button>
+        <button class="filter-pill @(kind == ItemKind.Mundane ? "active" : null)" @onclick="() => SetKind(ItemKind.Mundane)">Mundane (@CountOf(ItemKind.Mundane))</button>
+    </div>
+    @if (kind == ItemKind.Magic)
+    {
+        <div class="cal-filters">
+            @foreach (var r in Rarities)
+            {
+                <button class="filter-pill @(rarity == r ? "active" : null)" @onclick="() => rarity = rarity == r ? null : r">@r.Display()</button>
+            }
+        </div>
+    }
+    <div class="cal-filters">
+        <button class="filter-pill @(unpricedOnly ? "active" : null)" @onclick="() => unpricedOnly = !unpricedOnly" title="Items a CA still needs to price">Unpriced</button>
+        @if (CurrentUser.IsCa)
+        {
+            <button class="filter-pill @(showInactive ? "active" : null)" @onclick="() => showInactive = !showInactive">Show retired</button>
+        }
+    </div>
+    <input type="text" style="max-width:220px" placeholder="Search by name…" @bind="search" @bind:event="oninput" />
+</div>
+
+@if (items is null)
+{
+    <p class="meta">Unlocking the vault…</p>
+}
+else
+{
+    var visible = Filtered.ToList();
+    <p class="meta">@visible.Count item(s)</p>
+    <table class="wm-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                @if (kind == ItemKind.Magic)
+                {
+                    <th>Rarity</th>
+                }
+                <th>Category</th>
+                <th>Price</th>
+                @if (kind == ItemKind.Magic)
+                {
+                    <th>Attune</th>
+                }
+                <th>Source</th>
+                @if (CurrentUser.IsCa)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in visible)
+            {
+                <tr style="@(item.IsActive ? null : "opacity:0.45")">
+                    <td>
+                        @if (item.ExternalUrl is not null)
+                        {
+                            <a href="@item.ExternalUrl" target="_blank" rel="noopener">@item.Name</a>
+                        }
+                        else
+                        {
+                            @item.Name
+                        }
+                        @if (!item.IsActive)
+                        {
+                            <span class="seal seal-cancelled">retired</span>
+                        }
+                    </td>
+                    @if (kind == ItemKind.Magic)
+                    {
+                        <td><RarityChip Rarity="item.Rarity" /></td>
+                    }
+                    <td class="meta">@item.Category</td>
+                    <td>
+                        @if (editingId == item.Id)
+                        {
+                            <span style="display:inline-flex;gap:0.3rem;align-items:center">
+                                <input type="number" style="width:110px" @bind="editPrice" placeholder="gp" />
+                                <button class="btn btn-sm btn-primary" @onclick="() => SavePriceAsync(item)">Set</button>
+                                <button class="btn btn-sm" @onclick="() => editingId = null">×</button>
+                            </span>
+                        }
+                        else if (CurrentUser.IsCa)
+                        {
+                            <span style="cursor:pointer" title="Click to set a campaign price"
+                                  @onclick="() => BeginEdit(item)"><ItemPrice Item="item" /></span>
+                        }
+                        else
+                        {
+                            <ItemPrice Item="item" />
+                        }
+                    </td>
+                    @if (kind == ItemKind.Magic)
+                    {
+                        <td class="meta">@(item.RequiresAttunement ? "Yes" : "—")</td>
+                    }
+                    <td class="meta">@(item.Source == CatalogSource.Custom ? "Custom" : "Imported")</td>
+                    @if (CurrentUser.IsCa)
+                    {
+                        <td>
+                            <button class="btn btn-sm" @onclick="() => ToggleActiveAsync(item)">
+                                @(item.IsActive ? "Retire" : "Restore")
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private static readonly ItemRarity[] Rarities =
+    [
+        ItemRarity.Common, ItemRarity.Uncommon, ItemRarity.Rare,
+        ItemRarity.VeryRare, ItemRarity.Legendary, ItemRarity.Artifact,
+    ];
+
+    private IReadOnlyList<CatalogItem>? items;
+    private ItemKind kind = ItemKind.Magic;
+    private ItemRarity? rarity;
+    private bool unpricedOnly;
+    private bool showInactive;
+    private string search = "";
+    private string? error;
+
+    private bool showCustomForm;
+    private CustomModel customModel = new();
+
+    private Guid? editingId;
+    private int? editPrice;
+
+    private IEnumerable<CatalogItem> Filtered => (items ?? [])
+        .Where(i => i.Kind == kind)
+        .Where(i => rarity is null || kind == ItemKind.Mundane || i.Rarity == rarity)
+        .Where(i => !unpricedOnly || i.EffectivePriceGp is null)
+        .Where(i => showInactive || i.IsActive)
+        .Where(i => string.IsNullOrWhiteSpace(search) || i.Name.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    private int CountOf(ItemKind k) => (items ?? []).Count(i => i.Kind == k && (showInactive || i.IsActive));
+
+    protected override Task OnInitializedAsync() => LoadAsync();
+
+    private async Task LoadAsync() =>
+        items = await Catalog.ListAsync(new CatalogFilter(IncludeInactive: true));
+
+    private void SetKind(ItemKind k)
+    {
+        kind = k;
+        rarity = null;
+    }
+
+    private void BeginEdit(CatalogItem item)
+    {
+        editingId = item.Id;
+        editPrice = item.CampaignPriceGp ?? item.BasePriceGp;
+    }
+
+    private async Task SavePriceAsync(CatalogItem item) => await DoAsync(async () =>
+    {
+        await Catalog.UpdateAsync(item.Id, new CatalogItemUpdate(editPrice, item.IsActive));
+        editingId = null;
+    });
+
+    private Task ToggleActiveAsync(CatalogItem item) => DoAsync(() =>
+        Catalog.UpdateAsync(item.Id, new CatalogItemUpdate(item.CampaignPriceGp, !item.IsActive)));
+
+    private Task CreateCustomAsync() => DoAsync(async () =>
+    {
+        await Catalog.CreateCustomAsync(new CustomItemInput(
+            customModel.Kind, customModel.Name, customModel.Rarity, customModel.Category,
+            customModel.RequiresAttunement, customModel.PriceGp, customModel.ExternalUrl));
+        customModel = new();
+        showCustomForm = false;
+    });
+
+    private async Task DoAsync(Func<Task> action)
+    {
+        error = null;
+        try
+        {
+            await action();
+            await LoadAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+    }
+
+    private sealed class CustomModel
+    {
+        [Required, StringLength(200)]
+        public string Name { get; set; } = "";
+
+        public ItemKind Kind { get; set; } = ItemKind.Magic;
+        public ItemRarity Rarity { get; set; } = ItemRarity.Uncommon;
+
+        [Required, StringLength(100)]
+        public string Category { get; set; } = "Wondrous Item";
+
+        public bool RequiresAttunement { get; set; }
+        public int? PriceGp { get; set; }
+        public string? ExternalUrl { get; set; }
+    }
+}

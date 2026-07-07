@@ -16,6 +16,9 @@ public interface ISessionRepository
     /// <summary>Scheduled sessions with no assigned DM, soonest first.</summary>
     Task<IReadOnlyList<GameSession>> ListNeedingDmAsync(DateTimeOffset from, CancellationToken ct = default);
 
+    /// <summary>Untracked non-cancelled sessions a character is signed up for, with adventure, newest first.</summary>
+    Task<IReadOnlyList<GameSession>> ListByCharacterAsync(Guid characterId, CancellationToken ct = default);
+
     Task<IReadOnlyList<SessionMessage>> ListMessagesAsync(Guid sessionId, CancellationToken ct = default);
 
     void Add(GameSession session);

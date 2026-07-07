@@ -4,6 +4,7 @@ using WestMarch.Application.Common;
 using WestMarch.Domain.Adventures;
 using WestMarch.Domain.Announcements;
 using WestMarch.Domain.Characters;
+using WestMarch.Domain.Items;
 using WestMarch.Domain.Sessions;
 using WestMarch.Infrastructure.Identity;
 
@@ -23,8 +24,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<SessionSignup> SessionSignups => Set<SessionSignup>();
     public DbSet<SessionMessage> SessionMessages => Set<SessionMessage>();
     public DbSet<Announcement> Announcements => Set<Announcement>();
+    public DbSet<CatalogItem> CatalogItems => Set<CatalogItem>();
+    public DbSet<ImportBatch> ImportBatches => Set<ImportBatch>();
+    public DbSet<ItemInstance> ItemInstances => Set<ItemInstance>();
+    public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
+    public DbSet<MarketListing> MarketListings => Set<MarketListing>();
 
     Task IUnitOfWork.SaveChangesAsync(CancellationToken ct) => SaveChangesAsync(ct);
+
+    async Task<bool> IUnitOfWork.TrySaveChangesAsync(CancellationToken ct)
+    {
+        try
+        {
+            await SaveChangesAsync(ct);
+            return true;
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // Optimistic-concurrency loser (e.g. two buyers, one listing). Detach the
+            // failed changes so the context stays usable for the caller's error path.
+            ChangeTracker.Clear();
+            return false;
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -17,6 +17,10 @@ public interface ISessionService
 {
     Task<IReadOnlyList<GameSession>> ListScheduledAsync(DateTimeOffset from, DateTimeOffset until, CancellationToken ct = default);
     Task<IReadOnlyList<GameSession>> ListNeedingDmAsync(CancellationToken ct = default);
+
+    /// <summary>A character's session history + upcoming signups, newest first. Owner, DM, or CA.</summary>
+    Task<IReadOnlyList<GameSession>> ListForCharacterAsync(Guid characterId, CancellationToken ct = default);
+
     Task<GameSession> GetAsync(Guid id, CancellationToken ct = default);
 
     Task<GameSession> CreateAsync(SessionInput input, CancellationToken ct = default);
@@ -56,6 +60,20 @@ public class SessionService(
         }
 
         return await sessions.ListNeedingDmAsync(DateTimeOffset.UtcNow.AddHours(-6), ct);
+    }
+
+    public async Task<IReadOnlyList<GameSession>> ListForCharacterAsync(Guid characterId, CancellationToken ct = default)
+    {
+        // Mirrors character-page visibility: the owning player, DMs, and CAs.
+        var character = await characters.GetAsync(characterId, ct)
+            ?? throw new NotFoundException(nameof(Character), characterId);
+
+        if (character.OwnerUserId != currentUser.RequireUserId() && !currentUser.IsDm)
+        {
+            throw new ForbiddenAccessException("You can only view your own character's expeditions.");
+        }
+
+        return await sessions.ListByCharacterAsync(characterId, ct);
     }
 
     public async Task<GameSession> GetAsync(Guid id, CancellationToken ct = default)

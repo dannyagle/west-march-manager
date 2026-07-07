@@ -3,8 +3,14 @@
 @rendermode InteractiveServer
 
 @using WestMarch.Application.Characters
+@using WestMarch.Application.Items
+@using WestMarch.Application.Users
 
 @inject ICharacterService Characters
+@inject IInventoryService Inventory
+@inject IMarketplaceService Marketplace
+@inject WestMarch.Application.Sessions.ISessionService Sessions
+@inject IUserDirectory Users
 @inject ICurrentUser CurrentUser
 @inject NavigationManager Nav
 
@@ -39,11 +45,16 @@ else
                 <span class="v-num">@character.Level</span>
                 <span class="v-label">Level</span>
             </div>
+            <div class="vital" style="min-width:80px">
+                <span class="v-num">@character.GoldGp</span>
+                <span class="v-label">Gold</span>
+            </div>
             <div>
                 @if (character.Summary is not null)
                 {
                     <div style="font-style:italic;color:var(--parchment-dim)">@character.Summary</div>
                 }
+                <div class="meta">Played by <b>@ownerName</b></div>
                 <LevelProgressRunes Progress="progress" />
             </div>
             <div style="margin-left:auto">
@@ -54,27 +65,151 @@ else
         </div>
     </div>
 
-    <div class="rule-title">Deeds &amp; advancement</div>
-    @if (character.Credits.Count == 0)
+    @if (actionError is not null)
     {
-        <div class="empty-state">No sessions in the record yet. The frontier awaits.</div>
+        <div class="alert alert-danger">@actionError</div>
+    }
+    @if (actionNotice is not null)
+    {
+        <div class="alert alert-success">@actionNotice</div>
+    }
+
+    <div class="rule-title">Deeds &amp; advancement</div>
+    @if (deeds.Count == 0)
+    {
+        <div class="empty-state">No expeditions in the record yet. The frontier awaits.</div>
     }
     else
     {
         <table class="wm-table">
             <thead>
-                <tr><th>When</th><th>Credited at level</th><th></th></tr>
+                <tr><th>When</th><th>Deed</th><th></th></tr>
             </thead>
             <tbody>
-                @foreach (var credit in character.Credits)
+                @foreach (var deed in deeds)
                 {
                     <tr>
-                        <td>@credit.AwardedAt.LocalDateTime.ToString("ddd, MMM d yyyy")</td>
-                        <td>Level @credit.LevelAtAward</td>
+                        <td class="meta" style="white-space:nowrap">@deed.When.LocalDateTime.ToString("ddd, MMM d yyyy")</td>
                         <td>
-                            @if (credit.TriggeredLevelUp)
+                            @if (deed.SessionId is not null)
                             {
-                                <span class="seal seal-completed">Leveled up!</span>
+                                <a href="sessions/@deed.SessionId">@deed.Text</a>
+                            }
+                            else
+                            {
+                                @deed.Text
+                            }
+                        </td>
+                        <td><span class="seal @deed.SealCss">@deed.SealText</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="rule-title">Possessions</div>
+    @if (inventory.Count == 0)
+    {
+        <div class="empty-state">Nothing but pocket lint. Complete sessions to claim rewards.</div>
+    }
+    else
+    {
+        <table class="wm-table">
+            <thead><tr><th>Item</th><th>Rarity</th><th>Value</th><th>Status</th>@if (CanSell)
+                {
+                    <th></th>
+                }</tr></thead>
+            <tbody>
+                @foreach (var instance in inventory)
+                {
+                    <tr>
+                        <td>
+                            @if (instance.CatalogItem.ExternalUrl is not null)
+                            {
+                                <a href="@instance.CatalogItem.ExternalUrl" target="_blank" rel="noopener">@instance.CatalogItem.Name</a>
+                            }
+                            else
+                            {
+                                @instance.CatalogItem.Name
+                            }
+                        </td>
+                        <td><RarityChip Rarity="instance.CatalogItem.Rarity" /></td>
+                        <td><ItemPrice Item="instance.CatalogItem" /></td>
+                        <td>
+                            @if (instance.Status == InstanceStatus.Listed)
+                            {
+                                <span class="seal seal-review">On the market</span>
+                            }
+                        </td>
+                        @if (CanSell)
+                        {
+                            <td style="white-space:nowrap">
+                                @if (instance.Status == InstanceStatus.Owned)
+                                {
+                                    @if (sellingInstanceId == instance.Id)
+                                    {
+                                        <span style="display:inline-flex;gap:0.3rem;align-items:center">
+                                            <input type="number" style="width:100px" @bind="listPrice" placeholder="gp" />
+                                            <button class="btn btn-sm btn-primary" @onclick="() => ListAsync(instance)">List</button>
+                                            <button class="btn btn-sm" @onclick="() => sellingInstanceId = null">×</button>
+                                        </span>
+                                    }
+                                    else if (confirmingQuickSellId == instance.Id)
+                                    {
+                                        @* Permanent transaction: an explicit, unmistakable confirmation step. *@
+                                        <span style="display:inline-flex;gap:0.4rem;align-items:center">
+                                            <span class="meta" style="color:var(--blood-bright)">
+                                                Gone forever — sell for @HalfValue(instance) gp?
+                                            </span>
+                                            <button class="btn btn-sm btn-danger" @onclick="() => QuickSellAsync(instance)">Sell it</button>
+                                            <button class="btn btn-sm" @onclick="() => confirmingQuickSellId = null">Keep it</button>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm" title="Sell instantly for half value — gone forever"
+                                                @onclick="() => BeginQuickSell(instance)">
+                                            Quick-sell (@HalfValue(instance) gp)
+                                        </button>
+                                        <button class="btn btn-sm" title="Offer to other characters on the marketplace"
+                                                @onclick="() => BeginListing(instance)">
+                                            Put up for sale
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm" href="marketplace">Manage listing</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="rule-title">Ledger</div>
+    @if (ledger.Count == 0)
+    {
+        <div class="empty-state">No transactions yet.</div>
+    }
+    else
+    {
+        <table class="wm-table">
+            <thead><tr><th>When</th><th>What</th><th style="text-align:right">Gold</th></tr></thead>
+            <tbody>
+                @foreach (var entry in ledger)
+                {
+                    <tr>
+                        <td class="meta" style="white-space:nowrap">@entry.OccurredAt.LocalDateTime.ToString("MMM d, yyyy")</td>
+                        <td>@entry.Description</td>
+                        <td style="text-align:right;white-space:nowrap">
+                            @if (entry.GoldDelta != 0)
+                            {
+                                <span style="color:@(entry.GoldDelta > 0 ? "var(--verdant)" : "var(--blood-bright)")">
+                                    @(entry.GoldDelta > 0 ? "+" : "")@entry.GoldDelta gp
+                                </span>
                             }
                         </td>
                     </tr>
@@ -82,6 +217,7 @@ else
             </tbody>
         </table>
     }
+
 }
 
 @code {
@@ -89,19 +225,166 @@ else
 
     private Character? character;
     private LevelProgress progress = default!;
+    private IReadOnlyList<ItemInstance> inventory = [];
+    private IReadOnlyList<LedgerEntry> ledger = [];
+    private List<Deed> deeds = [];
+    private Guid? sellingInstanceId;
+    private Guid? confirmingQuickSellId;
+    private int? listPrice;
+    private string? actionError;
+    private string? actionNotice;
+
+    /// <summary>One row of the character's story: upcoming expeditions, completions, advancements.</summary>
+    private sealed record Deed(DateTimeOffset When, string Text, string SealCss, string SealText, Guid? SessionId);
 
     private bool IsOwner => character is not null &&
         (character.OwnerUserId == CurrentUser.UserId || CurrentUser.IsCa);
 
-    protected override async Task OnParametersSetAsync()
+    /// <summary>Selling goes through the owning player only — CAs observe, players trade.</summary>
+    private bool CanSell => character is not null && character.OwnerUserId == CurrentUser.UserId && !character.IsRetired;
+
+    protected override Task OnParametersSetAsync() => LoadAsync();
+
+    private string ownerName = "…";
+
+    private async Task LoadAsync()
     {
         character = await Characters.GetAsync(Id);
         progress = LevelingEngine.GetProgress(character);
+        inventory = await Inventory.GetInventoryAsync(Id);
+        ledger = await Inventory.GetLedgerAsync(Id);
+
+        var names = await Users.GetDisplayNamesAsync([character.OwnerUserId]);
+        ownerName = names.GetValueOrDefault(character.OwnerUserId, "unknown");
+
+        BuildDeeds(await Sessions.ListForCharacterAsync(Id));
+    }
+
+    /// <summary>
+    /// Weaves signed-up sessions and session credits into one story, newest first.
+    /// One reference per adventure: a completed run supersedes an upcoming signup for the
+    /// same adventure (and only the soonest of several upcoming signups shows). Withdrawn
+    /// signups never appear (withdrawal removes the signup row). A completed session where
+    /// the character earned no credit renders only for CAs, tagged "no show" — evidence for
+    /// addressing players who block seats and affect other people's games.
+    /// </summary>
+    private void BuildDeeds(IReadOnlyList<GameSession> sessions)
+    {
+        deeds = [];
+
+        var completedAdventureIds = sessions
+            .Where(s => s.Status == SessionStatus.Completed)
+            .Select(s => s.AdventureId)
+            .ToHashSet();
+
+        // Soonest upcoming signup per adventure — and none at all once the adventure is completed.
+        var upcoming = sessions
+            .Where(s => s.Status == SessionStatus.Scheduled && !completedAdventureIds.Contains(s.AdventureId))
+            .GroupBy(s => s.AdventureId)
+            .Select(g => g.OrderBy(s => s.ScheduledAt).First());
+
+        foreach (var session in upcoming)
+        {
+            deeds.Add(new Deed(session.ScheduledAt,
+                $"Sets out on “{session.Adventure.Title}”", "seal-review", "upcoming", session.Id));
+        }
+
+        foreach (var session in sessions.Where(s => s.Status == SessionStatus.Completed))
+        {
+            var signup = session.Signups.First(su => su.CharacterId == Id);
+            var when = session.CompletedAt ?? session.ScheduledAt;
+
+            if (signup.ReceivedCredit == true)
+            {
+                deeds.Add(new Deed(when,
+                    $"Completed “{session.Adventure.Title}”", "seal-approved", "credit earned", session.Id));
+
+                var credit = character!.Credits.FirstOrDefault(c => c.SessionId == session.Id);
+                if (credit?.TriggeredLevelUp == true)
+                {
+                    // A breath after the completion row so it sorts directly above it.
+                    deeds.Add(new Deed(when.AddSeconds(1),
+                        $"Advanced to level {credit.LevelAtAward + 1}", "seal-completed", $"level {credit.LevelAtAward + 1}!", null));
+                }
+            }
+            else if (CurrentUser.IsCa)
+            {
+                deeds.Add(new Deed(when,
+                    $"Signed up for “{session.Adventure.Title}” but earned no credit", "seal-cancelled", "no show", session.Id));
+            }
+        }
+
+        // Credits whose session isn't in the signup list (imported/legacy records) still count.
+        foreach (var credit in character!.Credits.Where(c => sessions.All(s => s.Id != c.SessionId)))
+        {
+            deeds.Add(new Deed(credit.AwardedAt,
+                $"A successful expedition (level {credit.LevelAtAward})", "seal-approved", "credit earned", null));
+            if (credit.TriggeredLevelUp)
+            {
+                deeds.Add(new Deed(credit.AwardedAt.AddSeconds(1),
+                    $"Advanced to level {credit.LevelAtAward + 1}", "seal-completed", $"level {credit.LevelAtAward + 1}!", null));
+            }
+        }
+
+        deeds = [.. deeds.OrderByDescending(d => d.When)];
+    }
+
+    private void BeginQuickSell(ItemInstance instance)
+    {
+        confirmingQuickSellId = instance.Id;
+        sellingInstanceId = null;
+    }
+
+    private int HalfValue(ItemInstance instance)
+    {
+        var price = instance.CatalogItem.EffectivePriceGp ?? 0;
+        return price <= 1 ? price : price / 2;
+    }
+
+    private void BeginListing(ItemInstance instance)
+    {
+        sellingInstanceId = instance.Id;
+        confirmingQuickSellId = null;
+        listPrice = instance.CatalogItem.EffectivePriceGp;
+    }
+
+    private Task QuickSellAsync(ItemInstance instance) => DoAsync(async () =>
+    {
+        var proceeds = await Marketplace.QuickSellAsync(instance.Id);
+        confirmingQuickSellId = null;
+        actionNotice = $"Sold {instance.CatalogItem.Name} to the caravan for {proceeds} gp.";
+    });
+
+    private Task ListAsync(ItemInstance instance) => DoAsync(async () =>
+    {
+        if (listPrice is null)
+        {
+            throw new AppValidationException("Set an asking price.");
+        }
+
+        await Marketplace.ListForSaleAsync(instance.Id, listPrice.Value);
+        sellingInstanceId = null;
+        actionNotice = $"{instance.CatalogItem.Name} is up for sale at {listPrice} gp.";
+    });
+
+    private async Task DoAsync(Func<Task> action)
+    {
+        actionError = null;
+        actionNotice = null;
+        try
+        {
+            await action();
+            await LoadAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            actionError = ex.Message;
+        }
     }
 
     private async Task ToggleRetiredAsync()
     {
         await Characters.RetireAsync(Id, !character!.IsRetired);
-        character = await Characters.GetAsync(Id);
+        await LoadAsync();
     }
 }

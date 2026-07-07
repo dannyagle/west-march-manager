@@ -10,7 +10,8 @@ public class AdventureRepository(AppDbContext db) : IAdventureRepository
         .Include(a => a.Tags)
         .Include(a => a.GuaranteedRewards.OrderBy(r => r.SortOrder))
         .Include(a => a.RewardOptionSets.OrderBy(s => s.SortOrder))
-            .ThenInclude(s => s.Options.OrderBy(o => o.SortOrder));
+            .ThenInclude(s => s.Options.OrderBy(o => o.SortOrder))
+            .ThenInclude(o => o.CatalogItem);
 
     public Task<Adventure?> GetAsync(Guid id, CancellationToken ct = default) =>
         WithStructure(db.Adventures).FirstOrDefaultAsync(a => a.Id == id, ct);

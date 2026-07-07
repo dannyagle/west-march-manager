@@ -17,4 +17,7 @@ public class SessionSignup
 
     /// <summary>Set by the DM during completion: whether this character succeeded and earned a session credit.</summary>
     public bool? ReceivedCredit { get; set; }
+
+    /// <summary>When the player collected this character's rewards (gold + item choices). Null = unclaimed.</summary>
+    public DateTimeOffset? RewardsClaimedAt { get; set; }
 }

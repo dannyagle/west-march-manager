@@ -1,0 +1,6120 @@
+{
+  "source": "http://dnd2024.wikidot.com/magic-item:all",
+  "source_license": "Content licensed under CC BY-SA 3.0 (per source site footer)",
+  "generated_utc": "2026-07-06T18:15:22Z",
+  "notes": {
+    "price.raw": "Original price string exactly as listed on the source.",
+    "price.gp": "Numeric gold-piece value when a concrete number was listed; null for Varies/Priceless/Special.",
+    "price.base_item_plus": "True when source showed 'B+N', meaning add N gp to the base (mundane) item's cost.",
+    "price.special": "Set to varies/priceless/special when no fixed number applies; null otherwise.",
+    "multi_rarity": "True when the same item name appears under more than one rarity table (e.g. scaling +1/+2/+3 items).",
+    "url": "Best-effort deep link to the item's page; verify slugs before relying on them programmatically."
+  },
+  "count": 436,
+  "items": [
+    {
+      "name": "Adventurer's Ring",
+      "rarity": "Common",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "250 GP",
+        "gp": 250,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:adventurer-s-ring",
+      "multi_rarity": false
+    },
+    {
+      "name": "Armor of Gleaming",
+      "rarity": "Common",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-of-gleaming",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bead of Nourishment",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bead-of-nourishment",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bead of Refreshment",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bead-of-refreshment",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of False Tracks",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-false-tracks",
+      "multi_rarity": false
+    },
+    {
+      "name": "Candle of the Deep",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:candle-of-the-deep",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cast-Off Armor",
+      "rarity": "Common",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cast-off-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Charlatan's Die",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:charlatan-s-die",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Billowing",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-billowing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Many Fashions",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-many-fashions",
+      "multi_rarity": false
+    },
+    {
+      "name": "Clockwork Amulet",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:clockwork-amulet",
+      "multi_rarity": false
+    },
+    {
+      "name": "Clothes of Mending",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:clothes-of-mending",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dark Shard Amulet",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dark-shard-amulet",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dread Helm",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dread-helm",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ear Horn of Hearing",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ear-horn-of-hearing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Enduring Spellbook",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enduring-spellbook",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ersatz Eye",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ersatz-eye",
+      "multi_rarity": false
+    },
+    {
+      "name": "Eternal Chalk",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 gp",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eternal-chalk",
+      "multi_rarity": false
+    },
+    {
+      "name": "Hat of Vermin",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hat-of-vermin",
+      "multi_rarity": false
+    },
+    {
+      "name": "Hat of Wizardry",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hat-of-wizardry",
+      "multi_rarity": false
+    },
+    {
+      "name": "Heward's Handy Spice Pouch",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:heward-s-handy-spice-pouch",
+      "multi_rarity": false
+    },
+    {
+      "name": "Horn of Silent Alarm",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horn-of-silent-alarm",
+      "multi_rarity": false
+    },
+    {
+      "name": "Instrument of Illusions",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-illusions",
+      "multi_rarity": false
+    },
+    {
+      "name": "Instrument of Scribing",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-scribing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Lock of Trickery",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:lock-of-trickery",
+      "multi_rarity": false
+    },
+    {
+      "name": "Manifold Tool",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:manifold-tool",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mask of Changed Appearance",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mask-of-changed-appearance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mechanical Wonder",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mechanical-wonder",
+      "multi_rarity": true
+    },
+    {
+      "name": "Moon-Touched Sword",
+      "rarity": "Common",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:moon-touched-sword",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mystery Key",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mystery-key",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mythallar Bracelet",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mythallar-bracelet",
+      "multi_rarity": false
+    },
+    {
+      "name": "Orb of Direction",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:orb-of-direction",
+      "multi_rarity": false
+    },
+    {
+      "name": "Orb of Time",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:orb-of-time",
+      "multi_rarity": false
+    },
+    {
+      "name": "Perfume of Bewitching",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:perfume-of-bewitching",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pipe of Smoke Monsters",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pipe-of-smoke-monsters",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pole of Angling",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pole-of-angling",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pole of Collapsing",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pole-of-collapsing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pot of Awakening",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pot-of-awakening",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Climbing",
+      "rarity": "Common",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-climbing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Comprehension",
+      "rarity": "Common",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-comprehension",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Healing",
+      "rarity": "Common",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-healing",
+      "multi_rarity": true
+    },
+    {
+      "name": "Prosthetic Limb",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:prosthetic-limb",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rival Coin",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rival-coin",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rope of Mending",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rope-of-mending",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ruby of the War Mage",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ruby-of-the-war-mage",
+      "multi_rarity": false
+    },
+    {
+      "name": "Shield of Expression",
+      "rarity": "Common",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-of-expression",
+      "multi_rarity": false
+    },
+    {
+      "name": "Silvered Weapon",
+      "rarity": "Common",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:silvered-weapon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Smoldering Armor",
+      "rarity": "Common",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:smoldering-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spell Scroll",
+      "rarity": "Common",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-scroll",
+      "multi_rarity": true
+    },
+    {
+      "name": "Staff of Adornment",
+      "rarity": "Common",
+      "type": "Staff",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-adornment",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Birdcalls",
+      "rarity": "Common",
+      "type": "Staff",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-birdcalls",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Flowers",
+      "rarity": "Common",
+      "type": "Staff",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-flowers",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sylvan Talon",
+      "rarity": "Common",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+100 GP",
+        "gp": 100,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sylvan-talon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Talking Doll",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:talking-doll",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tankard of Sobriety",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tankard-of-sobriety",
+      "multi_rarity": false
+    },
+    {
+      "name": "Veteran's Cane",
+      "rarity": "Common",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:veteran-s-cane",
+      "multi_rarity": false
+    },
+    {
+      "name": "Walloping Ammunition",
+      "rarity": "Common",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "50 GP",
+        "gp": 50,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:walloping-ammunition",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Conducting",
+      "rarity": "Common",
+      "type": "Wand",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-conducting",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Pyrotechnics",
+      "rarity": "Common",
+      "type": "Wand",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100 GP",
+        "gp": 100,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-pyrotechnics",
+      "multi_rarity": false
+    },
+    {
+      "name": "Adamantine Armor",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:adamantine-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Adamantine Weapon",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:adamantine-weapon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Alchemy Jug",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:alchemy-jug",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ammunition, +1, +2, or +3",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ammunition-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Amulet of Proof against Detection and Location",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:amulet-of-proof-against-detection-and-location",
+      "multi_rarity": false
+    },
+    {
+      "name": "Arcane Battery",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:arcane-battery",
+      "multi_rarity": false
+    },
+    {
+      "name": "Baba Yaga's Dancing Broom",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:baba-yaga-s-dancing-broom",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bag of Holding",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bag-of-holding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bag of Tricks",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bag-of-tricks",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of Elvenkind",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-elvenkind",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of Striding and Springing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-striding-and-springing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of the Winding Path",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-the-winding-path",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of the Winterlands",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-the-winterlands",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bracers of Archery",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bracers-of-archery",
+      "multi_rarity": false
+    },
+    {
+      "name": "Brooch of Shielding",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:brooch-of-shielding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Broom of Flying",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:broom-of-flying",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cap of Vanishing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cap-of-vanishing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cap of Water Breathing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cap-of-water-breathing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Circlet of Blasting",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:circlet-of-blasting",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Elvenkind",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-elvenkind",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Protection",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-protection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of the Manta Ray",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-the-manta-ray",
+      "multi_rarity": false
+    },
+    {
+      "name": "Decanter of Endless Water",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:decanter-of-endless-water",
+      "multi_rarity": false
+    },
+    {
+      "name": "Deck of Illusions",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:deck-of-illusions",
+      "multi_rarity": false
+    },
+    {
+      "name": "Driftglobe",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:driftglobe",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dust of Disappearance",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dust-of-disappearance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dust of Dryness",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dust-of-dryness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dust of Sneezing and Choking",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dust-of-sneezing-and-choking",
+      "multi_rarity": false
+    },
+    {
+      "name": "Elemental Gem",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:elemental-gem",
+      "multi_rarity": false
+    },
+    {
+      "name": "Enspelled Armor",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-armor",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Staff",
+      "rarity": "Uncommon",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-staff",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Weapon",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-weapon",
+      "multi_rarity": true
+    },
+    {
+      "name": "Eversmoking Bottle",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eversmoking-bottle",
+      "multi_rarity": false
+    },
+    {
+      "name": "Eyes of Charming",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eyes-of-charming",
+      "multi_rarity": false
+    },
+    {
+      "name": "Eyes of Minute Seeing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eyes-of-minute-seeing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Eyes of the Eagle",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eyes-of-the-eagle",
+      "multi_rarity": false
+    },
+    {
+      "name": "Figurine of Wondrous Power",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:figurine-of-wondrous-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Gauntlets of Ogre Power",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gauntlets-of-ogre-power",
+      "multi_rarity": false
+    },
+    {
+      "name": "Gem of Brightness",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gem-of-brightness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Gloves of Missile Snaring",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gloves-of-missile-snaring",
+      "multi_rarity": false
+    },
+    {
+      "name": "Gloves of Swimming and Climbing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gloves-of-swimming-and-climbing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Gloves of Thievery",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gloves-of-thievery",
+      "multi_rarity": false
+    },
+    {
+      "name": "Goggles of Night",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:goggles-of-night",
+      "multi_rarity": false
+    },
+    {
+      "name": "Hag Eye",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hag-eye",
+      "multi_rarity": false
+    },
+    {
+      "name": "Harkon's Bite",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:harkon-s-bite",
+      "multi_rarity": false
+    },
+    {
+      "name": "Harper Pin",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:harper-pin",
+      "multi_rarity": true
+    },
+    {
+      "name": "Hat of Disguise",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hat-of-disguise",
+      "multi_rarity": false
+    },
+    {
+      "name": "Hat of Vortexes",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hat-of-vortexes",
+      "multi_rarity": false
+    },
+    {
+      "name": "Headband of Intellect",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:headband-of-intellect",
+      "multi_rarity": false
+    },
+    {
+      "name": "Helm of Awareness",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:helm-of-awareness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Helm of Comprehending Languages",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:helm-of-comprehending-languages",
+      "multi_rarity": false
+    },
+    {
+      "name": "Helm of Telepathy",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:helm-of-telepathy",
+      "multi_rarity": false
+    },
+    {
+      "name": "Immovable Rod",
+      "rarity": "Uncommon",
+      "type": "Rod",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:immovable-rod",
+      "multi_rarity": false
+    },
+    {
+      "name": "Instrument of the Bards",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-the-bards",
+      "multi_rarity": true
+    },
+    {
+      "name": "Javelin of Lightning",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:javelin-of-lightning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Keoghtom's Ointment",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:keoghtom-s-ointment",
+      "multi_rarity": false
+    },
+    {
+      "name": "Lantern of Revealing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:lantern-of-revealing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mariner's Armor",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mariner-s-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mechanical Wonder",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mechanical-wonder",
+      "multi_rarity": true
+    },
+    {
+      "name": "Medallion of Thoughts",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:medallion-of-thoughts",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mind Sharpener",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mind-sharpener",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mithral Armor",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mithral-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Nature's Mantle",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:nature-s-mantle",
+      "multi_rarity": false
+    },
+    {
+      "name": "Necklace of Adaptation",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:necklace-of-adaptation",
+      "multi_rarity": false
+    },
+    {
+      "name": "Oil of Slipperiness",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:oil-of-slipperiness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pearl of Power",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pearl-of-power",
+      "multi_rarity": false
+    },
+    {
+      "name": "Periapt of Health",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:periapt-of-health",
+      "multi_rarity": false
+    },
+    {
+      "name": "Periapt of Wound Closure",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:periapt-of-wound-closure",
+      "multi_rarity": false
+    },
+    {
+      "name": "Philter of Love",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:philter-of-love",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pipes of Haunting",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pipes-of-haunting",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pipes Of Pestilence",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pipes-of-pestilence",
+      "multi_rarity": false
+    },
+    {
+      "name": "Pipes of the Sewers",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:pipes-of-the-sewers",
+      "multi_rarity": false
+    },
+    {
+      "name": "Poison Soaked Kukri",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:poison-soaked-kukri",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Animal Friendship",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-animal-friendship",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Fire Breath",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-fire-breath",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Giant Strength",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Growth",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-growth",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Healing",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-healing",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Poison",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-poison",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Pugilism",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-pugilism",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Resistance",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-resistance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Water Breathing",
+      "rarity": "Uncommon",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-water-breathing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Quaal's Feather Token",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:quaal-s-feather-token",
+      "multi_rarity": true
+    },
+    {
+      "name": "Quiver of Ehlonna",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:quiver-of-ehlonna",
+      "multi_rarity": false
+    },
+    {
+      "name": "Reliquary of Dawn",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:reliquary-of-dawn",
+      "multi_rarity": false
+    },
+    {
+      "name": "Reliquary of Twilight",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:reliquary-of-twilight",
+      "multi_rarity": false
+    },
+    {
+      "name": "Repeating Shot",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:repeating-shot",
+      "multi_rarity": false
+    },
+    {
+      "name": "Repulsion Shield",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:repulsion-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Returning Weapon",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:returning-weapon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Jumping",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-jumping",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Mind Shielding",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-mind-shielding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Swimming",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-swimming",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Warmth",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-warmth",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Water Walking",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-water-walking",
+      "multi_rarity": false
+    },
+    {
+      "name": "Robe of Useful Items",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200 GP",
+        "gp": 200,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:robe-of-useful-items",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of the Pact Keeper",
+      "rarity": "Uncommon",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-the-pact-keeper",
+      "multi_rarity": true
+    },
+    {
+      "name": "Rope of Climbing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rope-of-climbing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Saddle of the Cavalier",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:saddle-of-the-cavalier",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sending Stones",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sending-stones",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sentinel Shield",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sentinel-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Shield, +1, +2, or +3",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Slippers of Spider Climbing",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:slippers-of-spider-climbing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spell Scroll",
+      "rarity": "Uncommon",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-scroll",
+      "multi_rarity": true
+    },
+    {
+      "name": "Spell-Refueling Ring",
+      "rarity": "Uncommon",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-refueling-ring",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spiked Shield",
+      "rarity": "Uncommon",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spiked-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of the Adder",
+      "rarity": "Uncommon",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-the-adder",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of the Python",
+      "rarity": "Uncommon",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-the-python",
+      "multi_rarity": false
+    },
+    {
+      "name": "Stone of Good Luck (Luckstone)",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:stone-of-good-luck-luckstone",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Vengeance",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-vengeance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Thayan Spell Tattoo",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Special",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "special"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:thayan-spell-tattoo",
+      "multi_rarity": false
+    },
+    {
+      "name": "Trident of Fish Command",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:trident-of-fish-command",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Magic Detection",
+      "rarity": "Uncommon",
+      "type": "Wand",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-magic-detection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Magic Missiles",
+      "rarity": "Uncommon",
+      "type": "Wand",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-magic-missiles",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Secrets",
+      "rarity": "Uncommon",
+      "type": "Wand",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-secrets",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of the War Mage, +1, +2 or +3",
+      "rarity": "Uncommon",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-the-war-mage-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Wand of Web",
+      "rarity": "Uncommon",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-web",
+      "multi_rarity": false
+    },
+    {
+      "name": "Weapon, +1, +2 or +3",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:weapon-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Weapon of Warning",
+      "rarity": "Uncommon",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+400 GP",
+        "gp": 400,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:weapon-of-warning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wind Fan",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wind-fan",
+      "multi_rarity": false
+    },
+    {
+      "name": "Winged Boots",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "400 GP",
+        "gp": 400,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:winged-boots",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wraps of Unarmed Power",
+      "rarity": "Uncommon",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wraps-of-unarmed-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ammunition, +1, +2, or +3",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ammunition-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Amulet of Health",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:amulet-of-health",
+      "multi_rarity": false
+    },
+    {
+      "name": "Amulet of Retributive Healing",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:amulet-of-retributive-healing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Armor, +1, +2, or +3",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Armor of Resistance",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-of-resistance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Armor of Vulnerability",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-of-vulnerability",
+      "multi_rarity": false
+    },
+    {
+      "name": "Arrow-Catching Shield",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:arrow-catching-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bag of Beans",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bag-of-beans",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bead of Force",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bead-of-force",
+      "multi_rarity": false
+    },
+    {
+      "name": "Belt of Dwarvenkind",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:belt-of-dwarvenkind",
+      "multi_rarity": false
+    },
+    {
+      "name": "Belt of Giant Strength",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:belt-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Berserker Axe",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:berserker-axe",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of Levitation",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-levitation",
+      "multi_rarity": false
+    },
+    {
+      "name": "Boots of Speed",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:boots-of-speed",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bowl of Commanding Water Elementals",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bowl-of-commanding-water-elementals",
+      "multi_rarity": false
+    },
+    {
+      "name": "Bracers of Defense",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bracers-of-defense",
+      "multi_rarity": false
+    },
+    {
+      "name": "Brazier of Commanding Fire Elementals",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:brazier-of-commanding-fire-elementals",
+      "multi_rarity": false
+    },
+    {
+      "name": "Brooch of the Elements",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:brooch-of-the-elements",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cape of the Mountebank",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cape-of-the-mountebank",
+      "multi_rarity": false
+    },
+    {
+      "name": "Censer of Controlling Air Elementals",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:censer-of-controlling-air-elementals",
+      "multi_rarity": false
+    },
+    {
+      "name": "Chime of Opening",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:chime-of-opening",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Displacement",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-displacement",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of the Bat",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-the-bat",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cube of Force",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cube-of-force",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cube of Summoning",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cube-of-summoning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Daern's Instant Fortress",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:daern-s-instant-fortress",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dagger of Venom",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dagger-of-venom",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dazzling Weapon",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dazzling-weapon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dimensional Shackles",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dimensional-shackles",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dragon Slayer",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dragon-slayer",
+      "multi_rarity": false
+    },
+    {
+      "name": "Elixir of Health",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:elixir-of-health",
+      "multi_rarity": false
+    },
+    {
+      "name": "Elven Chain",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:elven-chain",
+      "multi_rarity": false
+    },
+    {
+      "name": "Enspelled Armor",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-armor",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Staff",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-staff",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Weapon",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-weapon",
+      "multi_rarity": true
+    },
+    {
+      "name": "Figurine of Wondrous Power",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:figurine-of-wondrous-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Flame Tongue",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:flame-tongue",
+      "multi_rarity": false
+    },
+    {
+      "name": "Folding Boat",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:folding-boat",
+      "multi_rarity": false
+    },
+    {
+      "name": "Fork of Eddy Summoning",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:fork-of-eddy-summoning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Gem of Seeing",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:gem-of-seeing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Giant Slayer",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:giant-slayer",
+      "multi_rarity": false
+    },
+    {
+      "name": "Glamoured Studded Leather",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:glamoured-studded-leather",
+      "multi_rarity": false
+    },
+    {
+      "name": "Harper Pin",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:harper-pin",
+      "multi_rarity": true
+    },
+    {
+      "name": "Helm of Teleportation",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:helm-of-teleportation",
+      "multi_rarity": false
+    },
+    {
+      "name": "Heward's Handy Haversack",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:heward-s-handy-haversack",
+      "multi_rarity": false
+    },
+    {
+      "name": "Horn of Blasting",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horn-of-blasting",
+      "multi_rarity": false
+    },
+    {
+      "name": "Horn of Valhalla",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horn-of-valhalla",
+      "multi_rarity": true
+    },
+    {
+      "name": "Horseshoes of Speed",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horseshoes-of-speed",
+      "multi_rarity": false
+    },
+    {
+      "name": "Instrument of the Bards",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-the-bards",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ioun Stone",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ioun-stone",
+      "multi_rarity": true
+    },
+    {
+      "name": "Iron Bands of Bilarro",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:iron-bands-of-bilarro",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mace of Disruption",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mace-of-disruption",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mace of Smiting",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mace-of-smiting",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mace of Terror",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mace-of-terror",
+      "multi_rarity": false
+    },
+    {
+      "name": "Magen Handbell",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:magen-handbell",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mantle of Spell Resistance",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mantle-of-spell-resistance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mechanical Wonder",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mechanical-wonder",
+      "multi_rarity": true
+    },
+    {
+      "name": "Mythallar Cloak",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mythallar-cloak",
+      "multi_rarity": false
+    },
+    {
+      "name": "Necklace of Fireballs",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:necklace-of-fireballs",
+      "multi_rarity": false
+    },
+    {
+      "name": "Necklace of Prayer Beads",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:necklace-of-prayer-beads",
+      "multi_rarity": false
+    },
+    {
+      "name": "Oil of Etherealness",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:oil-of-etherealness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Periapt of Proof against Poison",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:periapt-of-proof-against-poison",
+      "multi_rarity": false
+    },
+    {
+      "name": "Portable Hole",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:portable-hole",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Clairvoyance",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-clairvoyance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Diminution",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-diminution",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Gaseous Form",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-gaseous-form",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Giant Strength",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Healing",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-healing",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Heroism",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-heroism",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Invisibility",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-invisibility",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Invulnerability",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-invulnerability",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Mind Reading",
+      "rarity": "Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-mind-reading",
+      "multi_rarity": false
+    },
+    {
+      "name": "Quaal's Feather Token",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:quaal-s-feather-token",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ring of Animal Influence",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-animal-influence",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Evasion",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-evasion",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Feather Falling",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-feather-falling",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Free Action",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-free-action",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Protection",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-protection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Resistance",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-resistance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Spell Storing",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-spell-storing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of the Ram",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-the-ram",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of X-ray Vision",
+      "rarity": "Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-x-ray-vision",
+      "multi_rarity": false
+    },
+    {
+      "name": "Robe of Eyes",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:robe-of-eyes",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Rulership",
+      "rarity": "Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-rulership",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of the Pact Keeper",
+      "rarity": "Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-the-pact-keeper",
+      "multi_rarity": true
+    },
+    {
+      "name": "Rope of Entanglement",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rope-of-entanglement",
+      "multi_rarity": false
+    },
+    {
+      "name": "Salubrious Armor",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:salubrious-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Scroll of Protection",
+      "rarity": "Rare",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "2,000 GP",
+        "gp": 2000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:scroll-of-protection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Shield, +1, +2, or +3",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Shield of Missile Attraction",
+      "rarity": "Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-of-missile-attraction",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spell Scroll",
+      "rarity": "Rare",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-scroll",
+      "multi_rarity": true
+    },
+    {
+      "name": "Staff of Charming",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-charming",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Healing",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-healing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Swarming Insects",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-swarming-insects",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of the Woodlands",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-the-woodlands",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Withering",
+      "rarity": "Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-withering",
+      "multi_rarity": false
+    },
+    {
+      "name": "Stone of Controlling Earth Elementals",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:stone-of-controlling-earth-elementals",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sun Blade",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sun-blade",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Life Stealing",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-life-stealing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Wounding",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-wounding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tentacle Rod",
+      "rarity": "Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tentacle-rod",
+      "multi_rarity": false
+    },
+    {
+      "name": "Vicious Weapon",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+4,000 GP",
+        "gp": 4000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:vicious-weapon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Binding",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-binding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Enemy Detection",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-enemy-detection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Fear",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-fear",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Fireballs",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-fireballs",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Lightning Bolts",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-lightning-bolts",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Paralysis",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-paralysis",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of the War Mage, +1, +2 or +3",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-the-war-mage-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Wand of Wonder",
+      "rarity": "Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-wonder",
+      "multi_rarity": false
+    },
+    {
+      "name": "Weapon, +1, +2 or +3",
+      "rarity": "Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:weapon-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Windskiff",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:windskiff",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wings of Flying",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "4,000 GP",
+        "gp": 4000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wings-of-flying",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wraps of Unarmed Power",
+      "rarity": "Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wraps-of-unarmed-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ammunition, +1, +2, or +3",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ammunition-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ammunition of Slaying",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ammunition-of-slaying",
+      "multi_rarity": false
+    },
+    {
+      "name": "Amulet of the Planes",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:amulet-of-the-planes",
+      "multi_rarity": false
+    },
+    {
+      "name": "Animated Shield",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:animated-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Armor, +1, +2, or +3",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Bag of Devouring",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:bag-of-devouring",
+      "multi_rarity": false
+    },
+    {
+      "name": "Belt of Giant Strength",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:belt-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Candle of Invocation",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:candle-of-invocation",
+      "multi_rarity": false
+    },
+    {
+      "name": "Carpet of Flying",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:carpet-of-flying",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cauldron of Rebirth",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cauldron-of-rebirth",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cloak of Arachnida",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-arachnida",
+      "multi_rarity": false
+    },
+    {
+      "name": "Crystal Ball",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:crystal-ball",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dancing Sword",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dancing-sword",
+      "multi_rarity": false
+    },
+    {
+      "name": "Demon Armor",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:demon-armor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dragon Scale Mail",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dragon-scale-mail",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dwarven Plate",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dwarven-plate",
+      "multi_rarity": false
+    },
+    {
+      "name": "Dwarven Thrower",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:dwarven-thrower",
+      "multi_rarity": false
+    },
+    {
+      "name": "Efreeti Bottle",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:efreeti-bottle",
+      "multi_rarity": false
+    },
+    {
+      "name": "Energy Bow",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:energy-bow",
+      "multi_rarity": false
+    },
+    {
+      "name": "Enspelled Armor",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-armor",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Staff",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-staff",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Weapon",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-weapon",
+      "multi_rarity": true
+    },
+    {
+      "name": "Executioner's Axe",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:executioner-s-axe",
+      "multi_rarity": false
+    },
+    {
+      "name": "Figurine of Wondrous Power",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:figurine-of-wondrous-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Frost Brand",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:frost-brand",
+      "multi_rarity": false
+    },
+    {
+      "name": "Hat of Many Spells",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hat-of-many-spells",
+      "multi_rarity": false
+    },
+    {
+      "name": "Helm of Brilliance",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:helm-of-brilliance",
+      "multi_rarity": false
+    },
+    {
+      "name": "Horn of Valhalla",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horn-of-valhalla",
+      "multi_rarity": true
+    },
+    {
+      "name": "Horseshoes of a Zephyr",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horseshoes-of-a-zephyr",
+      "multi_rarity": false
+    },
+    {
+      "name": "Instrument of the Bards",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-the-bards",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ioun Stone",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ioun-stone",
+      "multi_rarity": true
+    },
+    {
+      "name": "Lute of Thunderous Thumping",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:lute-of-thunderous-thumping",
+      "multi_rarity": false
+    },
+    {
+      "name": "Manual of Bodily Health",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:manual-of-bodily-health",
+      "multi_rarity": false
+    },
+    {
+      "name": "Manual of Gainful Exercise",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:manual-of-gainful-exercise",
+      "multi_rarity": false
+    },
+    {
+      "name": "Manual of Golems",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:manual-of-golems",
+      "multi_rarity": false
+    },
+    {
+      "name": "Manual of Quickness of Action",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:manual-of-quickness-of-action",
+      "multi_rarity": false
+    },
+    {
+      "name": "Mirror of Life Trapping",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:mirror-of-life-trapping",
+      "multi_rarity": false
+    },
+    {
+      "name": "Niko's Mace",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:niko-s-mace",
+      "multi_rarity": false
+    },
+    {
+      "name": "Nine Lives Stealer",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:nine-lives-stealer",
+      "multi_rarity": false
+    },
+    {
+      "name": "Nolzur's Marvelous Pigments",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:nolzur-s-marvelous-pigments",
+      "multi_rarity": false
+    },
+    {
+      "name": "Oathbow",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:oathbow",
+      "multi_rarity": false
+    },
+    {
+      "name": "Oil of Sharpness",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:oil-of-sharpness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Flying",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-flying",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Giant Strength",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Greater Invisibility",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-greater-invisibility",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Healing",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-healing",
+      "multi_rarity": true
+    },
+    {
+      "name": "Potion of Longevity",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-longevity",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Speed",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-speed",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Vitality",
+      "rarity": "Very Rare",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-vitality",
+      "multi_rarity": false
+    },
+    {
+      "name": "Quarterstaff of the Acrobat",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:quarterstaff-of-the-acrobat",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Regeneration",
+      "rarity": "Very Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-regeneration",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Shooting Stars",
+      "rarity": "Very Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-shooting-stars",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Telekinesis",
+      "rarity": "Very Rare",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-telekinesis",
+      "multi_rarity": false
+    },
+    {
+      "name": "Robe of Scintillating Colors",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:robe-of-scintillating-colors",
+      "multi_rarity": false
+    },
+    {
+      "name": "Robe of Stars",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:robe-of-stars",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Absorption",
+      "rarity": "Very Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-absorption",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Alertness",
+      "rarity": "Very Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-alertness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Security",
+      "rarity": "Very Rare",
+      "type": "Rod",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-security",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of the Pact Keeper",
+      "rarity": "Very Rare",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-the-pact-keeper",
+      "multi_rarity": true
+    },
+    {
+      "name": "Scimitar of Speed",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:scimitar-of-speed",
+      "multi_rarity": false
+    },
+    {
+      "name": "Shield, +1, +2, or +3",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Shield of the Cavalier",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:shield-of-the-cavalier",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spell Scroll",
+      "rarity": "Very Rare",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-scroll",
+      "multi_rarity": true
+    },
+    {
+      "name": "Spellguard Shield",
+      "rarity": "Very Rare",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spellguard-shield",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spirit Board",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spirit-board",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Fire",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-fire",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Frost",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-frost",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Power",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-power",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Striking",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-striking",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of Thunder and Lightning",
+      "rarity": "Very Rare",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-thunder-and-lightning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Sharpness",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-sharpness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Thunderous Greatclub",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+40,000 GP",
+        "gp": 40000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:thunderous-greatclub",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tome of Clear Thought",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tome-of-clear-thought",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tome of Leadership and Influence",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tome-of-leadership-and-influence",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tome of Understanding",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "20,000 GP",
+        "gp": 20000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tome-of-understanding",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Polymorph",
+      "rarity": "Very Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "40,000 GP",
+        "gp": 40000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-polymorph",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of the War Mage, +1, +2 or +3",
+      "rarity": "Very Rare",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-the-war-mage-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Weapon, +1, +2 or +3",
+      "rarity": "Very Rare",
+      "type": "Weapon",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:weapon-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Wraps of Unarmed Power",
+      "rarity": "Very Rare",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wraps-of-unarmed-power",
+      "multi_rarity": true
+    },
+    {
+      "name": "Apparatus of Kwalish",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:apparatus-of-kwalish",
+      "multi_rarity": false
+    },
+    {
+      "name": "Armor, +1, +2, or +3",
+      "rarity": "Legendary",
+      "type": "Armor",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-1-2-or-3",
+      "multi_rarity": true
+    },
+    {
+      "name": "Armor of Invulnerability",
+      "rarity": "Legendary",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:armor-of-invulnerability",
+      "multi_rarity": false
+    },
+    {
+      "name": "Belt of Giant Strength",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:belt-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Cloak of Invisibility",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cloak-of-invisibility",
+      "multi_rarity": false
+    },
+    {
+      "name": "Crystal Ball of Mind Reading",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:crystal-ball-of-mind-reading",
+      "multi_rarity": false
+    },
+    {
+      "name": "Crystal Ball of Telepathy",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:crystal-ball-of-telepathy",
+      "multi_rarity": false
+    },
+    {
+      "name": "Crystal Ball of True Seeing",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:crystal-ball-of-true-seeing",
+      "multi_rarity": false
+    },
+    {
+      "name": "Cubic Gate",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:cubic-gate",
+      "multi_rarity": false
+    },
+    {
+      "name": "Deck of Many Things",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:deck-of-many-things",
+      "multi_rarity": false
+    },
+    {
+      "name": "Defender",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:defender",
+      "multi_rarity": false
+    },
+    {
+      "name": "Efreeti Chain",
+      "rarity": "Legendary",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:efreeti-chain",
+      "multi_rarity": false
+    },
+    {
+      "name": "Enspelled Armor",
+      "rarity": "Legendary",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-armor",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Staff",
+      "rarity": "Legendary",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-staff",
+      "multi_rarity": true
+    },
+    {
+      "name": "Enspelled Weapon",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:enspelled-weapon",
+      "multi_rarity": true
+    },
+    {
+      "name": "Hammer of Thunderbolts",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:hammer-of-thunderbolts",
+      "multi_rarity": false
+    },
+    {
+      "name": "Holy Avenger",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:holy-avenger",
+      "multi_rarity": false
+    },
+    {
+      "name": "Horn of Valhalla",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:horn-of-valhalla",
+      "multi_rarity": true
+    },
+    {
+      "name": "Instrument of the Bards",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:instrument-of-the-bards",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ioun Stone",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ioun-stone",
+      "multi_rarity": true
+    },
+    {
+      "name": "Iron Flask",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:iron-flask",
+      "multi_rarity": false
+    },
+    {
+      "name": "Luck Blade",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:luck-blade",
+      "multi_rarity": false
+    },
+    {
+      "name": "Moonblade",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:moonblade",
+      "multi_rarity": false
+    },
+    {
+      "name": "Plate Armor of Etherealness",
+      "rarity": "Legendary",
+      "type": "Armor",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:plate-armor-of-etherealness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Potion of Giant Strength",
+      "rarity": "Legendary",
+      "type": "Potion",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:potion-of-giant-strength",
+      "multi_rarity": true
+    },
+    {
+      "name": "Ring of Djinni Summoning",
+      "rarity": "Legendary",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-djinni-summoning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Elemental Command",
+      "rarity": "Legendary",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-elemental-command",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Invisibility",
+      "rarity": "Legendary",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-invisibility",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Spell Turning",
+      "rarity": "Legendary",
+      "type": "Ring",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-spell-turning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ring of Three Wishes",
+      "rarity": "Legendary",
+      "type": "Ring",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ring-of-three-wishes",
+      "multi_rarity": false
+    },
+    {
+      "name": "Robe of the Archmagi",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:robe-of-the-archmagi",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Lordly Might",
+      "rarity": "Legendary",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-lordly-might",
+      "multi_rarity": false
+    },
+    {
+      "name": "Rod of Resurrection",
+      "rarity": "Legendary",
+      "type": "Rod",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:rod-of-resurrection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Scarab of Protection",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:scarab-of-protection",
+      "multi_rarity": false
+    },
+    {
+      "name": "Scroll of Titan Summoning",
+      "rarity": "Legendary",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:scroll-of-titan-summoning",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sovereign Glue",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sovereign-glue",
+      "multi_rarity": false
+    },
+    {
+      "name": "Spell Scroll",
+      "rarity": "Legendary",
+      "type": "Scroll",
+      "requires_attunement": false,
+      "price": {
+        "raw": "Varies",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "varies"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:spell-scroll",
+      "multi_rarity": true
+    },
+    {
+      "name": "Sphere of Annihilation",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sphere-of-annihilation",
+      "multi_rarity": false
+    },
+    {
+      "name": "Staff of the Magi",
+      "rarity": "Legendary",
+      "type": "Staff",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:staff-of-the-magi",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Answering",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-answering",
+      "multi_rarity": false
+    },
+    {
+      "name": "Talisman of Pure Good",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:talisman-of-pure-good",
+      "multi_rarity": false
+    },
+    {
+      "name": "Talisman of the Sphere",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:talisman-of-the-sphere",
+      "multi_rarity": false
+    },
+    {
+      "name": "Talisman of Ultimate Evil",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:talisman-of-ultimate-evil",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tome of the Dragon",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tome-of-the-dragon",
+      "multi_rarity": false
+    },
+    {
+      "name": "Tome of the Stilled Tongue",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:tome-of-the-stilled-tongue",
+      "multi_rarity": false
+    },
+    {
+      "name": "Universal Solvent",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "100,000 GP",
+        "gp": 100000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:universal-solvent",
+      "multi_rarity": false
+    },
+    {
+      "name": "Vorpal Sword",
+      "rarity": "Legendary",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "B+200,000 GP",
+        "gp": 200000,
+        "base_item_plus": true,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:vorpal-sword",
+      "multi_rarity": false
+    },
+    {
+      "name": "Well of Many Worlds",
+      "rarity": "Legendary",
+      "type": "Wondrous Item",
+      "requires_attunement": false,
+      "price": {
+        "raw": "200,000 GP",
+        "gp": 200000,
+        "base_item_plus": false,
+        "special": null
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:well-of-many-worlds",
+      "multi_rarity": false
+    },
+    {
+      "name": "Axe of the Dwarvish Lords",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:axe-of-the-dwarvish-lords",
+      "multi_rarity": false
+    },
+    {
+      "name": "Blackrazor",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:blackrazor",
+      "multi_rarity": false
+    },
+    {
+      "name": "Book of Exalted Deeds",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:book-of-exalted-deeds",
+      "multi_rarity": false
+    },
+    {
+      "name": "Book of Vile Darkness",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:book-of-vile-darkness",
+      "multi_rarity": false
+    },
+    {
+      "name": "Calimemnon Crystal",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:calimemnon-crystal",
+      "multi_rarity": false
+    },
+    {
+      "name": "Crown Of Horns",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:crown-of-horns",
+      "multi_rarity": false
+    },
+    {
+      "name": "Demonomicon of Iggwilv",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:demonomicon-of-iggwilv",
+      "multi_rarity": false
+    },
+    {
+      "name": "Ebonbane",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:ebonbane",
+      "multi_rarity": false
+    },
+    {
+      "name": "Eye and Hand of Vecna",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:eye-and-hand-of-vecna",
+      "multi_rarity": false
+    },
+    {
+      "name": "Orb of Damara",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:orb-of-damara",
+      "multi_rarity": false
+    },
+    {
+      "name": "Orb of Dragonkind",
+      "rarity": "Artifact",
+      "type": "Wondrous Item",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:orb-of-dragonkind",
+      "multi_rarity": false
+    },
+    {
+      "name": "Sword of Kas",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:sword-of-kas",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wand of Orcus",
+      "rarity": "Artifact",
+      "type": "Wand",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wand-of-orcus",
+      "multi_rarity": false
+    },
+    {
+      "name": "Wave",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:wave",
+      "multi_rarity": false
+    },
+    {
+      "name": "Whelm",
+      "rarity": "Artifact",
+      "type": "Weapon",
+      "requires_attunement": true,
+      "price": {
+        "raw": "Priceless",
+        "gp": null,
+        "base_item_plus": false,
+        "special": "priceless"
+      },
+      "url": "http://dnd2024.wikidot.com/magic-item:whelm",
+      "multi_rarity": false
+    }
+  ]
+}

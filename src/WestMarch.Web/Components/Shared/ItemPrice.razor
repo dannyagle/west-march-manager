@@ -1,0 +1,20 @@
+@using WestMarch.Domain.Items
+
+@* Shows the effective price: a CA campaign override wins (dotted underline explains why),
+   otherwise the source price string, otherwise an em-dash. *@
+@if (Item.CampaignPriceGp is not null)
+{
+    <span class="gold-amount price-overridden" title="Campaign price set by a CA (source listed: @(Item.PriceRaw ?? "no price"))">@Item.CampaignPriceGp</span>
+}
+else if (Item.BasePriceGp is not null)
+{
+    <span class="gold-amount">@Item.BasePriceGp</span>
+}
+else
+{
+    <span class="meta" title="No numeric price in the source — a CA can set a campaign price">@(Item.PriceRaw ?? "—")</span>
+}
+
+@code {
+    [Parameter, EditorRequired] public CatalogItem Item { get; set; } = default!;
+}

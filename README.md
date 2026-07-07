@@ -73,11 +73,35 @@ magic items, spells) from DDB's unsupported character JSON endpoint. It is featu
 timeout-bounded, and **never throws** — any failure renders the DM view with just the required
 D&D Beyond link. Nothing in the core app depends on it.
 
+### Item catalog & economy (Phase 2)
+
+- **Catalog** (`CatalogItem`): magic + mundane items in one table, `Imported` or `Custom`.
+  Viewable by DMs, editable by CAs. Reference files (`/data/*.json`) are only a feed —
+  a CA **import** upserts by stable key (name + rarity; multi-tier items like Belt of
+  Giant Strength are separate rows per rarity), shows a diff preview, and **deactivates**
+  items missing from the new file (never deletes — owned copies and history survive).
+  Custom items and the CA **campaign price override** are never touched by imports;
+  the override is also how "Varies/Priceless" items (85 in the current file) become
+  sellable — the catalog's *Unpriced* filter lists them.
+- **Rarity tiers** (`RarityTiers`): Common 1–4, Uncommon 5–8, Rare 9–12, Very Rare 13–16,
+  Legendary/Artifact 17–20 — aligned with the proficiency tiers. Filters the adventure
+  reward picker (optional override) and produces **flags, not blocks**: out-of-tier
+  rewards are surfaced to the reviewing CA; out-of-tier purchases warn the buyer.
+- **Reward collection**: after a DM completes a session, each credited player collects on
+  the session page — guaranteed gold hits the character's balance, each choose-1-of-N pick
+  mints a real `ItemInstance` (catalog-backed) or a ledger note (free text). Once only.
+- **Inventory & ledger**: characters carry an integer gold balance, owned items, and an
+  append-only `LedgerEntry` history (every acquisition, sale, and purchase), all on the
+  character page. The CA **audit page** is the same ledger campaign-wide.
+- **Marketplace**: quick-sell for half value (instance retired), or fixed-price listings
+  other players buy for one of their characters — gold moves between purses, the item
+  changes hands, both sides ledgered. Optimistic concurrency (listing `Version` token)
+  guarantees two buyers can't buy one listing. Bidding/auctions deliberately deferred;
+  a `Bids` collection can attach to `MarketListing` later without rework.
+
 ### Reserved extension points (deferred phases)
 
-- **Item/reference catalog** — `RewardOption` is a real object with free-text description,
-  optional external URL, and a reserved `CatalogItemId` FK. Options graduate to catalog
-  references without schema rework.
+- **Marketplace bidding/auctions** — listings are the attachment point.
 - **Reservable resources** (store tables, seats) — sessions expose the attachment seam;
   a `Resource` + `SessionResourceAllocation` pair slots in additively.
 - **More auth providers** — one registration call each.
@@ -116,6 +140,7 @@ All settings are environment-driven (`appsettings.{Environment}.json` / env vars
 | `ImageStore:Provider` | `Local` (dev, serves from `wwwroot/media`) or `AzureBlob` |
 | `ImageStore:AzureBlob:*` | Blob connection string + container |
 | `Authentication:Discord:ClientId/ClientSecret` | Discord OAuth app (callback `/signin-discord`); button hides when unset |
+| `Catalog:SeedDirectory` | Where the dev seeder finds `magic-items.json` / `equipment.json` (default: repo `/data`) |
 
 Local-account email confirmation is disabled (no email round-trip for a game community);
 wire an `IEmailSender<ApplicationUser>` and re-enable `RequireConfirmedAccount` for production.
@@ -134,11 +159,14 @@ Register the Discord redirect URI per environment: `https://<host>/signin-discor
 
 ## Phase roadmap
 
-- **Phase 1 (this build):** users + additive roles, Discord/local auth, characters with required
+- **Phase 1:** users + additive roles, Discord/local auth, characters with required
   DDB links + leveling progress, adventure authoring lifecycle (Draft → Ready for Review →
   Approved) with tags and structured rewards, sessions with DM assignment / sign-up /
   completion credits, real-time boards, calendar + LFP + needs-a-DM views, CA announcements
   with images, CA people manager, tests.
-- **Phase 2+ (designed for, not built):** CA-managed item/reference catalog (reward options
-  become references), reservable session resources (store tables), further auth providers,
-  deeper DDB import beyond the stat header.
+- **Phase 2 (this build):** item catalog with CA file imports + custom items + price
+  overrides, catalog-backed adventure rewards with tier filtering and CA review flags,
+  post-session reward collection, character gold/inventory/ledger, player marketplace
+  (quick-sell + fixed-price listings), CA audit ledger.
+- **Phase 3+ (designed for, not built):** marketplace bidding/auctions, reservable session
+  resources (store tables), further auth providers, deeper DDB import beyond the stat header.

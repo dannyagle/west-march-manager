@@ -117,7 +117,12 @@ public class RewardOptionConfiguration : IEntityTypeConfiguration<RewardOption>
     {
         b.Property(o => o.Description).HasMaxLength(500).IsRequired();
         b.Property(o => o.ExternalUrl).HasMaxLength(500);
-        // CatalogItemId stays a bare column until the catalog aggregate exists (deferred phase).
+
+        // The Phase 1 reserved seam, now real: options may reference the item catalog.
+        b.HasOne(o => o.CatalogItem)
+            .WithMany()
+            .HasForeignKey(o => o.CatalogItemId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

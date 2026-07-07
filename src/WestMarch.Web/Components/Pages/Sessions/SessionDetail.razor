@@ -4,11 +4,13 @@
 @implements IAsyncDisposable
 
 @using WestMarch.Application.Characters
+@using WestMarch.Application.Items
 @using WestMarch.Application.Sessions
 @using WestMarch.Application.Users
 
 @inject ISessionService Sessions
 @inject ICharacterService Characters
+@inject IRewardClaimService RewardClaims
 @inject IUserDirectory Users
 @inject ICurrentUser CurrentUser
 @inject IJSRuntime JS
@@ -82,19 +84,84 @@ else
         @foreach (var set in session.Adventure.RewardOptionSets)
         {
             <div class="reward-block">
-                <div class="reward-kicker">Choose one — @set.Name</div>
+                <div class="reward-kicker">@(string.IsNullOrWhiteSpace(set.Name) ? "Choose one" : $"Choose one — {set.Name}")</div>
                 <ul>
                     @foreach (var o in set.Options)
                     {
                         <li>
                             @o.Description
-                            @if (o.ExternalUrl is not null)
+                            @if (o.CatalogItem is not null)
                             {
-                                <a href="@o.ExternalUrl" target="_blank" rel="noopener">↗</a>
+                                <RarityChip Rarity="o.CatalogItem.Rarity" />
+                                <ItemPrice Item="o.CatalogItem" />
+                            }
+                            @if ((o.ExternalUrl ?? o.CatalogItem?.ExternalUrl) is { } url)
+                            {
+                                <a href="@url" target="_blank" rel="noopener">↗</a>
                             }
                         </li>
                     }
                 </ul>
+            </div>
+        }
+    }
+
+    @* ---------- collect rewards (after completion) ---------- *@
+    @if (session.Status == SessionStatus.Completed && claimStates.Count > 0)
+    {
+        <div class="rule-title">Collect your rewards</div>
+        @foreach (var claim in claimStates)
+        {
+            <div class="wm-panel" style="margin-bottom:1rem">
+                <h3>@claim.CharacterName</h3>
+                @if (claim.AlreadyClaimed)
+                {
+                    <p><span class="seal seal-completed">Rewards collected</span></p>
+                }
+                else
+                {
+                    @if (claim.GuaranteedGold > 0)
+                    {
+                        <p>Guaranteed: <span class="gold-amount">@claim.GuaranteedGold</span></p>
+                    }
+                    @foreach (var note in claim.GuaranteedOther)
+                    {
+                        <p class="meta">Also: @note</p>
+                    }
+                    @foreach (var set in claim.ChoiceSets)
+                    {
+                        <div class="field">
+                            <label>@(string.IsNullOrWhiteSpace(set.Name) ? "Choose one" : set.Name)</label>
+                            @foreach (var option in set.Options)
+                            {
+                                <label style="display:flex;align-items:center;gap:0.4rem;text-transform:none;letter-spacing:normal;font-size:0.95rem">
+                                    <input type="radio" name="claim-@claim.CharacterId-@set.SetId"
+                                           checked="@(GetPick(claim.CharacterId, set.SetId) == option.OptionId)"
+                                           @onchange="() => SetPick(claim.CharacterId, set.SetId, option.OptionId)" />
+                                    <span>
+                                        @option.Description
+                                        @if (option.Rarity is not null)
+                                        {
+                                            <RarityChip Rarity="option.Rarity.Value" />
+                                        }
+                                        @if (option.PriceGp is not null)
+                                        {
+                                            <span class="gold-amount">@option.PriceGp</span>
+                                        }
+                                        @if (option.ExternalUrl is not null)
+                                        {
+                                            <a href="@option.ExternalUrl" target="_blank" rel="noopener">↗</a>
+                                        }
+                                    </span>
+                                </label>
+                            }
+                        </div>
+                    }
+                    <button class="btn btn-primary" @onclick="() => CollectAsync(claim)"
+                            disabled="@(claim.ChoiceSets.Any(s => GetPick(claim.CharacterId, s.SetId) is null))">
+                        Collect rewards
+                    </button>
+                }
             </div>
         }
     }
@@ -295,6 +362,8 @@ else
     private Dictionary<string, string> names = [];
     private List<BoardMessage> messages = [];
     private HashSet<Guid> completionPicks = [];
+    private IReadOnlyList<ClaimState> claimStates = [];
+    private readonly Dictionary<(Guid CharacterId, Guid SetId), Guid> rewardPicks = [];
 
     private Guid? signupCharacterId;
     private IReadOnlyList<SignupWarning> signupWarnings = [];
@@ -366,7 +435,27 @@ else
             m.Id, m.SessionId, m.AuthorUserId, DisplayName(m.AuthorUserId), m.Body, m.PostedAt))];
 
         completionPicks = [.. session.Signups.Select(s => s.CharacterId)];
+
+        claimStates = session.Status == SessionStatus.Completed
+            ? await RewardClaims.GetClaimStatesAsync(Id)
+            : [];
     }
+
+    private Guid? GetPick(Guid characterId, Guid setId) =>
+        rewardPicks.TryGetValue((characterId, setId), out var pick) ? pick : null;
+
+    private void SetPick(Guid characterId, Guid setId, Guid optionId) =>
+        rewardPicks[(characterId, setId)] = optionId;
+
+    private Task CollectAsync(ClaimState claim) => DoAsync(async () =>
+    {
+        var choices = claim.ChoiceSets.ToDictionary(
+            s => s.SetId,
+            s => rewardPicks[(claim.CharacterId, s.SetId)]);
+
+        await RewardClaims.ClaimAsync(Id, claim.CharacterId, choices);
+        notice = $"{claim.CharacterName}'s rewards are collected — see their character page for the haul.";
+    });
 
     [JSInvokable]
     public async Task OnMessagePosted(BoardMessage message)

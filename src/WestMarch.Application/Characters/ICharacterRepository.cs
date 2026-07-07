@@ -12,6 +12,9 @@ public interface ICharacterRepository
 
     Task<IReadOnlyList<Character>> ListByOwnerAsync(string ownerUserId, bool includeRetired, CancellationToken ct = default);
 
+    /// <summary>Batch name lookup for ledgers and audit rows.</summary>
+    Task<IReadOnlyDictionary<Guid, string>> GetNamesAsync(IEnumerable<Guid> characterIds, CancellationToken ct = default);
+
     void Add(Character character);
 
     void AddCredit(SessionCredit credit);

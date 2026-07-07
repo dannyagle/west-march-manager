@@ -1,0 +1,7 @@
+@using WestMarch.Domain.Items
+
+<span class="rarity-chip rarity-@Rarity.ToString().ToLowerInvariant()">@Rarity.Display()</span>
+
+@code {
+    [Parameter, EditorRequired] public ItemRarity Rarity { get; set; }
+}

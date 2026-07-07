@@ -1,0 +1,101 @@
+@page "/admin/audit"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Items
+
+@inject IAuditService Audit
+
+<PageTitle>Audit Ledger</PageTitle>
+
+<div class="page-heading">
+    <h1>The Grand Ledger</h1>
+</div>
+<p class="meta">
+    Every gold movement and item transaction in the campaign — rewards collected,
+    quick-sells, marketplace trades — newest first.
+</p>
+
+<div class="cal-toolbar">
+    <div class="cal-filters" style="margin-left:0">
+        <button class="filter-pill @(typeFilter is null ? "active" : null)" @onclick="() => SetType(null)">All</button>
+        @foreach (var t in Types)
+        {
+            <button class="filter-pill @(typeFilter == t ? "active" : null)" @onclick="() => SetType(t)">@Label(t)</button>
+        }
+    </div>
+    <input type="text" style="max-width:220px" placeholder="Filter by character…" @bind="characterSearch" @bind:event="oninput" />
+</div>
+
+@if (rows is null)
+{
+    <p class="meta">Opening the great book…</p>
+}
+else
+{
+    var visible = Filtered.ToList();
+    <p class="meta">@visible.Count entr@(visible.Count == 1 ? "y" : "ies") shown (most recent @rows.Count loaded)</p>
+    <table class="wm-table">
+        <thead>
+            <tr><th>When</th><th>Character</th><th>Type</th><th>Detail</th><th style="text-align:right">Gold</th><th>Counterparty</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var row in visible)
+            {
+                <tr>
+                    <td class="meta" style="white-space:nowrap">@row.Entry.OccurredAt.LocalDateTime.ToString("MMM d, h:mm tt")</td>
+                    <td><a href="characters/@row.Entry.CharacterId">@row.CharacterName</a></td>
+                    <td><span class="tag-chip">@Label(row.Entry.Type)</span></td>
+                    <td>@row.Entry.Description</td>
+                    <td style="text-align:right;white-space:nowrap">
+                        @if (row.Entry.GoldDelta != 0)
+                        {
+                            <span style="color:@(row.Entry.GoldDelta > 0 ? "var(--verdant)" : "var(--blood-bright)")">
+                                @(row.Entry.GoldDelta > 0 ? "+" : "")@row.Entry.GoldDelta gp
+                            </span>
+                        }
+                    </td>
+                    <td class="meta">@row.CounterpartyName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private static readonly LedgerEntryType[] Types =
+    [
+        LedgerEntryType.RewardGold, LedgerEntryType.RewardItem, LedgerEntryType.RewardNote,
+        LedgerEntryType.QuickSell, LedgerEntryType.SaleProceeds, LedgerEntryType.Purchase,
+    ];
+
+    private IReadOnlyList<AuditRow>? rows;
+    private LedgerEntryType? typeFilter;
+    private string characterSearch = "";
+
+    private IEnumerable<AuditRow> Filtered => (rows ?? [])
+        .Where(r => string.IsNullOrWhiteSpace(characterSearch)
+            || r.CharacterName.Contains(characterSearch.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    protected override Task OnInitializedAsync() => LoadAsync();
+
+    private async Task LoadAsync() =>
+        rows = await Audit.ListAsync(new AuditFilter(Type: typeFilter, Take: 300));
+
+    private async Task SetType(LedgerEntryType? t)
+    {
+        typeFilter = t;
+        await LoadAsync();
+    }
+
+    private static string Label(LedgerEntryType t) => t switch
+    {
+        LedgerEntryType.RewardGold => "Reward gold",
+        LedgerEntryType.RewardItem => "Reward item",
+        LedgerEntryType.RewardNote => "Reward note",
+        LedgerEntryType.QuickSell => "Quick-sell",
+        LedgerEntryType.SaleProceeds => "Sale",
+        LedgerEntryType.Purchase => "Purchase",
+        _ => t.ToString(),
+    };
+}

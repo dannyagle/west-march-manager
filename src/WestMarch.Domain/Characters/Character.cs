@@ -26,6 +26,9 @@ public class Character
 
     public bool IsRetired { get; set; }
 
+    /// <summary>Managed gold balance in whole gold pieces. Change lives on the player's sheet.</summary>
+    public int GoldGp { get; set; }
+
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public List<SessionCredit> Credits { get; set; } = [];

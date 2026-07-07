@@ -6,7 +6,8 @@ namespace WestMarch.Application.Adventures;
 
 public record RewardComponentInput(RewardKind Kind, int? GoldAmount, string Description);
 
-public record RewardOptionInput(string Description, string? ExternalUrl);
+/// <summary>Catalog-backed when CatalogItemId is set (Description becomes a display snapshot); free text otherwise.</summary>
+public record RewardOptionInput(string Description, string? ExternalUrl, Guid? CatalogItemId = null);
 
 public record RewardOptionSetInput(string Name, List<RewardOptionInput> Options);
 
@@ -50,6 +51,7 @@ public interface IAdventureService
 public class AdventureService(
     IAdventureRepository adventures,
     ITagRepository tags,
+    Items.ICatalogRepository catalog,
     IUnitOfWork uow,
     ICurrentUser currentUser) : IAdventureService
 {
@@ -250,6 +252,21 @@ public class AdventureService(
         // so also AddRange-ing them here would double them up on tracked adventures.
         adventures.AddRewardComponents(newComponents);
 
+        // Catalog-backed options: verify the referenced items exist and snapshot their names.
+        var catalogIds = input.RewardOptionSets
+            .SelectMany(s => s.Options)
+            .Where(o => o.CatalogItemId is not null)
+            .Select(o => o.CatalogItemId!.Value)
+            .Distinct()
+            .ToList();
+        var catalogItems = (await catalog.ListByIdsAsync(catalogIds, ct)).ToDictionary(c => c.Id);
+
+        var missing = catalogIds.Where(id => !catalogItems.ContainsKey(id)).ToList();
+        if (missing.Count > 0)
+        {
+            throw new AppValidationException("A reward option references a catalog item that no longer exists.");
+        }
+
         adventures.RemoveRewardOptionSets(adventure.RewardOptionSets);
         adventure.RewardOptionSets.Clear();
         var newSets = input.RewardOptionSets.Select((set, i) => new RewardOptionSet
@@ -259,8 +276,11 @@ public class AdventureService(
             SortOrder = i,
             Options = [.. set.Options.Select((o, j) => new RewardOption
             {
-                Description = o.Description.Trim(),
+                Description = o.CatalogItemId is not null
+                    ? catalogItems[o.CatalogItemId.Value].Name
+                    : o.Description.Trim(),
                 ExternalUrl = string.IsNullOrWhiteSpace(o.ExternalUrl) ? null : o.ExternalUrl.Trim(),
+                CatalogItemId = o.CatalogItemId,
                 SortOrder = j,
             })],
         }).ToList();
@@ -309,20 +329,20 @@ public class AdventureService(
             errors.Add("The active window must end after it starts.");
         }
 
+        // Set names are optional flavor ("Boon of the Wardens"); the UI defaults to "Choose one".
+        var setNumber = 0;
         foreach (var set in input.RewardOptionSets)
         {
-            if (string.IsNullOrWhiteSpace(set.Name))
-            {
-                errors.Add("Every reward option set needs a name.");
-            }
+            setNumber++;
+            var label = string.IsNullOrWhiteSpace(set.Name) ? $"Reward choice {setNumber}" : $"'{set.Name}'";
 
             if (set.Options.Count < 2)
             {
-                errors.Add($"Option set '{set.Name}' needs at least two options to be a choice.");
+                errors.Add($"{label} needs at least two options to be a choice.");
             }
-            else if (set.Options.Any(o => string.IsNullOrWhiteSpace(o.Description)))
+            else if (set.Options.Any(o => string.IsNullOrWhiteSpace(o.Description) && o.CatalogItemId is null))
             {
-                errors.Add($"Every option in '{set.Name}' needs a description.");
+                errors.Add($"Every option in {label} needs a description or a linked catalog item.");
             }
         }
 

@@ -1,0 +1,2931 @@
+{
+  "source": "http://dnd2024.wikidot.com/equipment:all",
+  "source_pages": [
+    "http://dnd2024.wikidot.com/equipment:armor",
+    "http://dnd2024.wikidot.com/equipment:weapon",
+    "http://dnd2024.wikidot.com/equipment:adventuring-gear",
+    "http://dnd2024.wikidot.com/equipment:tool",
+    "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+  ],
+  "source_license": "Content licensed under CC BY-SA 3.0 (per source site footer)",
+  "generated_utc": "2026-07-06T19:42:41Z",
+  "notes": {
+    "cost.raw": "Original cost string exactly as listed (may be CP, SP, or GP).",
+    "cost.gp": "Cost normalized to gold pieces (10 CP = 1 SP, 10 SP = 1 GP). Fractional values are exact, e.g. a 1 SP item is 0.1. Null when the source lists 'Varies' or no price.",
+    "cost.special": "'varies' when no fixed price applies; null otherwise.",
+    "categories": "Armor, Weapon, Ammunition, Adventuring Gear, Tool, Mount, Vehicle.",
+    "weight": "Preserved as the source's display string (e.g. '5 lb.'); not normalized.",
+    "excluded": "Trinkets (no cost), Currency (exchange rates, not goods), and Poisons page were omitted as non-priced or non-purchasable reference. Full item rules/descriptions are on the linked source_url pages; only pricing-relevant fields are captured here.",
+    "source_url": "Points to the subpage the item's table lives on, not a per-item page (the equipment section uses per-table pages)."
+  },
+  "count": 215,
+  "counts_by_category": {
+    "Armor": 13,
+    "Weapon": 38,
+    "Ammunition": 5,
+    "Adventuring Gear": 90,
+    "Tool": 37,
+    "Mount": 14,
+    "Vehicle": 18
+  },
+  "items": [
+    {
+      "name": "Padded Armor",
+      "category": "Armor",
+      "armor_category": "Light",
+      "armor_class": "11 + Dex modifier",
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "8 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Leather Armor",
+      "category": "Armor",
+      "armor_category": "Light",
+      "armor_class": "11 + Dex modifier",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Studded Leather Armor",
+      "category": "Armor",
+      "armor_category": "Light",
+      "armor_class": "12 + Dex modifier",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "13 lb.",
+      "cost": {
+        "raw": "45 GP",
+        "gp": 45.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Hide Armor",
+      "category": "Armor",
+      "armor_category": "Medium",
+      "armor_class": "12 + Dex modifier (max 2)",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "12 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Chain Shirt",
+      "category": "Armor",
+      "armor_category": "Medium",
+      "armor_class": "13 + Dex modifier (max 2)",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "20 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Scale Mail",
+      "category": "Armor",
+      "armor_category": "Medium",
+      "armor_class": "14 + Dex modifier (max 2)",
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "45 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Breastplate",
+      "category": "Armor",
+      "armor_category": "Medium",
+      "armor_class": "14 + Dex modifier (max 2)",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "20 lb.",
+      "cost": {
+        "raw": "400 GP",
+        "gp": 400.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Half Plate Armor",
+      "category": "Armor",
+      "armor_category": "Medium",
+      "armor_class": "15 + Dex modifier (max 2)",
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "40 lb.",
+      "cost": {
+        "raw": "750 GP",
+        "gp": 750.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Ring Mail",
+      "category": "Armor",
+      "armor_category": "Heavy",
+      "armor_class": "14",
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "40 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Chain Mail",
+      "category": "Armor",
+      "armor_category": "Heavy",
+      "armor_class": "16",
+      "strength_requirement": "Str 13",
+      "stealth_disadvantage": true,
+      "weight": "55 lb.",
+      "cost": {
+        "raw": "75 GP",
+        "gp": 75.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Splint Armor",
+      "category": "Armor",
+      "armor_category": "Heavy",
+      "armor_class": "17",
+      "strength_requirement": "Str 15",
+      "stealth_disadvantage": true,
+      "weight": "60 lb.",
+      "cost": {
+        "raw": "200 GP",
+        "gp": 200.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Plate Armor",
+      "category": "Armor",
+      "armor_category": "Heavy",
+      "armor_class": "18",
+      "strength_requirement": "Str 15",
+      "stealth_disadvantage": true,
+      "weight": "65 lb.",
+      "cost": {
+        "raw": "1,500 GP",
+        "gp": 1500.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Shield",
+      "category": "Armor",
+      "armor_category": "Shield",
+      "armor_class": "+2",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:armor"
+    },
+    {
+      "name": "Club",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d4 Bludgeoning",
+      "properties": [
+        "Light"
+      ],
+      "mastery": "Slow",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Dagger",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d4 Piercing",
+      "properties": [
+        "Finesse",
+        "Light",
+        "Thrown (Range 20/60)"
+      ],
+      "mastery": "Nick",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Greatclub",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d8 Bludgeoning",
+      "properties": [
+        "Two-Handed"
+      ],
+      "mastery": "Push",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "2 SP",
+        "gp": 0.2,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Handaxe",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d6 Slashing",
+      "properties": [
+        "Light",
+        "Thrown (Range 20/60)"
+      ],
+      "mastery": "Vex",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Javelin",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d6 Piercing",
+      "properties": [
+        "Thrown (Range 30/120)"
+      ],
+      "mastery": "Slow",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Light Hammer",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d4 Bludgeoning",
+      "properties": [
+        "Light",
+        "Thrown (Range 20/60)"
+      ],
+      "mastery": "Nick",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Mace",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d6 Bludgeoning",
+      "properties": [],
+      "mastery": "Sap",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Quarterstaff",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d6 Bludgeoning",
+      "properties": [
+        "Versatile (1d8)"
+      ],
+      "mastery": "Topple",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "2 SP",
+        "gp": 0.2,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Sickle",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d4 Slashing",
+      "properties": [
+        "Light"
+      ],
+      "mastery": "Nick",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Spear",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Melee",
+      "damage": "1d6 Piercing",
+      "properties": [
+        "Thrown (Range 20/60)",
+        "Versatile (1d8)"
+      ],
+      "mastery": "Sap",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Dart",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Ranged",
+      "damage": "1d4 Piercing",
+      "properties": [
+        "Finesse",
+        "Thrown (Range 20/60)"
+      ],
+      "mastery": "Vex",
+      "weight": "1/4 lb.",
+      "cost": {
+        "raw": "5 CP",
+        "gp": 0.05,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Light Crossbow",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Ranged",
+      "damage": "1d8 Piercing",
+      "properties": [
+        "Ammunition (Range 80/320; Bolt)",
+        "Loading",
+        "Two-Handed"
+      ],
+      "mastery": "Slow",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Shortbow",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Ranged",
+      "damage": "1d6 Piercing",
+      "properties": [
+        "Ammunition (Range 80/320; Arrow)",
+        "Two-Handed"
+      ],
+      "mastery": "Vex",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Sling",
+      "category": "Weapon",
+      "weapon_category": "Simple",
+      "attack_type": "Ranged",
+      "damage": "1d4 Bludgeoning",
+      "properties": [
+        "Ammunition (Range 30/120; Bullet)"
+      ],
+      "mastery": "Slow",
+      "weight": "-",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Battleaxe",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Slashing",
+      "properties": [
+        "Versatile (1d10)"
+      ],
+      "mastery": "Topple",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Flail",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Bludgeoning",
+      "properties": [],
+      "mastery": "Sap",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Glaive",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d10 Slashing",
+      "properties": [
+        "Heavy",
+        "Reach",
+        "Two-Handed"
+      ],
+      "mastery": "Graze",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Greataxe",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d12 Slashing",
+      "properties": [
+        "Heavy",
+        "Two-Handed"
+      ],
+      "mastery": "Cleave",
+      "weight": "7 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Greatsword",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "2d6 Slashing",
+      "properties": [
+        "Heavy",
+        "Two-Handed"
+      ],
+      "mastery": "Graze",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Halberd",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d10 Slashing",
+      "properties": [
+        "Heavy",
+        "Reach",
+        "Two-Handed"
+      ],
+      "mastery": "Cleave",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Lance",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d10 Piercing",
+      "properties": [
+        "Heavy",
+        "Reach",
+        "Two-Handed (unless mounted)"
+      ],
+      "mastery": "Topple",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Longsword",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Slashing",
+      "properties": [
+        "Versatile (1d10)"
+      ],
+      "mastery": "Sap",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Maul",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "2d6 Bludgeoning",
+      "properties": [
+        "Heavy",
+        "Two-Handed"
+      ],
+      "mastery": "Topple",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Morningstar",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Piercing",
+      "properties": [],
+      "mastery": "Sap",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Pike",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d10 Piercing",
+      "properties": [
+        "Heavy",
+        "Reach",
+        "Two-Handed"
+      ],
+      "mastery": "Push",
+      "weight": "18 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Rapier",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Piercing",
+      "properties": [
+        "Finesse"
+      ],
+      "mastery": "Vex",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Scimitar",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d6 Slashing",
+      "properties": [
+        "Finesse",
+        "Light"
+      ],
+      "mastery": "Nick",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Shortsword",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d6 Piercing",
+      "properties": [
+        "Finesse",
+        "Light"
+      ],
+      "mastery": "Vex",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Trident",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Piercing",
+      "properties": [
+        "Thrown (Range 20/60)",
+        "Versatile (1d10)"
+      ],
+      "mastery": "Topple",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Warhammer",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Bludgeoning",
+      "properties": [
+        "Versatile (1d10)"
+      ],
+      "mastery": "Push",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "War Pick",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d8 Piercing",
+      "properties": [
+        "Versatile (1d10)"
+      ],
+      "mastery": "Sap",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Whip",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Melee",
+      "damage": "1d4 Slashing",
+      "properties": [
+        "Finesse",
+        "Reach"
+      ],
+      "mastery": "Slow",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Blowgun",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1 Piercing",
+      "properties": [
+        "Ammunition (Range 25/100; Needle)",
+        "Loading"
+      ],
+      "mastery": "Vex",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Hand Crossbow",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1d6 Piercing",
+      "properties": [
+        "Ammunition (Range 30/120; Bolt)",
+        "Light",
+        "Loading"
+      ],
+      "mastery": "Vex",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "75 GP",
+        "gp": 75.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Heavy Crossbow",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1d10 Piercing",
+      "properties": [
+        "Ammunition (Range 100/400; Bolt)",
+        "Heavy",
+        "Loading",
+        "Two-Handed"
+      ],
+      "mastery": "Push",
+      "weight": "18 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Longbow",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1d8 Piercing",
+      "properties": [
+        "Ammunition (Range 150/600; Arrow)",
+        "Heavy",
+        "Two-Handed"
+      ],
+      "mastery": "Slow",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Musket",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1d12 Piercing",
+      "properties": [
+        "Ammunition (Range 40/120; Bullet)",
+        "Loading",
+        "Two-Handed"
+      ],
+      "mastery": "Slow",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "500 GP",
+        "gp": 500.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Pistol",
+      "category": "Weapon",
+      "weapon_category": "Martial",
+      "attack_type": "Ranged",
+      "damage": "1d10 Piercing",
+      "properties": [
+        "Ammunition (Range 30/90; Bullet)",
+        "Loading"
+      ],
+      "mastery": "Vex",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "250 GP",
+        "gp": 250.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Arrows",
+      "category": "Ammunition",
+      "amount_per_purchase": 20,
+      "storage": "Quiver",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Bolts",
+      "category": "Ammunition",
+      "amount_per_purchase": 20,
+      "storage": "Case",
+      "weight": "1 1/2 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Bullets, Firearm",
+      "category": "Ammunition",
+      "amount_per_purchase": 10,
+      "storage": "Pouch",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "3 GP",
+        "gp": 3.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Bullets, Sling",
+      "category": "Ammunition",
+      "amount_per_purchase": 20,
+      "storage": "Pouch",
+      "weight": "1 1/2 lb.",
+      "cost": {
+        "raw": "4 CP",
+        "gp": 0.04,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Needles",
+      "category": "Ammunition",
+      "amount_per_purchase": 50,
+      "storage": "Pouch",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:weapon"
+    },
+    {
+      "name": "Acid",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Alchemist's Fire",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ammunition",
+      "category": "Adventuring Gear",
+      "weight": "Varies",
+      "cost": {
+        "raw": "Varies",
+        "gp": null,
+        "special": "varies"
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Antitoxin",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Arcane Focus",
+      "category": "Adventuring Gear",
+      "weight": "Varies",
+      "cost": {
+        "raw": "Varies",
+        "gp": null,
+        "special": "varies"
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Backpack",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ball Bearings",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Barrel",
+      "category": "Adventuring Gear",
+      "weight": "70 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Basket",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "4 SP",
+        "gp": 0.4,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Bedroll",
+      "category": "Adventuring Gear",
+      "weight": "7 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Bell",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Blanket",
+      "category": "Adventuring Gear",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Block and Tackle",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Bright Fungal Cloak",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Book",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Bottle, Glass",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Bucket",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 CP",
+        "gp": 0.05,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Burglar's Pack",
+      "category": "Adventuring Gear",
+      "weight": "42 lb.",
+      "cost": {
+        "raw": "16 GP",
+        "gp": 16.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Caltrops",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Candle",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 CP",
+        "gp": 0.01,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Case, Crossbow Bolt",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Case, Map or Scroll",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Chain",
+      "category": "Adventuring Gear",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Chest",
+      "category": "Adventuring Gear",
+      "weight": "25 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Climber's Kit",
+      "category": "Adventuring Gear",
+      "weight": "12 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Clothes, Fine",
+      "category": "Adventuring Gear",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Clothes, Traveler's",
+      "category": "Adventuring Gear",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Component Pouch",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Costume",
+      "category": "Adventuring Gear",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Crowbar",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Desert Clothing",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Devil Mask",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Diplomat's Pack",
+      "category": "Adventuring Gear",
+      "weight": "39 lb.",
+      "cost": {
+        "raw": "39 GP",
+        "gp": 39.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Druidic Focus",
+      "category": "Adventuring Gear",
+      "weight": "Varies",
+      "cost": {
+        "raw": "Varies",
+        "gp": null,
+        "special": "varies"
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Dungeoneer's Pack",
+      "category": "Adventuring Gear",
+      "weight": "55 lb.",
+      "cost": {
+        "raw": "12 GP",
+        "gp": 12.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Entertainer's Pack",
+      "category": "Adventuring Gear",
+      "weight": "58 1/2 lb.",
+      "cost": {
+        "raw": "40 GP",
+        "gp": 40.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Explorer's Pack",
+      "category": "Adventuring Gear",
+      "weight": "55 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Flask",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "2 CP",
+        "gp": 0.02,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Garb of Light and Shadow",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Genie Robe",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Grappling Hook",
+      "category": "Adventuring Gear",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Healer's Kit",
+      "category": "Adventuring Gear",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Holy Symbol",
+      "category": "Adventuring Gear",
+      "weight": "Varies",
+      "cost": {
+        "raw": "Varies",
+        "gp": null,
+        "special": "varies"
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Holy Water",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Hunting Trap",
+      "category": "Adventuring Gear",
+      "weight": "25 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ink",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ink Pen",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "2 CP",
+        "gp": 0.02,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Jug",
+      "category": "Adventuring Gear",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "2 CP",
+        "gp": 0.02,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ladder",
+      "category": "Adventuring Gear",
+      "weight": "25 lb.",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Lamp",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Lantern, Bullseye",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Lantern, Hooded",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Lock",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Locking Spellbook",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "35 GP",
+        "gp": 35.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Magnifying Glass",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "100 GP",
+        "gp": 100.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Manacles",
+      "category": "Adventuring Gear",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Map",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Mirror",
+      "category": "Adventuring Gear",
+      "weight": "1/2 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Monster Camouflage",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Net",
+      "category": "Adventuring Gear",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Oil",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Paper",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "2 SP",
+        "gp": 0.2,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Parchment",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Perfume",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Poison, Basic",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "100 GP",
+        "gp": 100.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Pole",
+      "category": "Adventuring Gear",
+      "weight": "7 lb.",
+      "cost": {
+        "raw": "5 CP",
+        "gp": 0.05,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Pot, Iron",
+      "category": "Adventuring Gear",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Potion of Healing",
+      "category": "Adventuring Gear",
+      "weight": "1/2 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Pouch",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Priest's Pack",
+      "category": "Adventuring Gear",
+      "weight": "29 lb.",
+      "cost": {
+        "raw": "33 GP",
+        "gp": 33.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Quiver",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Ram, Portable",
+      "category": "Adventuring Gear",
+      "weight": "35 lb.",
+      "cost": {
+        "raw": "4 GP",
+        "gp": 4.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Rations",
+      "category": "Adventuring Gear",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Robe",
+      "category": "Adventuring Gear",
+      "weight": "4 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Rope",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Sack",
+      "category": "Adventuring Gear",
+      "weight": "1/2 lb.",
+      "cost": {
+        "raw": "1 CP",
+        "gp": 0.01,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Scholar's Pack",
+      "category": "Adventuring Gear",
+      "weight": "22 lb.",
+      "cost": {
+        "raw": "40 GP",
+        "gp": 40.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Shovel",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Signal Whistle",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "5 CP",
+        "gp": 0.05,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Spell Scroll (Cantrip)",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Spell Scroll (Level 1)",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Spikes, Iron",
+      "category": "Adventuring Gear",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Spyglass",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1,000 GP",
+        "gp": 1000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "String",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Tent",
+      "category": "Adventuring Gear",
+      "weight": "20 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Tinderbox",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Torch",
+      "category": "Adventuring Gear",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "1 CP",
+        "gp": 0.01,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Vial",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Warm Fungal Clothing",
+      "category": "Adventuring Gear",
+      "weight": "-",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Waterskin",
+      "category": "Adventuring Gear",
+      "weight": "5 lb. (full)",
+      "cost": {
+        "raw": "2 SP",
+        "gp": 0.2,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:adventuring-gear"
+    },
+    {
+      "name": "Alchemist's Supplies",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Intelligence",
+      "weight": "8 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Brewer's Supplies",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Intelligence",
+      "weight": "9 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Calligrapher's Supplies",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Carpenter's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Strength",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "8 GP",
+        "gp": 8.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Cartographer's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Wisdom",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Cobbler's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Cook's Utensils",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Wisdom",
+      "weight": "8 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Glassblower's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Intelligence",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Jeweler's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Intelligence",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Leatherworker's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Mason's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Strength",
+      "weight": "8 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Painter's Supplies",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Wisdom",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Potter's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Intelligence",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Smith's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Strength",
+      "weight": "8 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Tinker's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Weaver's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Woodcarver's Tools",
+      "category": "Tool",
+      "tool_type": "Artisan",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Disguise Kit",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Charisma",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Forgery Kit",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Dexterity",
+      "weight": "5 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Herbalism Kit",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Intelligence",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "5 GP",
+        "gp": 5.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Navigator's Tools",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Wisdom",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Poisoner's Kit",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Intelligence",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Thieves' Tools",
+      "category": "Tool",
+      "tool_type": "Other",
+      "ability": "Dexterity",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Dice",
+      "category": "Tool",
+      "tool_type": "Gaming Set",
+      "ability": "Wisdom",
+      "weight": "-",
+      "cost": {
+        "raw": "1 SP",
+        "gp": 0.1,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Dragonchess",
+      "category": "Tool",
+      "tool_type": "Gaming Set",
+      "ability": "Wisdom",
+      "weight": "-",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Playing Cards",
+      "category": "Tool",
+      "tool_type": "Gaming Set",
+      "ability": "Wisdom",
+      "weight": "-",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Three-dragon Ante",
+      "category": "Tool",
+      "tool_type": "Gaming Set",
+      "ability": "Wisdom",
+      "weight": "-",
+      "cost": {
+        "raw": "1 GP",
+        "gp": 1.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Bagpipes",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "6 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Drum",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "3 lb.",
+      "cost": {
+        "raw": "6 GP",
+        "gp": 6.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Dulcimer",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Flute",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Horn",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "3 GP",
+        "gp": 3.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Lute",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "35 GP",
+        "gp": 35.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Lyre",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Pan Flute",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "2 lb.",
+      "cost": {
+        "raw": "12 GP",
+        "gp": 12.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Shawm",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "2 GP",
+        "gp": 2.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Viol",
+      "category": "Tool",
+      "tool_type": "Musical Instrument",
+      "ability": "Charisma",
+      "weight": "1 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:tool"
+    },
+    {
+      "name": "Axe Beak",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "210 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Camel",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "450 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Elephant",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "1,320 lb.",
+      "cost": {
+        "raw": "200 GP",
+        "gp": 200.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Flying Snake",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "60 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Horse, Draft",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "540 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Horse, Riding",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "480 lb.",
+      "cost": {
+        "raw": "75 GP",
+        "gp": 75.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Mastiff",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "195 lb.",
+      "cost": {
+        "raw": "25 GP",
+        "gp": 25.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Mule",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "420 lb.",
+      "cost": {
+        "raw": "8 GP",
+        "gp": 8.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Pony",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "225 lb.",
+      "cost": {
+        "raw": "30 GP",
+        "gp": 30.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Sled Dog",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "210 lb.",
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Warhorse",
+      "category": "Mount",
+      "mount_subtype": "Mount/Animal",
+      "carrying_capacity": "540 lb.",
+      "cost": {
+        "raw": "400 GP",
+        "gp": 400.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Saddle, Exotic",
+      "category": "Mount",
+      "mount_subtype": "Saddle",
+      "weight": "40 lb.",
+      "cost": {
+        "raw": "60 GP",
+        "gp": 60.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Saddle, Military",
+      "category": "Mount",
+      "mount_subtype": "Saddle",
+      "weight": "30 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Saddle, Riding",
+      "category": "Mount",
+      "mount_subtype": "Saddle",
+      "weight": "25 lb.",
+      "cost": {
+        "raw": "10 GP",
+        "gp": 10.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Carriage",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "600 lb.",
+      "cost": {
+        "raw": "100 GP",
+        "gp": 100.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Cart",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "200 lb.",
+      "cost": {
+        "raw": "15 GP",
+        "gp": 15.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Chariot",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "100 lb.",
+      "cost": {
+        "raw": "250 GP",
+        "gp": 250.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Covered Wagon",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "1,300 lb.",
+      "cost": {
+        "raw": "250 GP",
+        "gp": 250.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Feed per day",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "10 lb.",
+      "cost": {
+        "raw": "5 CP",
+        "gp": 0.05,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Sled",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "300 lb.",
+      "cost": {
+        "raw": "20 GP",
+        "gp": 20.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Stabling per day",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "-",
+      "cost": {
+        "raw": "5 SP",
+        "gp": 0.5,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Wagon",
+      "category": "Vehicle",
+      "vehicle_type": "Land / Tack & Harness",
+      "weight": "400 lb.",
+      "cost": {
+        "raw": "35 GP",
+        "gp": 35.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Airship",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "8 mph",
+      "crew": 10,
+      "passengers": 20,
+      "cargo_tons": "1",
+      "armor_class": 13,
+      "hit_points": 300,
+      "damage_threshold": null,
+      "cost": {
+        "raw": "40,000 GP",
+        "gp": 40000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Galley",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "4 mph",
+      "crew": 80,
+      "passengers": null,
+      "cargo_tons": "150",
+      "armor_class": 15,
+      "hit_points": 500,
+      "damage_threshold": 20,
+      "cost": {
+        "raw": "30,000 GP",
+        "gp": 30000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Keelboat",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "1 mph",
+      "crew": 1,
+      "passengers": 6,
+      "cargo_tons": "1/2",
+      "armor_class": 15,
+      "hit_points": 100,
+      "damage_threshold": 10,
+      "cost": {
+        "raw": "3,000 GP",
+        "gp": 3000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Longship",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "3 mph",
+      "crew": 40,
+      "passengers": 150,
+      "cargo_tons": "10",
+      "armor_class": 15,
+      "hit_points": 300,
+      "damage_threshold": 15,
+      "cost": {
+        "raw": "10,000 GP",
+        "gp": 10000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Rowboat",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "1 1/2 mph",
+      "crew": 1,
+      "passengers": 3,
+      "cargo_tons": null,
+      "armor_class": 11,
+      "hit_points": 50,
+      "damage_threshold": null,
+      "cost": {
+        "raw": "50 GP",
+        "gp": 50.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Sailing Ship",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "2 mph",
+      "crew": 20,
+      "passengers": 20,
+      "cargo_tons": "100",
+      "armor_class": 15,
+      "hit_points": 300,
+      "damage_threshold": 15,
+      "cost": {
+        "raw": "10,000 GP",
+        "gp": 10000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Warship",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Standard",
+      "speed": "2 1/2 mph",
+      "crew": 60,
+      "passengers": 60,
+      "cargo_tons": "200",
+      "armor_class": 15,
+      "hit_points": 500,
+      "damage_threshold": 20,
+      "cost": {
+        "raw": "25,000 GP",
+        "gp": 25000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Lyrandar Air Cruiser",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Eberron Airship",
+      "speed": "10 mph (Fly 100 ft. hover)",
+      "crew": 10,
+      "passengers": 40,
+      "cargo_tons": "2",
+      "armor_class": 16,
+      "hit_points": 600,
+      "damage_threshold": 20,
+      "cost": {
+        "raw": "50,000 GP",
+        "gp": 50000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Lyrandar Skyskiff",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Eberron Airship",
+      "speed": "7 mph (Fly 70 ft. hover)",
+      "crew": 2,
+      "passengers": 2,
+      "cargo_tons": "1/2",
+      "armor_class": 18,
+      "hit_points": 150,
+      "damage_threshold": 5,
+      "cost": {
+        "raw": "20,000 GP",
+        "gp": 20000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    },
+    {
+      "name": "Strider Airship",
+      "category": "Vehicle",
+      "vehicle_type": "Large Vehicle / Ship",
+      "ship_group": "Eberron Airship",
+      "speed": "8 mph (Fly 80 ft. hover)",
+      "crew": 6,
+      "passengers": 20,
+      "cargo_tons": "1",
+      "armor_class": 16,
+      "hit_points": 350,
+      "damage_threshold": 10,
+      "cost": {
+        "raw": "40,000 GP",
+        "gp": 40000.0,
+        "special": null
+      },
+      "source_url": "http://dnd2024.wikidot.com/equipment:mounts-and-vehicles"
+    }
+  ]
+}

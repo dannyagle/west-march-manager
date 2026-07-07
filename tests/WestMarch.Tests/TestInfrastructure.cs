@@ -91,9 +91,7 @@ public sealed class TestDb : IDisposable
         _connection = new SqliteConnection("DataSource=:memory:");
         _connection.Open();
 
-        Db = new AppDbContext(new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlite(_connection)
-            .Options);
+        Db = NewContext();
         Db.Database.EnsureCreated();
 
         foreach (var id in new[] { PlayerId, OtherPlayerId, DmId, OtherDmId, CaId })
@@ -108,6 +106,10 @@ public sealed class TestDb : IDisposable
 
         Db.SaveChanges();
     }
+
+    /// <summary>A second context on the same database — simulates a concurrent user/circuit.</summary>
+    public AppDbContext NewContext() =>
+        new(new DbContextOptionsBuilder<AppDbContext>().UseSqlite(_connection).Options);
 
     public void Dispose()
     {

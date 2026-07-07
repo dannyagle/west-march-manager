@@ -29,6 +29,16 @@ public class CharacterRepository(AppDbContext db) : ICharacterRepository
             .OrderByDescending(c => c.Level).ThenBy(c => c.Name)
             .ToListAsync(ct);
 
+    public async Task<IReadOnlyDictionary<Guid, string>> GetNamesAsync(IEnumerable<Guid> characterIds, CancellationToken ct = default)
+    {
+        var ids = characterIds.Distinct().ToList();
+        return ids.Count == 0
+            ? new Dictionary<Guid, string>()
+            : await db.Characters.AsNoTracking()
+                .Where(c => ids.Contains(c.Id))
+                .ToDictionaryAsync(c => c.Id, c => c.Name, ct);
+    }
+
     public void Add(Character character) => db.Characters.Add(character);
 
     public void AddCredit(SessionCredit credit) => db.SessionCredits.Add(credit);

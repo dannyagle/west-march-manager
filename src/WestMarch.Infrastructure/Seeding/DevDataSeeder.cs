@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WestMarch.Application.Items;
 using WestMarch.Domain.Adventures;
 using WestMarch.Domain.Announcements;
 using WestMarch.Domain.Characters;
+using WestMarch.Domain.Items;
 using WestMarch.Domain.Sessions;
 using WestMarch.Domain.Users;
 using WestMarch.Infrastructure.Identity;
@@ -38,6 +42,13 @@ public static class DevDataSeeder
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
+
+        // The catalog seeds whenever it is empty — even into an existing database —
+        // so a Phase 1 dev DB picks up the item files without a wipe.
+        var parser = scope.ServiceProvider.GetRequiredService<ICatalogFileParser>();
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
+        await SeedCatalogIfEmptyAsync(db, parser, config, env, logger);
 
         if (await db.Users.AnyAsync())
         {
@@ -98,6 +109,15 @@ public static class DevDataSeeder
 
         var now = DateTimeOffset.Now;
 
+        // Catalog lookups for linking demo rewards to real items (defensive: file may change).
+        async Task<CatalogItem?> FindItem(string name) =>
+            await db.CatalogItems.FirstOrDefaultAsync(c => c.Name == name && c.Kind == ItemKind.Magic);
+
+        var cloak = await FindItem("Cloak of Billowing");
+        var marinersArmor = await FindItem("Mariner's Armor");
+        var wandOfSecrets = await FindItem("Wand of Secrets");
+        var staffOfWithering = await FindItem("Staff of Withering");
+
         var goblinWatch = new Adventure
         {
             Title = "The Goblin Watchtower",
@@ -125,7 +145,7 @@ public static class DevDataSeeder
                     SortOrder = 0,
                     Options =
                     [
-                        new RewardOption { Description = "Cloak of Billowing (common)", ExternalUrl = "https://www.dndbeyond.com/magic-items/4581-cloak-of-billowing", SortOrder = 0 },
+                        new RewardOption { Description = "Cloak of Billowing", CatalogItemId = cloak?.Id, SortOrder = 0 },
                         new RewardOption { Description = "Potion of Hill Giant Strength", SortOrder = 1 },
                         new RewardOption { Description = "Vex's map satchel (three unexplored hex leads)", SortOrder = 2 },
                     ],
@@ -159,8 +179,8 @@ public static class DevDataSeeder
                     SortOrder = 0,
                     Options =
                     [
-                        new RewardOption { Description = "Mariner's Armor (uncommon)", ExternalUrl = "https://www.dndbeyond.com/magic-items/4623-mariners-armor", SortOrder = 0 },
-                        new RewardOption { Description = "Wand of Secrets", SortOrder = 1 },
+                        new RewardOption { Description = "Mariner's Armor", CatalogItemId = marinersArmor?.Id, SortOrder = 0 },
+                        new RewardOption { Description = "Wand of Secrets", CatalogItemId = wandOfSecrets?.Id, SortOrder = 1 },
                     ],
                 },
             ],
@@ -194,7 +214,7 @@ public static class DevDataSeeder
                     SortOrder = 0,
                     Options =
                     [
-                        new RewardOption { Description = "Staff of Withering (rare)", ExternalUrl = "https://www.dndbeyond.com/magic-items/5451-staff-of-withering", SortOrder = 0 },
+                        new RewardOption { Description = "Staff of Withering", CatalogItemId = staffOfWithering?.Id, SortOrder = 0 },
                         new RewardOption { Description = "Amber shard: once, ask the King one question (DM adjudicates)", SortOrder = 1 },
                         new RewardOption { Description = "Ring of Resistance (poison)", ExternalUrl = "http://dnd2024.wikidot.com/wondrous-items:ring-of-resistance", SortOrder = 2 },
                     ],
@@ -269,7 +289,9 @@ public static class DevDataSeeder
             CompletedAt = now.AddDays(-9).AddHours(4),
             Signups =
             [
-                new SessionSignup { Character = chars[0], ReceivedCredit = true },
+                // Bramblefoot has already collected; Grimjaw and Elsariel still have
+                // rewards waiting — visit the session page to demo the collect flow.
+                new SessionSignup { Character = chars[0], ReceivedCredit = true, RewardsClaimedAt = now.AddDays(-8) },
                 new SessionSignup { Character = chars[3], ReceivedCredit = true },
                 new SessionSignup { Character = chars[4], ReceivedCredit = true },
             ],
@@ -306,7 +328,172 @@ public static class DevDataSeeder
                 SortOrder = 2,
             });
 
+        // --- Demo economy: gold, an owned item, a claimed reward, and a live listing ---
+
+        // Bramblefoot collected the past session's rewards: 150 gp + the Cloak of Billowing.
+        chars[0].GoldGp = 150;
+        db.LedgerEntries.Add(new LedgerEntry
+        {
+            CharacterId = chars[0].Id,
+            Type = LedgerEntryType.RewardGold,
+            GoldDelta = 150,
+            SessionId = past.Id,
+            Description = "Reward: The Goblin Watchtower — 150 gp.",
+            OccurredAt = now.AddDays(-8),
+        });
+
+        if (cloak is not null)
+        {
+            var cloakInstance = new ItemInstance
+            {
+                CatalogItemId = cloak.Id,
+                OwnerCharacterId = chars[0].Id,
+                AcquiredAt = now.AddDays(-8),
+            };
+            db.ItemInstances.Add(cloakInstance);
+            db.LedgerEntries.Add(new LedgerEntry
+            {
+                CharacterId = chars[0].Id,
+                Type = LedgerEntryType.RewardItem,
+                ItemInstanceId = cloakInstance.Id,
+                ItemName = cloak.Name,
+                SessionId = past.Id,
+                Description = "Reward: The Goblin Watchtower — chose Cloak of Billowing (Spoils of the tower).",
+                OccurredAt = now.AddDays(-8),
+            });
+        }
+
+        // Elsariel has an old wand up for sale — a live marketplace listing to browse.
+        if (wandOfSecrets is not null)
+        {
+            var wandInstance = new ItemInstance
+            {
+                CatalogItemId = wandOfSecrets.Id,
+                OwnerCharacterId = chars[4].Id,
+                Status = InstanceStatus.Listed,
+                AcquiredAt = now.AddDays(-40),
+            };
+            db.ItemInstances.Add(wandInstance);
+            db.LedgerEntries.Add(new LedgerEntry
+            {
+                CharacterId = chars[4].Id,
+                Type = LedgerEntryType.RewardItem,
+                ItemInstanceId = wandInstance.Id,
+                ItemName = wandOfSecrets.Name,
+                Description = "Reward: an earlier expedition — Wand of Secrets.",
+                OccurredAt = now.AddDays(-40),
+            });
+            db.MarketListings.Add(new MarketListing
+            {
+                ItemInstanceId = wandInstance.Id,
+                SellerCharacterId = chars[4].Id,
+                AskingPriceGp = 400,
+                ListedAt = now.AddDays(-2),
+            });
+
+            // A buyer needs walking-around money.
+            chars[3].GoldGp = 500;
+            db.LedgerEntries.Add(new LedgerEntry
+            {
+                CharacterId = chars[3].Id,
+                Type = LedgerEntryType.RewardGold,
+                GoldDelta = 500,
+                Description = "Reward: earlier expeditions — accumulated bounties.",
+                OccurredAt = now.AddDays(-20),
+            });
+        }
+
         await db.SaveChangesAsync();
         logger.LogInformation("Development data seeded.");
+    }
+
+    /// <summary>
+    /// Seeds the item catalog from the repo's /data reference files when the catalog is
+    /// empty. Uses the same parser as the CA import screen, recorded as a normal batch.
+    /// Also demonstrates the CA "campaign price" override on a couple of Varies-priced items.
+    /// </summary>
+    private static async Task SeedCatalogIfEmptyAsync(
+        AppDbContext db,
+        ICatalogFileParser parser,
+        IConfiguration config,
+        IHostEnvironment env,
+        ILogger logger)
+    {
+        if (await db.CatalogItems.AnyAsync())
+        {
+            return;
+        }
+
+        var dataDir = config["Catalog:SeedDirectory"]
+            ?? Path.GetFullPath(Path.Combine(env.ContentRootPath, "..", "..", "data"));
+
+        var files = new[]
+        {
+            (Path.Combine(dataDir, "magic-items.json"), ItemKind.Magic),
+            (Path.Combine(dataDir, "equipment.json"), ItemKind.Mundane),
+        };
+
+        foreach (var (path, kind) in files)
+        {
+            if (!File.Exists(path))
+            {
+                logger.LogWarning("Catalog seed file not found: {Path} — skipping.", path);
+                continue;
+            }
+
+            await using var stream = File.OpenRead(path);
+            var parsed = await parser.ParseAsync(stream, kind);
+
+            var batch = new ImportBatch
+            {
+                Kind = kind,
+                FileName = Path.GetFileName(path),
+                SourceNote = parsed.SourceNote,
+                UploadedByUserId = "system-seed",
+                AddedCount = parsed.Items.Count,
+            };
+            db.ImportBatches.Add(batch);
+
+            foreach (var item in parsed.Items)
+            {
+                db.CatalogItems.Add(new CatalogItem
+                {
+                    Kind = kind,
+                    Name = item.Name,
+                    Rarity = item.Rarity,
+                    Category = item.Category,
+                    RequiresAttunement = item.RequiresAttunement,
+                    BasePriceGp = item.BasePriceGp,
+                    PriceRaw = item.PriceRaw,
+                    PriceIsBasePlus = item.PriceIsBasePlus,
+                    ExternalUrl = item.ExternalUrl,
+                    DetailsJson = item.DetailsJson,
+                    Source = CatalogSource.Imported,
+                    ImportKey = item.ImportKey,
+                    LastImportBatchId = batch.Id,
+                });
+            }
+
+            logger.LogInformation("Seeded {Count} {Kind} catalog items from {File}.", parsed.Items.Count, kind, batch.FileName);
+        }
+
+        await db.SaveChangesAsync();
+
+        // Demo the CA price override on two "Varies"-priced items.
+        var healing = await db.CatalogItems.FirstOrDefaultAsync(c =>
+            c.Name == "Potion of Healing" && c.Rarity == ItemRarity.Common);
+        if (healing is not null)
+        {
+            healing.CampaignPriceGp = 50;
+        }
+
+        var beltRare = await db.CatalogItems.FirstOrDefaultAsync(c =>
+            c.Name == "Belt of Giant Strength" && c.Rarity == ItemRarity.Rare);
+        if (beltRare is not null)
+        {
+            beltRare.CampaignPriceGp = 6000;
+        }
+
+        await db.SaveChangesAsync();
     }
 }

@@ -1,0 +1,221 @@
+@page "/marketplace"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Characters
+@using WestMarch.Application.Items
+@using WestMarch.Application.Sessions
+
+@inject IMarketplaceService Market
+@inject ICharacterService Characters
+@inject ICurrentUser CurrentUser
+
+<PageTitle>Marketplace</PageTitle>
+
+<div class="page-heading">
+    <h1>The Bazaar of the March</h1>
+</div>
+<p class="meta">
+    Treasures outgrown by one adventurer, waiting for another. Buy for any of your characters —
+    the gold moves between their purses, the item changes hands.
+</p>
+
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
+@if (notice is not null)
+{
+    <div class="alert alert-success">@notice</div>
+}
+
+<div class="cal-toolbar">
+    <div class="cal-filters" style="margin-left:0">
+        @foreach (var r in Rarities)
+        {
+            <button class="filter-pill @(rarityFilter == r ? "active" : null)"
+                    @onclick="() => rarityFilter = rarityFilter == r ? null : r">@r.Display()</button>
+        }
+    </div>
+    <input type="number" style="max-width:140px" placeholder="Max price (gp)" @bind="maxPrice" />
+    <input type="text" style="max-width:220px" placeholder="Search…" @bind="search" @bind:event="oninput" />
+</div>
+
+@if (listings is null)
+{
+    <p class="meta">Setting out the stalls…</p>
+}
+else
+{
+    var visible = Filtered.ToList();
+    @if (visible.Count == 0)
+    {
+        <div class="empty-state">The stalls are bare. Someone's hoarding.</div>
+    }
+    else
+    {
+        <div class="card-grid">
+            @foreach (var listing in visible)
+            {
+                var item = listing.ItemInstance.CatalogItem;
+                var mine = MyListingIds.Contains(listing.Id);
+                <div class="wm-card quest-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem">
+                        <RarityChip Rarity="item.Rarity" />
+                        <span class="gold-amount" style="font-size:1.15rem">@listing.AskingPriceGp</span>
+                    </div>
+                    <div class="quest-title">
+                        @if (item.ExternalUrl is not null)
+                        {
+                            <a href="@item.ExternalUrl" target="_blank" rel="noopener">@item.Name</a>
+                        }
+                        else
+                        {
+                            @item.Name
+                        }
+                    </div>
+                    <div class="quest-foot">
+                        <span>@item.Category@(item.RequiresAttunement ? " · attunement" : "")</span>
+                        <span style="margin-left:auto">seller: @SellerName(listing)</span>
+                    </div>
+
+                    @if (mine)
+                    {
+                        <div class="buy-panel">
+                            <button class="btn btn-sm btn-danger" @onclick="() => CancelAsync(listing.Id)">Withdraw listing</button>
+                        </div>
+                    }
+                    else if (buyingListingId == listing.Id)
+                    {
+                        <div class="buy-panel">
+                            <div class="field">
+                                <label>Buying for</label>
+                                <select @onchange="e => OnBuyerChangedAsync(listing.Id, e)">
+                                    <option value="">— choose a character —</option>
+                                    @foreach (var c in myCharacters)
+                                    {
+                                        <option value="@c.Id">@c.Name (level @c.Level, @c.GoldGp gp)</option>
+                                    }
+                                </select>
+                            </div>
+                            @foreach (var warning in buyWarnings)
+                            {
+                                <div class="warn-note">⚠ @warning.Message</div>
+                            }
+                            <div style="display:flex;gap:0.5rem">
+                                <button class="btn btn-sm btn-primary" disabled="@(buyerCharacterId is null)"
+                                        @onclick="() => BuyAsync(listing)">
+                                    Pay @listing.AskingPriceGp gp
+                                </button>
+                                <button class="btn btn-sm" @onclick="CloseBuyPanel">Cancel</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="buy-panel">
+                            <button class="btn btn-sm btn-primary" @onclick="() => OpenBuyPanel(listing.Id)">Buy</button>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+}
+
+@code {
+    private static readonly ItemRarity[] Rarities =
+    [
+        ItemRarity.Common, ItemRarity.Uncommon, ItemRarity.Rare,
+        ItemRarity.VeryRare, ItemRarity.Legendary, ItemRarity.Artifact,
+    ];
+
+    private List<MarketListing>? listings;
+    private IReadOnlyList<MarketListing> myListings = [];
+    private IReadOnlyList<Character> myCharacters = [];
+    private Dictionary<Guid, string> sellerNames = []; // listing id → seller character name
+
+    private ItemRarity? rarityFilter;
+    private int? maxPrice;
+    private string search = "";
+
+    private Guid? buyingListingId;
+    private Guid? buyerCharacterId;
+    private IReadOnlyList<SignupWarning> buyWarnings = [];
+
+    private string? error;
+    private string? notice;
+
+    private HashSet<Guid> MyListingIds => [.. myListings.Where(l => l.Status == ListingStatus.Active).Select(l => l.Id)];
+
+    private IEnumerable<MarketListing> Filtered => (listings ?? [])
+        .Where(l => rarityFilter is null || l.ItemInstance.CatalogItem.Rarity == rarityFilter)
+        .Where(l => maxPrice is null || l.AskingPriceGp <= maxPrice)
+        .Where(l => string.IsNullOrWhiteSpace(search)
+            || l.ItemInstance.CatalogItem.Name.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    protected override Task OnInitializedAsync() => LoadAsync();
+
+    private async Task LoadAsync()
+    {
+        var browse = await Market.BrowseAsync();
+        listings = [.. browse.Select(v => v.Listing)];
+        sellerNames = new Dictionary<Guid, string>(
+            browse.ToDictionary(v => v.Listing.Id, v => v.SellerName));
+
+        myListings = await Market.MyListingsAsync();
+        myCharacters = await Characters.GetMyCharactersAsync();
+    }
+
+    private string SellerName(MarketListing listing) =>
+        sellerNames.GetValueOrDefault(listing.Id, "a mysterious stranger");
+
+    private void OpenBuyPanel(Guid listingId)
+    {
+        buyingListingId = listingId;
+        buyerCharacterId = null;
+        buyWarnings = [];
+    }
+
+    private void CloseBuyPanel()
+    {
+        buyingListingId = null;
+        buyerCharacterId = null;
+        buyWarnings = [];
+    }
+
+    private async Task OnBuyerChangedAsync(Guid listingId, ChangeEventArgs e)
+    {
+        buyWarnings = [];
+        buyerCharacterId = Guid.TryParse(e.Value?.ToString(), out var id) ? id : null;
+        if (buyerCharacterId is not null)
+        {
+            buyWarnings = await Market.GetPurchaseWarningsAsync(listingId, buyerCharacterId.Value);
+        }
+    }
+
+    private Task BuyAsync(MarketListing listing) => DoAsync(async () =>
+    {
+        await Market.BuyAsync(listing.Id, buyerCharacterId!.Value);
+        notice = $"Bought {listing.ItemInstance.CatalogItem.Name} for {listing.AskingPriceGp} gp.";
+        CloseBuyPanel();
+    });
+
+    private Task CancelAsync(Guid listingId) => DoAsync(() => Market.CancelListingAsync(listingId));
+
+    private async Task DoAsync(Func<Task> action)
+    {
+        error = null;
+        notice = null;
+        try
+        {
+            await action();
+            await LoadAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+            await LoadAsync();
+        }
+    }
+}

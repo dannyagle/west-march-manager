@@ -48,6 +48,17 @@ public static class DependencyInjection
         services.AddScoped<IPeopleService, PeopleService>();
         services.AddScoped<IUserDirectory, UserDirectory>();
 
+        // Item catalog, inventory, marketplace (Phase 2)
+        services.AddScoped<Application.Items.ICatalogRepository, Items.CatalogRepository>();
+        services.AddScoped<Application.Items.IInventoryRepository, Items.InventoryRepository>();
+        services.AddScoped<Application.Items.IMarketRepository, Items.MarketRepository>();
+        services.AddScoped<Application.Items.ICatalogFileParser, Items.CatalogJsonParser>();
+        services.AddScoped<Application.Items.ICatalogService, Application.Items.CatalogService>();
+        services.AddScoped<Application.Items.IInventoryService, Application.Items.InventoryService>();
+        services.AddScoped<Application.Items.IAuditService, Application.Items.AuditService>();
+        services.AddScoped<Application.Items.IMarketplaceService, Application.Items.MarketplaceService>();
+        services.AddScoped<Application.Items.IRewardClaimService, Application.Items.RewardClaimService>();
+
         // Feature flags + optional DDB adapter (isolated; returns null on any failure)
         services.Configure<FeatureFlags>(configuration.GetSection(FeatureFlags.SectionName));
         services.Configure<DdbAdapterOptions>(configuration.GetSection(DdbAdapterOptions.SectionName));

@@ -24,6 +24,7 @@ public class SessionRepository(AppDbContext db) : ISessionRepository
             .Include(s => s.Adventure).ThenInclude(a => a.GuaranteedRewards.OrderBy(r => r.SortOrder))
             .Include(s => s.Adventure).ThenInclude(a => a.RewardOptionSets.OrderBy(o => o.SortOrder))
                 .ThenInclude(o => o.Options.OrderBy(x => x.SortOrder))
+                .ThenInclude(o => o.CatalogItem)
             .Include(s => s.Signups).ThenInclude(su => su.Character)
             .FirstOrDefaultAsync(s => s.Id == id, ct);
 
@@ -53,6 +54,19 @@ public class SessionRepository(AppDbContext db) : ISessionRepository
             .ToListAsync(ct);
 
         return [.. list.OrderBy(s => s.ScheduledAt)];
+    }
+
+    public async Task<IReadOnlyList<GameSession>> ListByCharacterAsync(Guid characterId, CancellationToken ct = default)
+    {
+        var list = await db.Sessions
+            .AsNoTracking()
+            .Include(s => s.Adventure)
+            .Include(s => s.Signups)
+            .Where(s => s.Status != SessionStatus.Cancelled
+                && s.Signups.Any(su => su.CharacterId == characterId))
+            .ToListAsync(ct);
+
+        return [.. list.OrderByDescending(s => s.ScheduledAt)];
     }
 
     public async Task<IReadOnlyList<SessionMessage>> ListMessagesAsync(Guid sessionId, CancellationToken ct = default)

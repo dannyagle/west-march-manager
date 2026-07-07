@@ -27,14 +27,30 @@
             <NavLink class="topnav-link" href="/" Match="NavLinkMatch.All">Expedition Board</NavLink>
             <AuthorizeView>
                 <NavLink class="topnav-link" href="characters">My Characters</NavLink>
+                <NavLink class="topnav-link" href="marketplace">Marketplace</NavLink>
             </AuthorizeView>
             <AuthorizeView Policy="@AuthPolicies.RequireDm">
-                <NavLink class="topnav-link" href="adventures">Adventures</NavLink>
-                <NavLink class="topnav-link topnav-link-attn" href="sessions/needs-dm">Needs a DM</NavLink>
+                <details class="nav-dropdown nav-dropdown-dm">
+                    <summary>Dungeon Master</summary>
+                    <div class="dropdown-menu">
+                        <span class="dropdown-kicker">Running the game</span>
+                        <NavLink class="topnav-link" href="adventures" onclick="this.closest('details').removeAttribute('open')">Adventures</NavLink>
+                        <NavLink class="topnav-link" href="catalog" onclick="this.closest('details').removeAttribute('open')">Item Catalog</NavLink>
+                        <NavLink class="topnav-link topnav-link-attn" href="sessions/needs-dm" onclick="this.closest('details').removeAttribute('open')">Needs a DM</NavLink>
+                    </div>
+                </details>
             </AuthorizeView>
             <AuthorizeView Policy="@AuthPolicies.RequireCa">
-                <NavLink class="topnav-link" href="admin/announcements">Announcements</NavLink>
-                <NavLink class="topnav-link" href="admin/people">People</NavLink>
+                <details class="nav-dropdown nav-dropdown-ca">
+                    <summary>Campaign Admin</summary>
+                    <div class="dropdown-menu">
+                        <span class="dropdown-kicker">Administration</span>
+                        <NavLink class="topnav-link" href="admin/announcements" onclick="this.closest('details').removeAttribute('open')">Announcements</NavLink>
+                        <NavLink class="topnav-link" href="admin/people" onclick="this.closest('details').removeAttribute('open')">People</NavLink>
+                        <NavLink class="topnav-link" href="admin/audit" onclick="this.closest('details').removeAttribute('open')">Audit Ledger</NavLink>
+                        <NavLink class="topnav-link" href="catalog/import" onclick="this.closest('details').removeAttribute('open')">Import Items</NavLink>
+                    </div>
+                </details>
             </AuthorizeView>
 
             <span class="topnav-spacer"></span>

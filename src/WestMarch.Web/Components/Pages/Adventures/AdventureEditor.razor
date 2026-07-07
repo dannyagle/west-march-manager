@@ -5,8 +5,11 @@
 
 @using System.ComponentModel.DataAnnotations
 @using WestMarch.Application.Adventures
+@using WestMarch.Application.Items
+@using WestMarch.Domain.Items
 
 @inject IAdventureService Adventures
+@inject ICatalogService Catalog
 @inject NavigationManager Nav
 
 <PageTitle>@(IsNew ? "Author an Adventure" : "Edit Adventure")</PageTitle>
@@ -86,7 +89,7 @@
             <InputText @bind-Value="model.TagsText" placeholder="wilderness, mystery" />
         </div>
 
-        <div class="rule-title">Guaranteed rewards</div>
+        <div class="rule-title">Rewards</div>
         <p class="meta">Every character who completes the session receives all of these.</p>
         @foreach (var reward in model.GuaranteedRewards)
         {
@@ -118,38 +121,63 @@
                 </div>
             </div>
         }
-        <button type="button" class="btn btn-sm" @onclick="() => model.GuaranteedRewards.Add(new())">+ Add guaranteed reward</button>
+        <button type="button" class="btn btn-sm" @onclick="() => model.GuaranteedRewards.Add(new())">+ Add reward</button>
 
-        <div class="rule-title">Choice rewards ("choose 1 of N")</div>
+        <h3 style="margin-top:1.5rem">Choices — each character picks one</h3>
         <p class="meta">
-            Options are free text for now; each can carry a link (D&amp;D Beyond, dnd2024.wikidot.com, a sourcebook page).
-            When the item catalog arrives, options will reference it directly.
+            Pick options from the item catalog (players receive a real, tradeable item) or write free
+            text (noted on the character's ledger for their sheet). The catalog list shows rarities
+            fitting levels @model.MinLevel–@model.MaxLevel by default.
         </p>
+        <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal;margin-bottom:0.6rem">
+            <input type="checkbox" @bind="showOffTier" />
+            Include items outside this adventure's level range <span class="meta">&nbsp;(special adventures — the reviewing CA sees a flag)</span>
+        </label>
         @foreach (var set in model.OptionSets)
         {
             var s = set;
             <div class="reward-block">
-                <div class="field-row">
-                    <div class="field">
-                        <label>Choice prompt</label>
-                        <InputText @bind-Value="s.Name" placeholder="e.g. Choose one relic of the vault" />
-                    </div>
-                    <div class="field" style="max-width:120px;align-self:flex-end">
-                        <button type="button" class="btn btn-sm btn-danger" @onclick="() => model.OptionSets.Remove(s)">Remove set</button>
-                    </div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between">
+                    <div class="reward-kicker">Choose one of @s.Options.Count</div>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => model.OptionSets.Remove(s)">Remove choice</button>
                 </div>
                 @foreach (var option in s.Options)
                 {
                     var o = option;
+                    var linked = LinkedItem(o);
                     <div class="field-row" style="margin-left:1rem">
-                        <div class="field">
-                            <label>Option</label>
-                            <InputText @bind-Value="o.Description" placeholder="e.g. Wand of Secrets" />
+                        <div class="field" style="max-width:320px">
+                            <label>Catalog item</label>
+                            <select value="@(o.CatalogItemId?.ToString() ?? "")" @onchange="e => SetOptionItem(o, e)">
+                                <option value="">— free text —</option>
+                                @foreach (var item in PickableItems(o))
+                                {
+                                    <option value="@item.Id">@item.Name (@item.Rarity.Display()@(item.EffectivePriceGp is not null ? $", {item.EffectivePriceGp} gp" : ""))</option>
+                                }
+                            </select>
                         </div>
-                        <div class="field">
-                            <label>Link <span class="meta">(optional)</span></label>
-                            <InputText @bind-Value="o.ExternalUrl" placeholder="https://…" />
-                        </div>
+                        @if (linked is null)
+                        {
+                            <div class="field">
+                                <label>Option text</label>
+                                <InputText @bind-Value="o.Description" placeholder="e.g. Vex's map satchel" />
+                            </div>
+                            <div class="field">
+                                <label>Link <span class="meta">(optional)</span></label>
+                                <InputText @bind-Value="o.ExternalUrl" placeholder="https://…" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="field" style="align-self:flex-end;padding-bottom:0.35rem">
+                                <RarityChip Rarity="linked.Rarity" />
+                                <ItemPrice Item="linked" />
+                                @if (!RarityTiers.IsAppropriateFor(linked.Rarity, model.MinLevel, model.MaxLevel))
+                                {
+                                    <span class="seal seal-needsdm" title="Outside this adventure's level range — the reviewing CA will see this flag">off-tier</span>
+                                }
+                            </div>
+                        }
                         <div class="field" style="max-width:90px;align-self:flex-end">
                             <button type="button" class="btn btn-sm btn-danger" @onclick="() => s.Options.Remove(o)">×</button>
                         </div>
@@ -158,9 +186,17 @@
                 <button type="button" class="btn btn-sm" style="margin-left:1rem" @onclick="() => s.Options.Add(new())">+ Add option</button>
             </div>
         }
-        <button type="button" class="btn btn-sm" @onclick="AddOptionSet">+ Add choice set</button>
+        <button type="button" class="btn btn-sm" @onclick="AddOptionSet">+ Add choice</button>
 
-        <div style="display:flex;gap:0.8rem;margin-top:1.8rem">
+        @* Validation feedback belongs next to the submit button too — the page is long
+           and field-level messages can be scrolled out of view. *@
+        <ValidationSummary class="text-danger" role="alert" style="margin-top:1.4rem" />
+        @if (errors is not null)
+        {
+            <div class="alert alert-danger" style="margin-top:1rem">@string.Join(" ", errors)</div>
+        }
+
+        <div style="display:flex;gap:0.8rem;margin-top:1rem">
             <button type="submit" class="btn btn-primary" disabled="@saving">@(IsNew ? "Create draft" : "Save changes")</button>
             <a class="btn" href="@(IsNew ? "adventures" : $"adventures/{Id}")">Cancel</a>
         </div>
@@ -175,6 +211,31 @@
     private IReadOnlyList<string>? errors;
     private bool saving;
     private bool loaded;
+
+    private IReadOnlyList<CatalogItem> catalogItems = [];
+    private bool showOffTier;
+
+    private CatalogItem? LinkedItem(OptionRow o) =>
+        o.CatalogItemId is null ? null : catalogItems.FirstOrDefault(c => c.Id == o.CatalogItemId);
+
+    /// <summary>Tier-filtered picker contents; the currently linked item always stays visible.</summary>
+    private IEnumerable<CatalogItem> PickableItems(OptionRow o) => catalogItems
+        .Where(c => c.Id == o.CatalogItemId
+            || showOffTier
+            || RarityTiers.IsAppropriateFor(c.Rarity, model.MinLevel, model.MaxLevel));
+
+    private void SetOptionItem(OptionRow o, ChangeEventArgs e)
+    {
+        o.CatalogItemId = Guid.TryParse(e.Value?.ToString(), out var id) ? id : null;
+        if (LinkedItem(o) is { } item)
+        {
+            o.Description = item.Name;
+            o.ExternalUrl = null;
+        }
+    }
+
+    protected override async Task OnInitializedAsync() =>
+        catalogItems = await Catalog.ListAsync(new CatalogFilter(Kind: ItemKind.Magic));
 
     protected override async Task OnParametersSetAsync()
     {
@@ -203,7 +264,12 @@
                 OptionSets = [.. a.RewardOptionSets.Select(s => new OptionSetRow
                 {
                     Name = s.Name,
-                    Options = [.. s.Options.Select(o => new OptionRow { Description = o.Description, ExternalUrl = o.ExternalUrl })],
+                    Options = [.. s.Options.Select(o => new OptionRow
+                    {
+                        Description = o.Description,
+                        ExternalUrl = o.ExternalUrl,
+                        CatalogItemId = o.CatalogItemId,
+                    })],
                 })],
             };
         }
@@ -234,7 +300,7 @@
                 [.. model.GuaranteedRewards.Select(r => new RewardComponentInput(r.Kind, r.GoldAmount, r.Description))],
                 [.. model.OptionSets.Select(s => new RewardOptionSetInput(
                     s.Name,
-                    [.. s.Options.Select(o => new RewardOptionInput(o.Description, o.ExternalUrl))]))]);
+                    [.. s.Options.Select(o => new RewardOptionInput(o.Description, o.ExternalUrl, o.CatalogItemId))]))]);
 
             var saved = IsNew
                 ? await Adventures.CreateAsync(input)
@@ -297,5 +363,6 @@
     {
         public string Description { get; set; } = "";
         public string? ExternalUrl { get; set; }
+        public Guid? CatalogItemId { get; set; }
     }
 }

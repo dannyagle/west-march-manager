@@ -1,0 +1,184 @@
+@page "/catalog/import"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Items
+@using WestMarch.Domain.Items
+
+@inject ICatalogService Catalog
+@inject ICatalogFileParser Parser
+
+<PageTitle>Import Items</PageTitle>
+
+<div class="wm-panel" style="max-width:860px;margin:0 auto">
+    <h1>Refresh the vault ledger</h1>
+    <p class="meta">
+        Upload a new reference file. Existing items are matched by name + rarity: changed entries
+        are updated, new ones added, and entries missing from the file are <b>retired, never deleted</b>
+        (owned copies and history survive). Custom items and campaign price overrides are untouched.
+    </p>
+
+    @if (error is not null)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+    @if (applied is not null)
+    {
+        <div class="alert alert-success">
+            Imported <b>@applied.FileName</b>: @applied.AddedCount added, @applied.UpdatedCount updated,
+            @applied.DeactivatedCount retired, @applied.UnchangedCount unchanged.
+        </div>
+    }
+
+    <div class="field-row" style="align-items:flex-end">
+        <div class="field" style="max-width:170px">
+            <label>File kind</label>
+            <select @bind="kind">
+                <option value="@ItemKind.Magic">Magic items</option>
+                <option value="@ItemKind.Mundane">Mundane equipment</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>JSON file</label>
+            <InputFile OnChange="OnFileSelectedAsync" accept="application/json,.json" />
+        </div>
+    </div>
+
+    @if (preview is not null)
+    {
+        <div class="rule-title">What this import will do</div>
+        <p class="meta">
+            <b>@preview.Added.Count</b> added · <b>@preview.Updated.Count</b> updated ·
+            <b>@preview.Deactivated.Count</b> retired · @preview.UnchangedCount unchanged
+        </p>
+
+        @foreach (var (title, changes) in new[] { ("Added", preview.Added), ("Updated", preview.Updated), ("Retired (missing from file)", preview.Deactivated) })
+        {
+            @if (changes.Count > 0)
+            {
+                <details style="margin-bottom:0.6rem" open="@(changes.Count <= 12)">
+                    <summary style="cursor:pointer">@title (@changes.Count)</summary>
+                    <table class="wm-table">
+                        <tbody>
+                            @foreach (var change in changes)
+                            {
+                                <tr>
+                                    <td>@change.Name</td>
+                                    <td><RarityChip Rarity="change.Rarity" /></td>
+                                    <td class="meta">@change.Detail</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </details>
+            }
+        }
+
+        <div style="display:flex;gap:0.8rem;margin-top:1rem">
+            <button class="btn btn-primary" @onclick="ApplyAsync" disabled="@applying">Apply import</button>
+            <button class="btn" @onclick="Reset">Discard</button>
+        </div>
+    }
+
+    <div class="rule-title">Import history</div>
+    @if (batches is null || batches.Count == 0)
+    {
+        <p class="meta">No imports recorded yet.</p>
+    }
+    else
+    {
+        <table class="wm-table">
+            <thead><tr><th>When</th><th>File</th><th>Kind</th><th>Changes</th><th>Source</th></tr></thead>
+            <tbody>
+                @foreach (var b in batches)
+                {
+                    <tr>
+                        <td class="meta">@b.UploadedAt.LocalDateTime.ToString("MMM d, yyyy h:mm tt")</td>
+                        <td>@b.FileName</td>
+                        <td class="meta">@b.Kind</td>
+                        <td class="meta">+@b.AddedCount ~@b.UpdatedCount −@b.DeactivatedCount</td>
+                        <td class="meta" title="@b.SourceNote">@Truncate(b.SourceNote)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private ItemKind kind = ItemKind.Magic;
+    private ParsedCatalogFile? parsed;
+    private string? fileName;
+    private ImportPreview? preview;
+    private ImportBatch? applied;
+    private IReadOnlyList<ImportBatch>? batches;
+    private string? error;
+    private bool applying;
+
+    protected override async Task OnInitializedAsync() =>
+        batches = await Catalog.ListImportBatchesAsync();
+
+    private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
+    {
+        error = null;
+        applied = null;
+        preview = null;
+
+        try
+        {
+            // Buffer the browser stream so parse + apply don't re-read it.
+            using var memory = new MemoryStream();
+            await e.File.OpenReadStream(maxAllowedSize: 4 * 1024 * 1024).CopyToAsync(memory);
+            memory.Position = 0;
+
+            fileName = e.File.Name;
+            parsed = await Parser.ParseAsync(memory, kind);
+            preview = await Catalog.PreviewImportAsync(parsed);
+        }
+        catch (AppValidationException ex)
+        {
+            error = ex.Message;
+            Reset();
+        }
+        catch (IOException)
+        {
+            error = "That file is too large (4 MB max).";
+            Reset();
+        }
+    }
+
+    private async Task ApplyAsync()
+    {
+        if (parsed is null || fileName is null)
+        {
+            return;
+        }
+
+        applying = true;
+        error = null;
+        try
+        {
+            applied = await Catalog.ApplyImportAsync(parsed, fileName);
+            Reset();
+            batches = await Catalog.ListImportBatchesAsync();
+        }
+        catch (Exception ex) when (ex is AppValidationException or ForbiddenAccessException)
+        {
+            error = ex.Message;
+        }
+        finally
+        {
+            applying = false;
+        }
+    }
+
+    private void Reset()
+    {
+        parsed = null;
+        preview = null;
+        fileName = null;
+    }
+
+    private static string Truncate(string? s) =>
+        s is null ? "—" : s.Length <= 40 ? s : s[..40] + "…";
+}

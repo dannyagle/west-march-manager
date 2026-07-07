@@ -1,11 +1,12 @@
 namespace WestMarch.Domain.Adventures;
 
+using WestMarch.Domain.Items;
+
 /// <summary>
-/// One selectable option inside a "choose 1 of N" set. Modeled as a real object,
-/// not a bare string: today it is populated by free text, but it reserves the seam
-/// for the future CA-managed catalog — when the catalog ships, options graduate by
-/// setting <see cref="CatalogItemId"/> to reference a catalog entry (which will carry
-/// its own external URL / sourcebook citation). No schema rework required.
+/// One selectable option inside a "choose 1 of N" set. Either catalog-backed
+/// (<see cref="CatalogItemId"/> set — claiming it mints a real inventory instance)
+/// or free text (recorded on the character's ledger as a note for their sheet).
+/// This was the seam reserved in Phase 1; the catalog now fills it.
 /// </summary>
 public class RewardOption
 {
@@ -13,14 +14,15 @@ public class RewardOption
 
     public Guid RewardOptionSetId { get; set; }
 
-    /// <summary>Free-text description of the option (Phase 1 source of truth).</summary>
+    /// <summary>Free-text description; for catalog-backed options this is a display snapshot of the item name.</summary>
     public string Description { get; set; } = default!;
 
-    /// <summary>Optional direct link (D&D Beyond, dnd2024.wikidot.com, etc.) until the catalog exists.</summary>
+    /// <summary>Optional direct link; catalog-backed options usually rely on the catalog item's URL instead.</summary>
     public string? ExternalUrl { get; set; }
 
-    /// <summary>Reserved: future FK into the CA-managed item/reference catalog. Unused in Phase 1.</summary>
+    /// <summary>Reference into the CA-managed item catalog; null for free-text options.</summary>
     public Guid? CatalogItemId { get; set; }
+    public CatalogItem? CatalogItem { get; set; }
 
     public int SortOrder { get; set; }
 }

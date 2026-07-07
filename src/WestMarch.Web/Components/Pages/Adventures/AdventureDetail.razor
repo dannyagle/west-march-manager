@@ -71,13 +71,26 @@ else
         @foreach (var set in adventure.RewardOptionSets)
         {
             <div class="reward-block">
-                <div class="reward-kicker">Choose one — @set.Name</div>
+                <div class="reward-kicker">@(string.IsNullOrWhiteSpace(set.Name) ? "Choose one" : $"Choose one — {set.Name}")</div>
                 <ul>
                     @foreach (var o in set.Options)
                     {
                         <li>
                             @o.Description
-                            @if (o.ExternalUrl is not null)
+                            @if (o.CatalogItem is not null)
+                            {
+                                <RarityChip Rarity="o.CatalogItem.Rarity" />
+                                <ItemPrice Item="o.CatalogItem" />
+                                @if (o.CatalogItem.ExternalUrl is not null)
+                                {
+                                    <a href="@o.CatalogItem.ExternalUrl" target="_blank" rel="noopener">↗</a>
+                                }
+                                @if (!RarityTiers.IsAppropriateFor(o.CatalogItem.Rarity, adventure.MinLevel, adventure.MaxLevel))
+                                {
+                                    <span class="seal seal-needsdm">off-tier</span>
+                                }
+                            }
+                            else if (o.ExternalUrl is not null)
                             {
                                 <a href="@o.ExternalUrl" target="_blank" rel="noopener">↗</a>
                             }
@@ -118,6 +131,17 @@ else
         }
         @if (adventure.Status == AdventureStatus.ReadyForReview && CurrentUser.IsCa)
         {
+            @if (TierWarnings.Any())
+            {
+                <div class="warn-note" style="flex-basis:100%">
+                    ⚠ Review flags:
+                    @foreach (var warning in TierWarnings)
+                    {
+                        <span>@warning</span>
+                    }
+                    — approving anyway is allowed for special adventures.
+                </div>
+            }
             <button class="btn btn-primary" @onclick="() => DoAsync(() => Adventures.ApproveAsync(Id))">
                 Approve for play
             </button>
@@ -145,6 +169,15 @@ else
     private bool IsAuthor => adventure?.AuthorUserId == CurrentUser.UserId;
     private bool CanEdit => adventure is not null &&
         (CurrentUser.IsCa || (IsAuthor && adventure.Status != AdventureStatus.Approved));
+
+    /// <summary>Out-of-tier catalog rewards, surfaced to the reviewing CA. Flags, not blocks.</summary>
+    private IEnumerable<string> TierWarnings => adventure is null
+        ? []
+        : adventure.RewardOptionSets
+            .SelectMany(s => s.Options)
+            .Where(o => o.CatalogItem is not null
+                && !RarityTiers.IsAppropriateFor(o.CatalogItem.Rarity, adventure.MinLevel, adventure.MaxLevel))
+            .Select(o => $"{o.CatalogItem!.Name} is {o.CatalogItem.Rarity.Display()} but the adventure is levels {adventure.MinLevel}–{adventure.MaxLevel}.");
 
     protected override Task OnParametersSetAsync() => LoadAsync();
 
