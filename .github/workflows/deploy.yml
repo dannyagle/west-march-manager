@@ -1,0 +1,48 @@
+name: Build, test & deploy
+
+# Deploys the web app to Azure App Service on every push to main, after tests pass.
+# Setup required once (see README "Deploying to Azure"):
+#   1. Set AZURE_WEBAPP_NAME below to your App Service name.
+#   2. Add the App Service publish profile as the repo secret AZURE_WEBAPP_PUBLISH_PROFILE
+#      (Azure Portal → your Web App → Get publish profile).
+# Manual runs are available via the "Run workflow" button (workflow_dispatch).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: CHANGE-ME-westmarch   # <-- your App Service name
+  DOTNET_VERSION: '10.0.x'
+  WEB_PROJECT: src/WestMarch.Web/WestMarch.Web.csproj
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore WestMarch.slnx
+
+      - name: Build
+        run: dotnet build WestMarch.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test WestMarch.slnx --configuration Release --no-build
+
+      - name: Publish
+        run: dotnet publish ${{ env.WEB_PROJECT }} --configuration Release --no-build --output ./publish
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish

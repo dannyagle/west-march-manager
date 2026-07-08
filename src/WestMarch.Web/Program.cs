@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using WestMarch.Application.Common;
 using WestMarch.Application.Sessions;
@@ -107,6 +108,18 @@ builder.Services.AddSignalR();
 builder.Services.PostConfigure<ImageStoreOptions>(options =>
     options.Local.RootPath ??= Path.Combine(builder.Environment.WebRootPath ?? "wwwroot", "media"));
 
+// DataProtection guards Blazor circuits, antiforgery, and the auth cookie. On Azure App
+// Service the framework already persists keys to the durable %HOME% share automatically;
+// setting DataProtection:KeyPath pins them explicitly (e.g. a mounted share) if we ever
+// scale beyond a single instance.
+var keyPath = builder.Configuration["DataProtection:KeyPath"];
+if (!string.IsNullOrWhiteSpace(keyPath))
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(keyPath))
+        .SetApplicationName("WestMarch");
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -116,6 +129,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    // Apply migrations and bootstrap the first Campaign Admin from configuration.
+    // Reference data (items, bestiary) is imported in-app by a CA after first sign-in.
+    await ProductionInitializer.InitializeAsync(app.Services, app.Logger);
+
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }

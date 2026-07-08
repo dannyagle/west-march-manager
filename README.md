@@ -164,6 +164,8 @@ All settings are environment-driven (`appsettings.{Environment}.json` / env vars
 | `ImageStore:AzureBlob:*` | Blob connection string + container |
 | `Authentication:Discord:ClientId/ClientSecret` | Discord OAuth app (callback `/signin-discord`); button hides when unset |
 | `Catalog:SeedDirectory` | Where the dev seeder finds `magic-items.json` / `equipment.json` (default: repo `/data`) |
+| `InitialAdmin:Email/Password/DisplayName` | First-run bootstrap of a Campaign Admin in non-dev environments (see below) |
+| `DataProtection:KeyPath` | Optional durable path for DataProtection keys; blank lets App Service auto-persist to `%HOME%` |
 
 Local-account email confirmation is disabled (no email round-trip for a game community);
 wire an `IEmailSender<ApplicationUser>` and re-enable `RequireConfirmedAccount` for production.
@@ -179,6 +181,56 @@ wire an `IEmailSender<ApplicationUser>` and re-enable `RequireConfirmedAccount` 
 | Scale-out later | Azure SignalR Service (config-level change) |
 
 Register the Discord redirect URI per environment: `https://<host>/signin-discord`.
+
+## Deploying to Azure
+
+A low-cost testing footprint: **App Service B1** (WebSockets require at least Basic — the Free
+tier can't run Blazor Server), **Azure SQL serverless** (auto-pauses when idle; the free offer
+may cover light testing), and **Blob Storage** for images. Azure SignalR Service and Key Vault
+are intentionally skipped at this scale.
+
+**How the app boots in production** (differs from the Dev demo seed):
+- On non-dev startup, `ProductionInitializer` applies EF migrations, ensures roles, and — if
+  `InitialAdmin:*` is set and that email is unused — creates one bootstrap Campaign Admin.
+- **No demo data is seeded.** After first sign-in, the CA loads reference data through the
+  in-app import screens (Import Items / Monsters), uploading the three files from `/data`.
+
+**One-time provisioning** (Azure CLI; replace names/region):
+
+```bash
+az group create -n westmarch-rg -l eastus2
+
+# Azure SQL — serverless, auto-pause. Try the free offer first; otherwise GP_S_Gen5_1.
+az sql server create -g westmarch-rg -n westmarch-sql --admin-user wmadmin --admin-password '<STRONG-PW>'
+az sql db create -g westmarch-rg -s westmarch-sql -n WestMarch \
+  --edition GeneralPurpose --compute-model Serverless --family Gen5 --capacity 1 --auto-pause-delay 60
+az sql server firewall-rule create -g westmarch-rg -s westmarch-sql \
+  -n allow-azure --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0   # "Allow Azure services"
+
+# Storage for announcement images
+az storage account create -g westmarch-rg -n westmarchimg --sku Standard_LRS
+
+# App Service on Linux B1, with WebSockets on
+az appservice plan create -g westmarch-rg -n westmarch-plan --is-linux --sku B1
+az webapp create -g westmarch-rg -p westmarch-plan -n <APP-NAME> --runtime "DOTNETCORE:10.0"
+az webapp config set -g westmarch-rg -n <APP-NAME> --web-sockets-enabled true
+az webapp config appsettings set -g westmarch-rg -n <APP-NAME> --settings \
+  ASPNETCORE_ENVIRONMENT=Production \
+  ConnectionStrings__DefaultConnection="<AZURE-SQL-ADO-CONNECTION-STRING>" \
+  ImageStore__Provider=AzureBlob \
+  ImageStore__AzureBlob__ConnectionString="<STORAGE-CONNECTION-STRING>" \
+  InitialAdmin__Email="you@example.com" \
+  InitialAdmin__Password="<STRONG-PW>" \
+  InitialAdmin__DisplayName="Campaign Admin"
+```
+
+**CI/CD:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds, tests, and deploys
+on every push to `main`. Set `AZURE_WEBAPP_NAME` in the workflow, and add the App Service publish
+profile as the repo secret `AZURE_WEBAPP_PUBLISH_PROFILE` (Portal → Web App → *Get publish profile*).
+
+After the first deploy: sign in as the InitialAdmin, open **Campaign Admin → Import Items** and
+**Import Monsters**, upload the three `/data` files, then use the People manager to promote DMs.
+Clear the `InitialAdmin__Password` setting once you're in if you prefer.
 
 ## Phase roadmap
 
