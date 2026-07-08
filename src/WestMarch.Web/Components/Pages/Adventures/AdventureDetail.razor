@@ -47,6 +47,23 @@ else
         <p style="white-space:pre-wrap">@adventure.LongDescription</p>
     </div>
 
+    @if (adventure.DmNotes is not null || adventure.Encounters.Count > 0)
+    {
+        <div class="dm-only">
+            <div class="dm-kicker">⚔ For the Dungeon Master's eyes only</div>
+            @if (adventure.DmNotes is not null)
+            {
+                <h3>Notes</h3>
+                <p style="white-space:pre-wrap">@adventure.DmNotes</p>
+            }
+            @foreach (var encounter in adventure.Encounters)
+            {
+                <h3 style="margin-top:1rem">@encounter.Title</h3>
+                <EncounterView Encounter="encounter" />
+            }
+        </div>
+    }
+
     @if (adventure.GuaranteedRewards.Count > 0 || adventure.RewardOptionSets.Count > 0)
     {
         <div class="rule-title">Rewards</div>
@@ -99,23 +116,6 @@ else
                 </ul>
             </div>
         }
-    }
-
-    @if (adventure.DmNotes is not null || adventure.MonsterStatBlocks is not null)
-    {
-        <div class="dm-only">
-            <div class="dm-kicker">⚔ For the Dungeon Master's eyes only</div>
-            @if (adventure.DmNotes is not null)
-            {
-                <h3>Notes</h3>
-                <p style="white-space:pre-wrap">@adventure.DmNotes</p>
-            }
-            @if (adventure.MonsterStatBlocks is not null)
-            {
-                <h3>Monsters</h3>
-                <pre>@adventure.MonsterStatBlocks</pre>
-            }
-        </div>
     }
 
     <div style="display:flex;gap:0.8rem;margin-top:1.8rem;flex-wrap:wrap">

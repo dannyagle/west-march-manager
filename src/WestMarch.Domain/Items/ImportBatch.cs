@@ -1,15 +1,25 @@
 namespace WestMarch.Domain.Items;
 
+/// <summary>Which reference file an import batch refreshed. Member names double as the
+/// stored strings (so Magic/Mundane rows written before monsters existed still parse),
+/// and Mundane/Magic keep ItemKind's numeric values for safe casting.</summary>
+public enum ImportFileKind
+{
+    Mundane = 0,
+    Magic = 1,
+    Monster = 2,
+}
+
 /// <summary>
 /// Audit record of one CA file import: who uploaded which file, when, and what changed.
 /// "Removing the old file and adding a new one" is applying a new batch —
-/// data is upserted/deactivated, never wiped.
+/// data is upserted/deactivated, never wiped. Covers item files and the bestiary alike.
 /// </summary>
 public class ImportBatch
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    public ItemKind Kind { get; set; }
+    public ImportFileKind Kind { get; set; }
 
     public string FileName { get; set; } = default!;
 

@@ -25,6 +25,10 @@ public interface IAdventureRepository
 
     void RemoveRewardComponents(IEnumerable<RewardComponent> components);
     void RemoveRewardOptionSets(IEnumerable<RewardOptionSet> sets);
+
+    /// <summary>Same explicit-Add contract as the reward rows, for encounter graphs.</summary>
+    void AddEncounters(IEnumerable<Encounter> encounters);
+    void RemoveEncounters(IEnumerable<Encounter> encounters);
 }
 
 public interface ITagRepository

@@ -195,7 +195,7 @@ public class CatalogService(
 
         var batch = new ImportBatch
         {
-            Kind = file.Kind,
+            Kind = (ImportFileKind)(int)file.Kind, // Mundane/Magic share numeric values by design
             FileName = fileName,
             SourceNote = file.SourceNote,
             UploadedByUserId = currentUser.RequireUserId(),

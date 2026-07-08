@@ -11,7 +11,12 @@ public class AdventureRepository(AppDbContext db) : IAdventureRepository
         .Include(a => a.GuaranteedRewards.OrderBy(r => r.SortOrder))
         .Include(a => a.RewardOptionSets.OrderBy(s => s.SortOrder))
             .ThenInclude(s => s.Options.OrderBy(o => o.SortOrder))
-            .ThenInclude(o => o.CatalogItem);
+            .ThenInclude(o => o.CatalogItem)
+        .Include(a => a.Encounters.OrderBy(e => e.SortOrder))
+            .ThenInclude(e => e.Npcs.OrderBy(n => n.SortOrder))
+        .Include(a => a.Encounters.OrderBy(e => e.SortOrder))
+            .ThenInclude(e => e.Monsters.OrderBy(m => m.SortOrder))
+            .ThenInclude(m => m.Monster);
 
     public Task<Adventure?> GetAsync(Guid id, CancellationToken ct = default) =>
         WithStructure(db.Adventures).FirstOrDefaultAsync(a => a.Id == id, ct);
@@ -52,6 +57,12 @@ public class AdventureRepository(AppDbContext db) : IAdventureRepository
 
     public void RemoveRewardOptionSets(IEnumerable<RewardOptionSet> sets) =>
         db.RewardOptionSets.RemoveRange(sets);
+
+    public void AddEncounters(IEnumerable<Encounter> encounters) =>
+        db.Encounters.AddRange(encounters);
+
+    public void RemoveEncounters(IEnumerable<Encounter> encounters) =>
+        db.Encounters.RemoveRange(encounters);
 }
 
 public class TagRepository(AppDbContext db) : ITagRepository

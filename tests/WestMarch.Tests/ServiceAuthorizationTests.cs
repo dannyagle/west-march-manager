@@ -25,6 +25,7 @@ public class ServiceAuthorizationTests : IDisposable
             new AdventureRepository(_t.Db),
             new TagRepository(_t.Db),
             new WestMarch.Infrastructure.Items.CatalogRepository(_t.Db),
+            new WestMarch.Infrastructure.Bestiary.MonsterRepository(_t.Db),
             _t.Db,
             _t.CurrentUser);
 
@@ -46,9 +47,9 @@ public class ServiceAuthorizationTests : IDisposable
     private static AdventureInput ValidAdventure(string title = "The Goblin Watchtower") => new(
         title, 3, 5, 4, 6,
         "Short teaser.", "Long description.",
-        "Secret DM notes.", "Goblin ×8",
+        "Secret DM notes.",
         DateTimeOffset.Now.AddDays(-1), null,
-        ["wilderness"], [], []);
+        ["wilderness"], [], [], []);
 
     public void Dispose() => _t.Dispose();
 
@@ -144,7 +145,7 @@ public class ServiceAuthorizationTests : IDisposable
         var view = await Adventures().GetAsync(adventureId);
 
         Assert.Null(view.DmNotes);
-        Assert.Null(view.MonsterStatBlocks);
+        Assert.Empty(view.Encounters);
         Assert.Equal("Short teaser.", view.ShortDescription);
     }
 

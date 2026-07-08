@@ -1,0 +1,114 @@
+@page "/dm/screen"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Sessions
+@using WestMarch.Application.Users
+
+@inject ISessionService Sessions
+@inject IUserDirectory Users
+@inject ICurrentUser CurrentUser
+
+<PageTitle>DM Screen</PageTitle>
+
+<div class="page-heading">
+    <h1>Behind the Screen</h1>
+</div>
+<p class="meta">
+    Pick a session to open its run view: encounters, stat blocks, and the party's
+    critical numbers on one page. Shows your tables and sessions still needing a DM.
+</p>
+
+@if (upcoming is null)
+{
+    <p class="meta">Setting up the screen…</p>
+}
+else
+{
+    <div class="rule-title">Upcoming</div>
+    @if (upcoming.Count == 0)
+    {
+        <div class="empty-state">No tables of yours coming up, and nothing needs a DM. The frontier rests — briefly.</div>
+    }
+    else
+    {
+        <div class="card-grid">
+            @foreach (var s in upcoming)
+            {
+                <a class="wm-card quest-card" href="dm/screen/@s.Id"
+                   style="@(s.DmUserId == CurrentUser.UserId ? "border-color:var(--gold-deep)" : null)">
+                    <div style="display:flex;justify-content:space-between;gap:0.5rem;align-items:center">
+                        <span class="quest-date">@s.ScheduledAt.LocalDateTime.ToString("ddd, MMM d · h:mm tt")</span>
+                        @if (s.DmUserId == CurrentUser.UserId)
+                        {
+                            <span class="seal seal-completed">your table</span>
+                        }
+                        else
+                        {
+                            <SessionSeal Session="s" />
+                        }
+                    </div>
+                    <div class="quest-title">@s.Adventure.Title</div>
+                    <div class="quest-foot">
+                        <span>Levels @s.Adventure.MinLevel–@s.Adventure.MaxLevel</span>
+                        <SeatPips Filled="s.Signups.Count" Max="s.Adventure.TargetPlayersMax" />
+                        <span style="margin-left:auto">DM: @DmName(s)</span>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+
+    <div class="rule-title">Recently run</div>
+    @if (recent.Count == 0)
+    {
+        <div class="empty-state">You haven't run a table in the last few days.</div>
+    }
+    else
+    {
+        <div class="card-grid">
+            @foreach (var s in recent)
+            {
+                <a class="wm-card quest-card" href="dm/screen/@s.Id">
+                    <div style="display:flex;justify-content:space-between;gap:0.5rem;align-items:center">
+                        <span class="quest-date">@s.ScheduledAt.LocalDateTime.ToString("ddd, MMM d · h:mm tt")</span>
+                        <SessionSeal Session="s" />
+                    </div>
+                    <div class="quest-title">@s.Adventure.Title</div>
+                    <div class="quest-foot">
+                        <span>DM: @DmName(s)</span>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+}
+
+@code {
+    private IReadOnlyList<GameSession>? upcoming;
+    private IReadOnlyList<GameSession> recent = [];
+    private Dictionary<string, string> dmNames = [];
+
+    private string DmName(GameSession s) =>
+        s.DmUserId is null ? "needed!" : dmNames.GetValueOrDefault(s.DmUserId, "assigned");
+
+    protected override async Task OnInitializedAsync()
+    {
+        var now = DateTimeOffset.Now;
+        var all = await Sessions.ListScheduledAsync(now.AddDays(-5), now.AddDays(90));
+
+        // Upcoming: this DM's own tables, plus sessions still looking for a DM to claim.
+        upcoming = [.. all.Where(s => s.Status == SessionStatus.Scheduled
+            && s.ScheduledAt >= now.AddHours(-6)
+            && (s.DmUserId == CurrentUser.UserId || s.DmUserId is null))];
+
+        // Recently run: only tables this DM actually ran.
+        recent = [.. all
+            .Where(s => s.DmUserId == CurrentUser.UserId
+                && (s.Status == SessionStatus.Completed || (s.Status == SessionStatus.Scheduled && s.ScheduledAt < now.AddHours(-6))))
+            .OrderByDescending(s => s.ScheduledAt)];
+
+        var dmIds = all.Where(s => s.DmUserId is not null).Select(s => s.DmUserId!).Distinct();
+        dmNames = new Dictionary<string, string>(await Users.GetDisplayNamesAsync(dmIds));
+    }
+}

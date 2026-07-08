@@ -1,0 +1,156 @@
+@page "/dm/screen/{SessionId:guid}"
+@attribute [Authorize(Policy = AuthPolicies.RequireDm)]
+@rendermode InteractiveServer
+
+@using WestMarch.Application.Adventures
+@using WestMarch.Application.Sessions
+@using WestMarch.Application.Users
+
+@inject ISessionService Sessions
+@inject IAdventureService Adventures
+@inject IUserDirectory Users
+@inject IEnumerable<IDmScreenTool> Tools
+@inject ICurrentUser CurrentUser
+
+<PageTitle>@(adventure?.Title ?? "DM Screen")</PageTitle>
+
+@if (session is null || adventure is null)
+{
+    <p class="meta">Raising the screen…</p>
+}
+else
+{
+    <div class="page-heading">
+        <h1>@adventure.Title</h1>
+        <SessionSeal Session="session" />
+        <span class="meta">
+            <a href="sessions/@session.Id">Session page &amp; board →</a>
+        </span>
+    </div>
+
+    <p class="meta">
+        @session.ScheduledAt.LocalDateTime.ToString("dddd, MMMM d · h:mm tt")
+        @if (session.Location is not null)
+        {
+            <span> · @session.Location</span>
+        }
+        · levels @adventure.MinLevel–@adventure.MaxLevel
+        · run by <b>@dmName</b>
+    </p>
+
+    @* ---------- the party at a glance ---------- *@
+    <div class="rule-title">The party (@session.Signups.Count)</div>
+    @if (session.Signups.Count == 0)
+    {
+        <div class="empty-state">No signups yet.</div>
+    }
+    else
+    {
+        <div class="stat-strip">
+            @foreach (var signup in session.Signups)
+            {
+                <DdbStatCard Character="signup.Character" />
+            }
+        </div>
+    }
+
+    @* ---------- encounters as tabs (order is display-only; run them as the story demands) ---------- *@
+    <div class="rule-title">Encounters</div>
+    @if (Panels.Count == 0)
+    {
+        <div class="empty-state">This adventure has no prepared encounters — improvise gloriously.</div>
+    }
+    else
+    {
+        <div class="enc-tabs">
+            @for (var i = 0; i < Panels.Count; i++)
+            {
+                var idx = i;
+                <button type="button" class="enc-tab @(activeTab == idx ? "active" : null)" @onclick="() => activeTab = idx">
+                    @Panels[idx].Title
+                </button>
+            }
+        </div>
+
+        <div class="wm-panel">
+            @{ var panel = Panels[Math.Clamp(activeTab, 0, Panels.Count - 1)]; }
+            @if (panel.Encounter is not null)
+            {
+                <EncounterView Encounter="panel.Encounter" OpenStatBlocks="true" />
+            }
+            else if (panel.Tool is not null)
+            {
+                @* Future DM tools (initiative tracker, HP/conditions) render here via the IDmScreenTool seam. *@
+                <DynamicComponent Type="panel.Tool.ComponentType"
+                                  Parameters="@(new Dictionary<string, object> { ["SessionId"] = SessionId })" />
+            }
+            else
+            {
+                @* DM notes panel *@
+                @if (adventure.DmNotes is not null)
+                {
+                    <p style="white-space:pre-wrap">@adventure.DmNotes</p>
+                }
+                @if (adventure.GuaranteedRewards.Count > 0 || adventure.RewardOptionSets.Count > 0)
+                {
+                    <h3 style="margin-top:0.8rem">Rewards to hand out</h3>
+                    <ul>
+                        @foreach (var r in adventure.GuaranteedRewards)
+                        {
+                            <li>@r.Description</li>
+                        }
+                        @foreach (var set in adventure.RewardOptionSets)
+                        {
+                            <li>Choose one: @string.Join(" / ", set.Options.Select(o => o.Description))</li>
+                        }
+                    </ul>
+                    <p class="meta">Players collect these on the session page after you mark it completed.</p>
+                }
+            }
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public Guid SessionId { get; set; }
+
+    private GameSession? session;
+    private Adventure? adventure;
+    private string dmName = "no one yet";
+    private int activeTab;
+
+    private sealed record Panel(string Title, Encounter? Encounter = null, IDmScreenTool? Tool = null);
+
+    private List<Panel> Panels
+    {
+        get
+        {
+            if (adventure is null)
+            {
+                return [];
+            }
+
+            var panels = adventure.Encounters.Select(e => new Panel(e.Title, e)).ToList();
+
+            if (adventure.DmNotes is not null || adventure.GuaranteedRewards.Count > 0 || adventure.RewardOptionSets.Count > 0)
+            {
+                panels.Add(new Panel("Notes & rewards"));
+            }
+
+            panels.AddRange(Tools.Select(t => new Panel(t.Name, Tool: t)));
+            return panels;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        session = await Sessions.GetAsync(SessionId);
+        adventure = await Adventures.GetAsync(session.AdventureId);
+
+        if (session.DmUserId is not null)
+        {
+            var names = await Users.GetDisplayNamesAsync([session.DmUserId]);
+            dmName = names.GetValueOrDefault(session.DmUserId, "assigned");
+        }
+    }
+}

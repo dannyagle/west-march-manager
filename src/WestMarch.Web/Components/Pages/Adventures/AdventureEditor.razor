@@ -5,11 +5,14 @@
 
 @using System.ComponentModel.DataAnnotations
 @using WestMarch.Application.Adventures
+@using WestMarch.Application.Bestiary
 @using WestMarch.Application.Items
+@using WestMarch.Domain.Bestiary
 @using WestMarch.Domain.Items
 
 @inject IAdventureService Adventures
 @inject ICatalogService Catalog
+@inject IMonsterService Monsters
 @inject NavigationManager Nav
 
 <PageTitle>@(IsNew ? "Author an Adventure" : "Edit Adventure")</PageTitle>
@@ -68,11 +71,6 @@
             <InputTextArea @bind-Value="model.DmNotes" rows="4" />
         </div>
 
-        <div class="field">
-            <label>Monster stat blocks <span class="meta">(DMs &amp; CAs only)</span></label>
-            <InputTextArea @bind-Value="model.MonsterStatBlocks" rows="5" placeholder="e.g. 8× Goblin (MM p.166)…" />
-        </div>
-
         <div class="field-row">
             <div class="field">
                 <label>Active from</label>
@@ -88,6 +86,123 @@
             <label>Tags <span class="meta">(comma-separated, e.g. horror, epic event)</span></label>
             <InputText @bind-Value="model.TagsText" placeholder="wilderness, mystery" />
         </div>
+
+        <div class="rule-title">Encounters</div>
+        <p class="meta">
+            The scenes a DM runs — rooms, ambushes, leads in a mystery. Order is display-only;
+            adventures need not be linear. Every section is optional. DMs &amp; CAs only.
+        </p>
+        <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal;margin-bottom:0.6rem">
+            <input type="checkbox" @bind="showAllCrs" />
+            Include monsters above CR @ChallengeRatings.DefaultMaxCr(model.MaxLevel) <span class="meta">&nbsp;(default fits levels @model.MinLevel–@model.MaxLevel)</span>
+        </label>
+
+        @for (var encounterIndex = 0; encounterIndex < model.Encounters.Count; encounterIndex++)
+        {
+            var ei = encounterIndex;
+            var enc = model.Encounters[ei];
+            <div class="reward-block" style="border-left:3px solid var(--blood)">
+                <div style="display:flex;align-items:center;gap:0.4rem">
+                    <div class="field" style="flex:1;margin-bottom:0.4rem">
+                        <label>Encounter title</label>
+                        <InputText @bind-Value="enc.Title" placeholder=@($"e.g. Room {ei + 1}: The Kennels") />
+                    </div>
+                    <button type="button" class="btn btn-sm" title="Move up" disabled="@(ei == 0)"
+                            @onclick="() => MoveEncounter(ei, -1)">↑</button>
+                    <button type="button" class="btn btn-sm" title="Move down" disabled="@(ei == model.Encounters.Count - 1)"
+                            @onclick="() => MoveEncounter(ei, 1)">↓</button>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => model.Encounters.Remove(enc)">Remove</button>
+                </div>
+
+                <div class="field">
+                    <label>Read aloud <span class="meta">(spoken verbatim to the players)</span></label>
+                    <InputTextArea @bind-Value="enc.ReadAloud" rows="2" />
+                </div>
+
+                <div class="field">
+                    <label>DM description <span class="meta">(tactics, terrain, secrets)</span></label>
+                    <InputTextArea @bind-Value="enc.Description" rows="3" />
+                </div>
+
+                <label>NPCs</label>
+                @foreach (var npc in enc.Npcs)
+                {
+                    var n = npc;
+                    <div class="field-row" style="margin-left:1rem">
+                        <div class="field" style="max-width:200px">
+                            <label>Name</label>
+                            <InputText @bind-Value="n.Name" placeholder="e.g. Vex, the exile" />
+                        </div>
+                        <div class="field">
+                            <label>Critical stats</label>
+                            <InputText @bind-Value="n.Stats" placeholder="e.g. AC 15, HP 40, +6 Deception" />
+                        </div>
+                        <div class="field">
+                            <label>Description</label>
+                            <InputText @bind-Value="n.Description" placeholder="Who they are, what they want" />
+                        </div>
+                        <div class="field" style="max-width:60px;align-self:flex-end">
+                            <button type="button" class="btn btn-sm btn-danger" @onclick="() => enc.Npcs.Remove(n)">×</button>
+                        </div>
+                    </div>
+                }
+                <div style="margin:0.3rem 0 0.8rem 1rem">
+                    <button type="button" class="btn btn-sm" @onclick="() => enc.Npcs.Add(new())">+ Add NPC</button>
+                </div>
+
+                <label>Monsters</label>
+                @foreach (var row in enc.Monsters)
+                {
+                    var m = row;
+                    var beast = FindMonster(m.MonsterId);
+                    <div style="margin-left:1rem;margin-bottom:0.4rem">
+                        <div style="display:flex;gap:0.5rem;align-items:center">
+                            <input type="number" min="1" style="width:70px" @bind="m.Count" />
+                            <span>×</span>
+                            <b>@(beast?.Name ?? "(missing from bestiary)")</b>
+                            @if (beast is not null)
+                            {
+                                <span class="meta">CR @beast.ChallengeRating · AC @beast.ArmorClass · @beast.MaxHitPoints HP</span>
+                            }
+                            <button type="button" class="btn btn-sm btn-danger" @onclick="() => enc.Monsters.Remove(m)">×</button>
+                        </div>
+                        @if (beast is not null)
+                        {
+                            <details style="margin-top:0.25rem">
+                                <summary class="meta" style="cursor:pointer">Full stat block</summary>
+                                <MonsterStatBlock Monster="beast" />
+                            </details>
+                        }
+                    </div>
+                }
+                <div style="margin-left:1rem">
+                    @if (enc.PickerOpen)
+                    {
+                        <div style="max-width:520px">
+                            <input type="text" placeholder="Search the bestiary…"
+                                   @bind="enc.PickerSearch" @bind:event="oninput" />
+                            <div class="monster-picker">
+                                @foreach (var candidate in PickableMonsters(enc))
+                                {
+                                    var pick = candidate;
+                                    <button type="button" @onclick="() => AddMonster(enc, pick)">
+                                        <span class="cr">CR @pick.ChallengeRating</span>
+                                        <span>@pick.Name</span>
+                                        <span class="kind">@pick.CreatureType · AC @pick.ArmorClass · @pick.MaxHitPoints HP</span>
+                                    </button>
+                                }
+                            </div>
+                            <button type="button" class="btn btn-sm" style="margin-top:0.3rem" @onclick="() => enc.PickerOpen = false">Done</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-sm" @onclick="() => OpenPicker(enc)">+ Add monster</button>
+                    }
+                </div>
+            </div>
+        }
+        <button type="button" class="btn btn-sm" @onclick="() => model.Encounters.Add(new())">+ Add encounter</button>
 
         <div class="rule-title">Rewards</div>
         <p class="meta">Every character who completes the session receives all of these.</p>
@@ -213,7 +328,43 @@
     private bool loaded;
 
     private IReadOnlyList<CatalogItem> catalogItems = [];
+    private IReadOnlyList<Monster> bestiary = [];
     private bool showOffTier;
+    private bool showAllCrs;
+
+    private Monster? FindMonster(Guid id) => bestiary.FirstOrDefault(m => m.Id == id);
+
+    /// <summary>Bestiary picker contents: CR-capped for the adventure's levels unless overridden.</summary>
+    private IEnumerable<Monster> PickableMonsters(EncounterRow enc) => bestiary
+        .Where(m => showAllCrs || m.CrValue <= ChallengeRatings.DefaultMaxCr(model.MaxLevel))
+        .Where(m => string.IsNullOrWhiteSpace(enc.PickerSearch)
+            || m.Name.Contains(enc.PickerSearch.Trim(), StringComparison.OrdinalIgnoreCase))
+        .Take(40);
+
+    private static void OpenPicker(EncounterRow enc)
+    {
+        enc.PickerOpen = true;
+        enc.PickerSearch = "";
+    }
+
+    private static void AddMonster(EncounterRow enc, Monster monster)
+    {
+        var existing = enc.Monsters.FirstOrDefault(m => m.MonsterId == monster.Id);
+        if (existing is null)
+        {
+            enc.Monsters.Add(new MonsterRow { MonsterId = monster.Id, Count = 1 });
+        }
+        else
+        {
+            existing.Count++;
+        }
+    }
+
+    private void MoveEncounter(int index, int delta)
+    {
+        var target = index + delta;
+        (model.Encounters[index], model.Encounters[target]) = (model.Encounters[target], model.Encounters[index]);
+    }
 
     private CatalogItem? LinkedItem(OptionRow o) =>
         o.CatalogItemId is null ? null : catalogItems.FirstOrDefault(c => c.Id == o.CatalogItemId);
@@ -234,8 +385,11 @@
         }
     }
 
-    protected override async Task OnInitializedAsync() =>
+    protected override async Task OnInitializedAsync()
+    {
         catalogItems = await Catalog.ListAsync(new CatalogFilter(Kind: ItemKind.Magic));
+        bestiary = await Monsters.ListAsync(new MonsterFilter());
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -253,7 +407,6 @@
                 ShortDescription = a.ShortDescription,
                 LongDescription = a.LongDescription,
                 DmNotes = a.DmNotes,
-                MonsterStatBlocks = a.MonsterStatBlocks,
                 ActiveFrom = DateOnly.FromDateTime(a.ActiveFrom.LocalDateTime),
                 ActiveUntil = a.ActiveUntil is null ? null : DateOnly.FromDateTime(a.ActiveUntil.Value.LocalDateTime),
                 TagsText = string.Join(", ", a.Tags.Select(t => t.Name)),
@@ -270,6 +423,14 @@
                         ExternalUrl = o.ExternalUrl,
                         CatalogItemId = o.CatalogItemId,
                     })],
+                })],
+                Encounters = [.. a.Encounters.Select(e => new EncounterRow
+                {
+                    Title = e.Title,
+                    Description = e.Description,
+                    ReadAloud = e.ReadAloud,
+                    Npcs = [.. e.Npcs.Select(n => new NpcRow { Name = n.Name, Stats = n.Stats, Description = n.Description })],
+                    Monsters = [.. e.Monsters.Select(m => new MonsterRow { MonsterId = m.MonsterId, Count = m.Count })],
                 })],
             };
         }
@@ -293,14 +454,19 @@
                 model.ShortDescription,
                 model.LongDescription,
                 model.DmNotes,
-                model.MonsterStatBlocks,
                 new DateTimeOffset(model.ActiveFrom, TimeOnly.MinValue, DateTimeOffset.Now.Offset),
                 model.ActiveUntil is null ? null : new DateTimeOffset(model.ActiveUntil.Value, new TimeOnly(23, 59), DateTimeOffset.Now.Offset),
                 [.. model.TagsText.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)],
                 [.. model.GuaranteedRewards.Select(r => new RewardComponentInput(r.Kind, r.GoldAmount, r.Description))],
                 [.. model.OptionSets.Select(s => new RewardOptionSetInput(
                     s.Name,
-                    [.. s.Options.Select(o => new RewardOptionInput(o.Description, o.ExternalUrl, o.CatalogItemId))]))]);
+                    [.. s.Options.Select(o => new RewardOptionInput(o.Description, o.ExternalUrl, o.CatalogItemId))]))],
+                [.. model.Encounters.Select(e => new EncounterInput(
+                    e.Title,
+                    e.Description,
+                    e.ReadAloud,
+                    [.. e.Npcs.Select(n => new EncounterNpcInput(n.Name, n.Stats, n.Description))],
+                    [.. e.Monsters.Select(m => new EncounterMonsterInput(m.MonsterId, m.Count))]))]);
 
             var saved = IsNew
                 ? await Adventures.CreateAsync(input)
@@ -335,7 +501,6 @@
         public string LongDescription { get; set; } = "";
 
         public string? DmNotes { get; set; }
-        public string? MonsterStatBlocks { get; set; }
 
         public DateOnly ActiveFrom { get; set; } = DateOnly.FromDateTime(DateTime.Today);
         public DateOnly? ActiveUntil { get; set; }
@@ -344,6 +509,31 @@
 
         public List<RewardRow> GuaranteedRewards { get; set; } = [];
         public List<OptionSetRow> OptionSets { get; set; } = [];
+        public List<EncounterRow> Encounters { get; set; } = [];
+    }
+
+    private sealed class EncounterRow
+    {
+        public string Title { get; set; } = "";
+        public string? Description { get; set; }
+        public string? ReadAloud { get; set; }
+        public List<NpcRow> Npcs { get; set; } = [];
+        public List<MonsterRow> Monsters { get; set; } = [];
+        public bool PickerOpen { get; set; }
+        public string PickerSearch { get; set; } = "";
+    }
+
+    private sealed class NpcRow
+    {
+        public string Name { get; set; } = "";
+        public string? Stats { get; set; }
+        public string? Description { get; set; }
+    }
+
+    private sealed class MonsterRow
+    {
+        public Guid MonsterId { get; set; }
+        public int Count { get; set; } = 1;
     }
 
     private sealed class RewardRow

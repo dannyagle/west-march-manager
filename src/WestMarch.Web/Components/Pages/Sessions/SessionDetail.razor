@@ -278,11 +278,10 @@ else
                 <h3 style="margin-top:1rem">Notes</h3>
                 <p style="white-space:pre-wrap">@session.Adventure.DmNotes</p>
             }
-            @if (session.Adventure.MonsterStatBlocks is not null)
-            {
-                <h3>Monsters</h3>
-                <pre>@session.Adventure.MonsterStatBlocks</pre>
-            }
+            <p style="margin-top:0.8rem">
+                <a class="btn btn-primary" href="dm/screen/@session.Id">Open the DM screen ⚔</a>
+                <span class="meta">&nbsp;Encounters, stat blocks, and the party at a glance — built for running the table.</span>
+            </p>
 
             @if (session.Status == SessionStatus.Scheduled)
             {

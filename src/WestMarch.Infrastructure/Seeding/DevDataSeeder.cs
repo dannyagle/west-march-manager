@@ -4,9 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WestMarch.Application.Bestiary;
 using WestMarch.Application.Items;
 using WestMarch.Domain.Adventures;
 using WestMarch.Domain.Announcements;
+using WestMarch.Domain.Bestiary;
 using WestMarch.Domain.Characters;
 using WestMarch.Domain.Items;
 using WestMarch.Domain.Sessions;
@@ -43,12 +45,14 @@ public static class DevDataSeeder
             }
         }
 
-        // The catalog seeds whenever it is empty — even into an existing database —
-        // so a Phase 1 dev DB picks up the item files without a wipe.
+        // Reference data seeds whenever it is empty — even into an existing database —
+        // so an older dev DB picks up new files without a wipe.
         var parser = scope.ServiceProvider.GetRequiredService<ICatalogFileParser>();
+        var monsterParser = scope.ServiceProvider.GetRequiredService<IMonsterFileParser>();
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
         await SeedCatalogIfEmptyAsync(db, parser, config, env, logger);
+        await SeedBestiaryIfEmptyAsync(db, monsterParser, config, env, logger);
 
         if (await db.Users.AnyAsync())
         {
@@ -118,6 +122,21 @@ public static class DevDataSeeder
         var wandOfSecrets = await FindItem("Wand of Secrets");
         var staffOfWithering = await FindItem("Staff of Withering");
 
+        // Bestiary lookups for seed encounters (defensive: file contents may change).
+        async Task<Monster?> FindMonster(string name) =>
+            await db.Monsters.FirstOrDefaultAsync(m => m.Name == name);
+
+        var goblin = await FindMonster("Goblin");
+        var hobgoblin = await FindMonster("Hobgoblin");
+        var ghoul = await FindMonster("Ghoul");
+        var ghast = await FindMonster("Ghast");
+        var treant = await FindMonster("Treant");
+        var awakenedTree = await FindMonster("Awakened Tree");
+
+        static List<EncounterMonster> Muster(params (Monster? Monster, int Count)[] picks) =>
+            [.. picks.Where(p => p.Monster is not null)
+                .Select((p, i) => new EncounterMonster { MonsterId = p.Monster!.Id, Count = p.Count, SortOrder = i })];
+
         var goblinWatch = new Adventure
         {
             Title = "The Goblin Watchtower",
@@ -127,7 +146,34 @@ public static class DevDataSeeder
             ShortDescription = "Smoke rises from the old border watchtower. The goblins of the Bent Fang have claimed it — and something is organizing them.",
             LongDescription = "The watchtower on the Elderline has stood empty since the retreat. Now travellers report drums at dusk and green fires on its crown. The Wardens will pay for its recapture, and pay better for whoever — or whatever — taught the Bent Fang discipline.",
             DmNotes = "The 'organizer' is a hobgoblin exile, Vex. She will parley if cornered. The tower basement hides a Warden supply cache (map to The Sunken Vault).",
-            MonsterStatBlocks = "8× Goblin (MM p.166)\n2× Goblin Boss (MM p.166)\n1× Hobgoblin Captain 'Vex' (MM p.186) — AC 17, HP 39, parley DC 14",
+            Encounters =
+            [
+                new Encounter
+                {
+                    Title = "The palisade gate",
+                    SortOrder = 0,
+                    ReadAloud = "Sharpened stakes ring the tower's base, lashed with fresh goblin knots. Green fires gutter on the crown high above, and a drum starts up the moment your boots touch the causeway.",
+                    Description = "Two sentries on the palisade whistle for the pack below. The goblins fight in pairs and retreat up the stairs at half strength.",
+                    Monsters = Muster((goblin, 8)),
+                },
+                new Encounter
+                {
+                    Title = "The tower top — Vex",
+                    SortOrder = 1,
+                    Description = "Vex parleys if cornered (DC 14 Charisma to talk her down). If the party negotiated, she surrenders the map satchel; if not, she fights beside her bodyguard.",
+                    Npcs =
+                    [
+                        new EncounterNpc
+                        {
+                            Name = "Vex, the exile",
+                            Stats = "Use Hobgoblin, but AC 17, HP 39; parley DC 14",
+                            Description = "A disciplined hobgoblin exile teaching the Bent Fang formation fighting. Wants a warband, not a massacre.",
+                            SortOrder = 0,
+                        },
+                    ],
+                    Monsters = Muster((hobgoblin, 1), (goblin, 2)),
+                },
+            ],
             Status = AdventureStatus.Approved,
             ApprovedByUserId = admin.Id,
             ApprovedAt = now.AddDays(-20),
@@ -162,7 +208,33 @@ public static class DevDataSeeder
             ShortDescription = "A drowned dwarven vault has surfaced in the fen. Its doors are open. They were not opened from outside.",
             LongDescription = "When the marsh receded after the storm, the vault's spire broke the waterline for the first time in two centuries. The Cartographers' Guild wants its ledgers; the vault wants visitors. Bring rope, bring light, and mind the water level.",
             DmNotes = "Water rises one 'step' every 30 real minutes — track it visibly. The ledgers implicate a founding family of the town.",
-            MonsterStatBlocks = "4× Ghoul (MM p.148)\n1× Water Weird (MM p.299)\n1× Flameskull 'the Archivist' (MM p.134) — will trade answers for fire",
+            Encounters =
+            [
+                new Encounter
+                {
+                    Title = "The flooded antechamber",
+                    SortOrder = 0,
+                    ReadAloud = "The vault doors hang open on drowned hinges. Inside, the waterline glimmers waist-high, and something pale moves beneath it without a ripple.",
+                    Monsters = Muster((ghoul, 4)),
+                },
+                new Encounter
+                {
+                    Title = "The archive",
+                    SortOrder = 1,
+                    Description = "The Archivist trades answers for fire — one truthful answer per open flame brought within reach. It attacks only if the ledgers are touched without payment.",
+                    Npcs =
+                    [
+                        new EncounterNpc
+                        {
+                            Name = "The Archivist",
+                            Stats = "Flameskull — AC 13, HP 40; rejuvenates unless its skull is doused in holy water",
+                            Description = "The vault's burning-skull custodian. Pedantic, lonely, literal.",
+                            SortOrder = 0,
+                        },
+                    ],
+                    Monsters = Muster((ghast, 1)),
+                },
+            ],
             Status = AdventureStatus.ReadyForReview,
             ActiveFrom = now.AddDays(-5),
             Tags = [T("dungeon"), T("horror")],
@@ -195,7 +267,33 @@ public static class DevDataSeeder
             ShortDescription = "Deep in the Elderwood, woodcutters found a hall swallowed by amber — and a crowned figure inside it, watching them.",
             LongDescription = "An epic-tier expedition into the Elderwood's oldest grove. The amber hall predates every map the Guild holds. Whatever royal court was frozen there, its heraldry matches nothing in the archives — except one seal in the town founder's crypt.",
             DmNotes = "Part 1 of the 'Amber Court' epic. The king wakes if the amber is damaged. He speaks only in questions.",
-            MonsterStatBlocks = "1× Treant (MM p.289)\n6× Blight assortment\n'The King in Amber' — use Archmage chassis (MM p.342), lair actions: amber grasp (DC 16 STR).",
+            Encounters =
+            [
+                new Encounter
+                {
+                    Title = "The overgrown approach",
+                    SortOrder = 0,
+                    Description = "The grove defends itself. The treant will stand down if the party demonstrates they mean the hall no harm (extinguish all open flames).",
+                    Monsters = Muster((treant, 1), (awakenedTree, 4)),
+                },
+                new Encounter
+                {
+                    Title = "The amber hall",
+                    SortOrder = 1,
+                    ReadAloud = "Amber swallows the hall like honey poured over a feast — tables, banners, and courtiers mid-toast. At the far end, a crowned figure sits unswallowed, and his eyes follow you.",
+                    Description = "The King wakes if the amber is damaged. He speaks only in questions. Use an Archmage chassis; lair action: amber grasp (DC 16 STR or restrained).",
+                    Npcs =
+                    [
+                        new EncounterNpc
+                        {
+                            Name = "The King in Amber",
+                            Stats = "Archmage chassis — AC 12 (15 with mage armor), HP 99; lair: amber grasp DC 16 STR",
+                            Description = "A monarch of no recorded court. Answers only with questions; each honest answer given to him costs a memory.",
+                            SortOrder = 0,
+                        },
+                    ],
+                },
+            ],
             Status = AdventureStatus.Approved,
             ApprovedByUserId = admin.Id,
             ApprovedAt = now.AddDays(-7),
@@ -231,6 +329,7 @@ public static class DevDataSeeder
             ShortDescription = "The harvest stores are vanishing overnight. The miller blames rats. The rats, if asked, blame the miller.",
             LongDescription = "Work in progress — a one-night mystery for fresh level-3 characters.",
             DmNotes = "TODO: stat the wererat, decide who's lying.",
+            Encounters = [],
             Status = AdventureStatus.Draft,
             ActiveFrom = now,
             Tags = [T("mystery"), T("town")],
@@ -446,7 +545,7 @@ public static class DevDataSeeder
 
             var batch = new ImportBatch
             {
-                Kind = kind,
+                Kind = (ImportFileKind)(int)kind, // Mundane/Magic share numeric values by design
                 FileName = Path.GetFileName(path),
                 SourceNote = parsed.SourceNote,
                 UploadedByUserId = "system-seed",
@@ -495,5 +594,65 @@ public static class DevDataSeeder
         }
 
         await db.SaveChangesAsync();
+    }
+
+    /// <summary>Seeds the bestiary from the repo's monster reference file when empty.</summary>
+    private static async Task SeedBestiaryIfEmptyAsync(
+        AppDbContext db,
+        IMonsterFileParser parser,
+        IConfiguration config,
+        IHostEnvironment env,
+        ILogger logger)
+    {
+        if (await db.Monsters.AnyAsync())
+        {
+            return;
+        }
+
+        var dataDir = config["Catalog:SeedDirectory"]
+            ?? Path.GetFullPath(Path.Combine(env.ContentRootPath, "..", "..", "data"));
+        var path = Path.Combine(dataDir, "srd_5e_monsters_ext.json");
+
+        if (!File.Exists(path))
+        {
+            logger.LogWarning("Bestiary seed file not found: {Path} — skipping.", path);
+            return;
+        }
+
+        await using var stream = File.OpenRead(path);
+        var parsed = await parser.ParseAsync(stream);
+
+        var batch = new ImportBatch
+        {
+            Kind = ImportFileKind.Monster,
+            FileName = Path.GetFileName(path),
+            SourceNote = parsed.SourceNote,
+            UploadedByUserId = "system-seed",
+            AddedCount = parsed.Monsters.Count,
+        };
+        db.ImportBatches.Add(batch);
+
+        foreach (var m in parsed.Monsters)
+        {
+            db.Monsters.Add(new Monster
+            {
+                Name = m.Name,
+                ChallengeRating = m.ChallengeRating,
+                CrValue = m.CrValue,
+                Xp = m.Xp,
+                ArmorClass = m.ArmorClass,
+                MaxHitPoints = m.MaxHitPoints,
+                HitDice = m.HitDice,
+                Size = m.Size,
+                CreatureType = m.CreatureType,
+                Alignment = m.Alignment,
+                StatsJson = m.StatsJson,
+                ImportKey = m.ImportKey,
+                LastImportBatchId = batch.Id,
+            });
+        }
+
+        await db.SaveChangesAsync();
+        logger.LogInformation("Seeded {Count} monsters from {File}.", parsed.Monsters.Count, batch.FileName);
     }
 }

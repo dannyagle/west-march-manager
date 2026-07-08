@@ -24,9 +24,6 @@ public class Adventure
     /// <summary>Visible to DMs and CAs only.</summary>
     public string? DmNotes { get; set; }
 
-    /// <summary>Monster stat blocks needed to run the session. DM/CA only.</summary>
-    public string? MonsterStatBlocks { get; set; }
-
     /// <summary>Start of the window in which this adventure may be scheduled.</summary>
     public DateTimeOffset ActiveFrom { get; set; } = DateTimeOffset.UtcNow;
 
@@ -44,6 +41,9 @@ public class Adventure
     public List<Tag> Tags { get; set; } = [];
     public List<RewardComponent> GuaranteedRewards { get; set; } = [];
     public List<RewardOptionSet> RewardOptionSets { get; set; } = [];
+
+    /// <summary>The encounters an author prepared for DMs. DM/CA only; order is display-only.</summary>
+    public List<Encounter> Encounters { get; set; } = [];
 
     public bool IsActiveOn(DateTimeOffset date) =>
         date >= ActiveFrom && (ActiveUntil is null || date <= ActiveUntil);

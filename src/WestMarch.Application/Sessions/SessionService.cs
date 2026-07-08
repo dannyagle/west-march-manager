@@ -86,7 +86,7 @@ public class SessionService(
         if (!currentUser.IsDm && session.Adventure is not null)
         {
             session.Adventure.DmNotes = null;
-            session.Adventure.MonsterStatBlocks = null;
+            session.Adventure.Encounters = [];
         }
 
         return session;

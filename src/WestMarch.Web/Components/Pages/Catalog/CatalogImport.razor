@@ -2,40 +2,42 @@
 @attribute [Authorize(Policy = AuthPolicies.RequireCa)]
 @rendermode InteractiveServer
 
+@using WestMarch.Application.Bestiary
 @using WestMarch.Application.Items
 @using WestMarch.Domain.Items
 
 @inject ICatalogService Catalog
 @inject ICatalogFileParser Parser
+@inject IMonsterService MonsterSvc
+@inject IMonsterFileParser MonsterParser
 
-<PageTitle>Import Items</PageTitle>
+<PageTitle>Import Reference Files</PageTitle>
 
 <div class="wm-panel" style="max-width:860px;margin:0 auto">
-    <h1>Refresh the vault ledger</h1>
+    <h1>Refresh the reference ledgers</h1>
     <p class="meta">
-        Upload a new reference file. Existing items are matched by name + rarity: changed entries
-        are updated, new ones added, and entries missing from the file are <b>retired, never deleted</b>
-        (owned copies and history survive). Custom items and campaign price overrides are untouched.
+        Upload a new items or monsters file. Existing entries are matched by name (items:
+        name + rarity): changed entries are updated, new ones added, and entries missing from
+        the file are <b>retired, never deleted</b> (owned copies, encounters, and history
+        survive). Custom items and campaign price overrides are untouched.
     </p>
 
     @if (error is not null)
     {
         <div class="alert alert-danger">@error</div>
     }
-    @if (applied is not null)
+    @if (appliedSummary is not null)
     {
-        <div class="alert alert-success">
-            Imported <b>@applied.FileName</b>: @applied.AddedCount added, @applied.UpdatedCount updated,
-            @applied.DeactivatedCount retired, @applied.UnchangedCount unchanged.
-        </div>
+        <div class="alert alert-success">@appliedSummary</div>
     }
 
     <div class="field-row" style="align-items:flex-end">
-        <div class="field" style="max-width:170px">
+        <div class="field" style="max-width:200px">
             <label>File kind</label>
             <select @bind="kind">
-                <option value="@ItemKind.Magic">Magic items</option>
-                <option value="@ItemKind.Mundane">Mundane equipment</option>
+                <option value="@ImportFileKind.Magic">Magic items</option>
+                <option value="@ImportFileKind.Mundane">Mundane equipment</option>
+                <option value="@ImportFileKind.Monster">Monsters (bestiary)</option>
             </select>
         </div>
         <div class="field">
@@ -44,15 +46,15 @@
         </div>
     </div>
 
-    @if (preview is not null)
+    @if (added is not null)
     {
         <div class="rule-title">What this import will do</div>
         <p class="meta">
-            <b>@preview.Added.Count</b> added · <b>@preview.Updated.Count</b> updated ·
-            <b>@preview.Deactivated.Count</b> retired · @preview.UnchangedCount unchanged
+            <b>@added.Count</b> added · <b>@updated.Count</b> updated ·
+            <b>@deactivated.Count</b> retired · @unchangedCount unchanged
         </p>
 
-        @foreach (var (title, changes) in new[] { ("Added", preview.Added), ("Updated", preview.Updated), ("Retired (missing from file)", preview.Deactivated) })
+        @foreach (var (title, changes) in new[] { ("Added", added), ("Updated", updated), ("Retired (missing from file)", deactivated) })
         {
             @if (changes.Count > 0)
             {
@@ -64,7 +66,16 @@
                             {
                                 <tr>
                                     <td>@change.Name</td>
-                                    <td><RarityChip Rarity="change.Rarity" /></td>
+                                    <td>
+                                        @if (change.Rarity is not null and not ItemRarity.None)
+                                        {
+                                            <RarityChip Rarity="change.Rarity.Value" />
+                                        }
+                                        else if (change.Cr is not null)
+                                        {
+                                            <span class="tag-chip">CR @change.Cr</span>
+                                        }
+                                    </td>
                                     <td class="meta">@change.Detail</td>
                                 </tr>
                             }
@@ -106,11 +117,19 @@
 </div>
 
 @code {
-    private ItemKind kind = ItemKind.Magic;
-    private ParsedCatalogFile? parsed;
+    private sealed record ChangeRow(string Name, ItemRarity? Rarity, string? Cr, string Detail);
+
+    private ImportFileKind kind = ImportFileKind.Magic;
+    private ParsedCatalogFile? parsedItems;
+    private ParsedMonsterFile? parsedMonsters;
     private string? fileName;
-    private ImportPreview? preview;
-    private ImportBatch? applied;
+    private string? appliedSummary;
+
+    private List<ChangeRow>? added;
+    private List<ChangeRow> updated = [];
+    private List<ChangeRow> deactivated = [];
+    private int unchangedCount;
+
     private IReadOnlyList<ImportBatch>? batches;
     private string? error;
     private bool applying;
@@ -121,19 +140,35 @@
     private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
     {
         error = null;
-        applied = null;
-        preview = null;
+        appliedSummary = null;
+        Reset();
 
         try
         {
             // Buffer the browser stream so parse + apply don't re-read it.
             using var memory = new MemoryStream();
-            await e.File.OpenReadStream(maxAllowedSize: 4 * 1024 * 1024).CopyToAsync(memory);
+            await e.File.OpenReadStream(maxAllowedSize: 8 * 1024 * 1024).CopyToAsync(memory);
             memory.Position = 0;
-
             fileName = e.File.Name;
-            parsed = await Parser.ParseAsync(memory, kind);
-            preview = await Catalog.PreviewImportAsync(parsed);
+
+            if (kind == ImportFileKind.Monster)
+            {
+                parsedMonsters = await MonsterParser.ParseAsync(memory);
+                var preview = await MonsterSvc.PreviewImportAsync(parsedMonsters);
+                added = [.. preview.Added.Select(c => new ChangeRow(c.Name, null, c.ChallengeRating, c.Detail))];
+                updated = [.. preview.Updated.Select(c => new ChangeRow(c.Name, null, c.ChallengeRating, c.Detail))];
+                deactivated = [.. preview.Deactivated.Select(c => new ChangeRow(c.Name, null, c.ChallengeRating, c.Detail))];
+                unchangedCount = preview.UnchangedCount;
+            }
+            else
+            {
+                parsedItems = await Parser.ParseAsync(memory, (ItemKind)(int)kind);
+                var preview = await Catalog.PreviewImportAsync(parsedItems);
+                added = [.. preview.Added.Select(c => new ChangeRow(c.Name, c.Rarity, null, c.Detail))];
+                updated = [.. preview.Updated.Select(c => new ChangeRow(c.Name, c.Rarity, null, c.Detail))];
+                deactivated = [.. preview.Deactivated.Select(c => new ChangeRow(c.Name, c.Rarity, null, c.Detail))];
+                unchangedCount = preview.UnchangedCount;
+            }
         }
         catch (AppValidationException ex)
         {
@@ -142,14 +177,14 @@
         }
         catch (IOException)
         {
-            error = "That file is too large (4 MB max).";
+            error = "That file is too large (8 MB max).";
             Reset();
         }
     }
 
     private async Task ApplyAsync()
     {
-        if (parsed is null || fileName is null)
+        if (fileName is null)
         {
             return;
         }
@@ -158,7 +193,12 @@
         error = null;
         try
         {
-            applied = await Catalog.ApplyImportAsync(parsed, fileName);
+            var batch = kind == ImportFileKind.Monster
+                ? await MonsterSvc.ApplyImportAsync(parsedMonsters!, fileName)
+                : await Catalog.ApplyImportAsync(parsedItems!, fileName);
+
+            appliedSummary = $"Imported {batch.FileName}: {batch.AddedCount} added, {batch.UpdatedCount} updated, " +
+                             $"{batch.DeactivatedCount} retired, {batch.UnchangedCount} unchanged.";
             Reset();
             batches = await Catalog.ListImportBatchesAsync();
         }
@@ -174,9 +214,13 @@
 
     private void Reset()
     {
-        parsed = null;
-        preview = null;
+        parsedItems = null;
+        parsedMonsters = null;
         fileName = null;
+        added = null;
+        updated = [];
+        deactivated = [];
+        unchangedCount = 0;
     }
 
     private static string Truncate(string? s) =>

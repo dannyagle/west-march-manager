@@ -9,6 +9,18 @@ public record RewardComponentInput(RewardKind Kind, int? GoldAmount, string Desc
 /// <summary>Catalog-backed when CatalogItemId is set (Description becomes a display snapshot); free text otherwise.</summary>
 public record RewardOptionInput(string Description, string? ExternalUrl, Guid? CatalogItemId = null);
 
+public record EncounterNpcInput(string Name, string? Stats, string? Description);
+
+public record EncounterMonsterInput(Guid MonsterId, int Count);
+
+/// <summary>One authored encounter. Every section optional; order is display-only (adventures may be non-linear).</summary>
+public record EncounterInput(
+    string Title,
+    string? Description,
+    string? ReadAloud,
+    List<EncounterNpcInput> Npcs,
+    List<EncounterMonsterInput> Monsters);
+
 public record RewardOptionSetInput(string Name, List<RewardOptionInput> Options);
 
 public record AdventureInput(
@@ -20,12 +32,12 @@ public record AdventureInput(
     string ShortDescription,
     string LongDescription,
     string? DmNotes,
-    string? MonsterStatBlocks,
     DateTimeOffset ActiveFrom,
     DateTimeOffset? ActiveUntil,
     List<string> Tags,
     List<RewardComponentInput> GuaranteedRewards,
-    List<RewardOptionSetInput> RewardOptionSets);
+    List<RewardOptionSetInput> RewardOptionSets,
+    List<EncounterInput> Encounters);
 
 public interface IAdventureService
 {
@@ -52,6 +64,7 @@ public class AdventureService(
     IAdventureRepository adventures,
     ITagRepository tags,
     Items.ICatalogRepository catalog,
+    Bestiary.IMonsterRepository monsters,
     IUnitOfWork uow,
     ICurrentUser currentUser) : IAdventureService
 {
@@ -206,7 +219,7 @@ public class AdventureService(
         if (!currentUser.IsDm)
         {
             adventure.DmNotes = null;
-            adventure.MonsterStatBlocks = null;
+            adventure.Encounters = [];
         }
 
         return adventure;
@@ -222,7 +235,6 @@ public class AdventureService(
         adventure.ShortDescription = input.ShortDescription.Trim();
         adventure.LongDescription = input.LongDescription.Trim();
         adventure.DmNotes = string.IsNullOrWhiteSpace(input.DmNotes) ? null : input.DmNotes.Trim();
-        adventure.MonsterStatBlocks = string.IsNullOrWhiteSpace(input.MonsterStatBlocks) ? null : input.MonsterStatBlocks.Trim();
         adventure.ActiveFrom = input.ActiveFrom;
         adventure.ActiveUntil = input.ActiveUntil;
 
@@ -285,6 +297,43 @@ public class AdventureService(
             })],
         }).ToList();
         adventures.AddRewardOptionSets(newSets);
+
+        // Encounters replace wholesale too; monster references are validated first.
+        var monsterIds = input.Encounters
+            .SelectMany(e => e.Monsters)
+            .Select(m => m.MonsterId)
+            .Distinct()
+            .ToList();
+        var knownMonsters = (await monsters.ListByIdsAsync(monsterIds, ct)).Select(m => m.Id).ToHashSet();
+        if (monsterIds.Any(id => !knownMonsters.Contains(id)))
+        {
+            throw new AppValidationException("An encounter references a monster that no longer exists in the bestiary.");
+        }
+
+        adventures.RemoveEncounters(adventure.Encounters);
+        adventure.Encounters.Clear();
+        var newEncounters = input.Encounters.Select((e, i) => new Encounter
+        {
+            AdventureId = adventure.Id,
+            Title = string.IsNullOrWhiteSpace(e.Title) ? $"Encounter {i + 1}" : e.Title.Trim(),
+            SortOrder = i,
+            Description = string.IsNullOrWhiteSpace(e.Description) ? null : e.Description.Trim(),
+            ReadAloud = string.IsNullOrWhiteSpace(e.ReadAloud) ? null : e.ReadAloud.Trim(),
+            Npcs = [.. e.Npcs.Select((n, j) => new EncounterNpc
+            {
+                Name = n.Name.Trim(),
+                Stats = string.IsNullOrWhiteSpace(n.Stats) ? null : n.Stats.Trim(),
+                Description = string.IsNullOrWhiteSpace(n.Description) ? null : n.Description.Trim(),
+                SortOrder = j,
+            })],
+            Monsters = [.. e.Monsters.Select((m, j) => new EncounterMonster
+            {
+                MonsterId = m.MonsterId,
+                Count = m.Count,
+                SortOrder = j,
+            })],
+        }).ToList();
+        adventures.AddEncounters(newEncounters);
     }
 
     private void RequireDm()
@@ -356,6 +405,23 @@ public class AdventureService(
             if (reward.Kind == RewardKind.Gold && reward.GoldAmount is null or < 0)
             {
                 errors.Add("Gold rewards need a non-negative amount.");
+            }
+        }
+
+        var encounterNumber = 0;
+        foreach (var encounter in input.Encounters)
+        {
+            encounterNumber++;
+            var label = string.IsNullOrWhiteSpace(encounter.Title) ? $"Encounter {encounterNumber}" : $"'{encounter.Title}'";
+
+            if (encounter.Npcs.Any(n => string.IsNullOrWhiteSpace(n.Name)))
+            {
+                errors.Add($"Every NPC in {label} needs a name.");
+            }
+
+            if (encounter.Monsters.Any(m => m.Count < 1))
+            {
+                errors.Add($"Monster counts in {label} must be at least 1.");
             }
         }
 

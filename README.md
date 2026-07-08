@@ -99,8 +99,31 @@ D&D Beyond link. Nothing in the core app depends on it.
   guarantees two buyers can't buy one listing. Bidding/auctions deliberately deferred;
   a `Bids` collection can attach to `MarketListing` later without rework.
 
+### Bestiary, encounters & the DM screen (Phase 3)
+
+- **Bestiary** (`Monster`): SRD monster records imported from `/data/srd_5e_monsters_ext.json`
+  with the same CA refresh pipeline as the item catalog (diff preview, upsert by name,
+  retire-don't-delete). Critical columns (CR, AC, HP, type) feed lists and filtering; the
+  complete source record is preserved as JSON so stat blocks render every trait, action,
+  and legendary action.
+- **Encounters** replace the old free-text monster stat blocks on adventures. Each adventure
+  carries 0–N encounters — title, read-aloud text, DM description, free-text NPCs, and
+  bestiary-backed monsters with head-counts. All sections optional; **order is display-only**
+  (mysteries and sandboxes are first-class). The encounter builder's monster picker is
+  search-as-you-type, CR-capped at the adventure's max level + 2 by default (boss headroom,
+  no dragons in starter dungeons) with a show-all override. The Phase 3 migration converted
+  existing stat-block text into starter encounters — nothing authored was lost.
+- **DM Screen** (`/dm/screen`, DM menu): upcoming + recently run sessions, each opening a
+  run view built for the table — the party's critical numbers up top (name, class, AC, HP,
+  passive perception, saves via the DDB stat headers), encounters as tabs, read-aloud text
+  in a distinct "speak this" treatment, and full stat blocks expanded.
+- **DM tool seam** (`IDmScreenTool`): future tools (initiative tracker, monster HP/condition
+  tracking) register in DI and appear as extra DM-screen tabs — one component + one
+  registration, no screen changes.
+
 ### Reserved extension points (deferred phases)
 
+- **DM screen tools** — initiative tracker, HP/conditions; `IDmScreenTool` is the seam.
 - **Marketplace bidding/auctions** — listings are the attachment point.
 - **Reservable resources** (store tables, seats) — sessions expose the attachment seam;
   a `Resource` + `SessionResourceAllocation` pair slots in additively.
@@ -164,9 +187,14 @@ Register the Discord redirect URI per environment: `https://<host>/signin-discor
   Approved) with tags and structured rewards, sessions with DM assignment / sign-up /
   completion credits, real-time boards, calendar + LFP + needs-a-DM views, CA announcements
   with images, CA people manager, tests.
-- **Phase 2 (this build):** item catalog with CA file imports + custom items + price
+- **Phase 2:** item catalog with CA file imports + custom items + price
   overrides, catalog-backed adventure rewards with tier filtering and CA review flags,
   post-session reward collection, character gold/inventory/ledger, player marketplace
   (quick-sell + fixed-price listings), CA audit ledger.
-- **Phase 3+ (designed for, not built):** marketplace bidding/auctions, reservable session
-  resources (store tables), further auth providers, deeper DDB import beyond the stat header.
+- **Phase 3 (this build):** SRD bestiary with CA imports, structured encounters
+  (read-aloud, NPCs, CR-filtered monster picker) replacing free-text stat blocks, and the
+  DM screen — a run view with the party's critical stats and encounters as tabs, plus the
+  `IDmScreenTool` seam for future table tools.
+- **Phase 4+ (designed for, not built):** DM screen tools (initiative, HP/conditions),
+  marketplace bidding/auctions, reservable session resources (store tables), further auth
+  providers, deeper DDB import beyond the stat header.

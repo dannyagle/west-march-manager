@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WestMarch.Application.Common;
 using WestMarch.Domain.Adventures;
 using WestMarch.Domain.Announcements;
+using WestMarch.Domain.Bestiary;
 using WestMarch.Domain.Characters;
 using WestMarch.Domain.Items;
 using WestMarch.Domain.Sessions;
@@ -29,6 +30,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ItemInstance> ItemInstances => Set<ItemInstance>();
     public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
     public DbSet<MarketListing> MarketListings => Set<MarketListing>();
+    public DbSet<Monster> Monsters => Set<Monster>();
+    public DbSet<Encounter> Encounters => Set<Encounter>();
+    public DbSet<EncounterNpc> EncounterNpcs => Set<EncounterNpc>();
+    public DbSet<EncounterMonster> EncounterMonsters => Set<EncounterMonster>();
 
     Task IUnitOfWork.SaveChangesAsync(CancellationToken ct) => SaveChangesAsync(ct);
 

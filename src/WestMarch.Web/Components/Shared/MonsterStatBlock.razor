@@ -1,0 +1,157 @@
+@* Full stat block rendered from the bestiary record's preserved source JSON.
+   Defensive throughout: anything missing simply doesn't render. *@
+
+@using System.Text.Json
+@using WestMarch.Domain.Bestiary
+
+<div class="statblock">
+    <div class="statblock-head">
+        <span class="statblock-name">@Monster.Name</span>
+        <span class="meta">@Capitalize(Monster.Size) @Monster.CreatureType@(Monster.Alignment is not null ? $", {Monster.Alignment}" : "")</span>
+    </div>
+
+    <div class="stat-vitals" style="margin:0.5rem 0">
+        <span class="vital"><span class="v-num">@Monster.ArmorClass</span><span class="v-label">AC</span></span>
+        <span class="vital"><span class="v-num">@Monster.MaxHitPoints</span><span class="v-label">HP @(Monster.HitDice is not null ? $"({Monster.HitDice})" : "")</span></span>
+        <span class="vital"><span class="v-num">@Monster.ChallengeRating</span><span class="v-label">CR @(Monster.Xp is not null ? $"({Monster.Xp} XP)" : "")</span></span>
+    </div>
+
+    @if (abilities is not null)
+    {
+        <div class="statblock-abilities">
+            @foreach (var (label, score, mod) in abilities)
+            {
+                <span class="ability"><b>@label</b> @score (@(mod >= 0 ? "+" : "")@mod)</span>
+            }
+        </div>
+    }
+
+    @if (speed is not null)
+    {
+        <div class="statblock-line"><b>Speed</b> @speed</div>
+    }
+    @if (saves is not null)
+    {
+        <div class="statblock-line"><b>Saves</b> @saves</div>
+    }
+    @if (skills is not null)
+    {
+        <div class="statblock-line"><b>Skills</b> @skills</div>
+    }
+    @if (languages is not null)
+    {
+        <div class="statblock-line"><b>Languages</b> @languages</div>
+    }
+
+    @foreach (var (heading, entries) in sections)
+    {
+        <div class="statblock-section">@heading</div>
+        @foreach (var entry in entries)
+        {
+            <p class="statblock-entry">@entry</p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public Monster Monster { get; set; } = default!;
+
+    private List<(string Label, int Score, int Mod)>? abilities;
+    private string? speed;
+    private string? saves;
+    private string? skills;
+    private string? languages;
+    private List<(string Heading, List<string> Entries)> sections = [];
+
+    private static readonly string[] AbilityKeys = ["str", "dex", "con", "int", "wis", "cha"];
+
+    protected override void OnParametersSet()
+    {
+        abilities = null;
+        speed = saves = skills = languages = null;
+        sections = [];
+
+        try
+        {
+            using var doc = JsonDocument.Parse(Monster.StatsJson);
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("stats", out var stats) && stats.ValueKind == JsonValueKind.Object)
+            {
+                var mods = root.TryGetProperty("modifiers", out var m) && m.ValueKind == JsonValueKind.Object ? m : default;
+                abilities = [.. AbilityKeys.Select(key => (
+                    key.ToUpperInvariant(),
+                    GetInt(stats, key) ?? 10,
+                    mods.ValueKind == JsonValueKind.Object ? GetInt(mods, key) ?? 0 : 0))];
+            }
+
+            if (root.TryGetProperty("speed", out var sp) && sp.ValueKind == JsonValueKind.Object)
+            {
+                var parts = sp.EnumerateObject()
+                    .Where(p => p.Value.ValueKind == JsonValueKind.Number && p.Value.GetInt32() > 0)
+                    .Select(p => $"{p.Name} {p.Value.GetInt32()} ft.");
+                speed = string.Join(", ", parts) is { Length: > 0 } s ? s : null;
+            }
+
+            saves = NonZeroBonuses(root, "savingThrows");
+            skills = NonZeroBonuses(root, "skills");
+
+            if (root.TryGetProperty("languages", out var langs) && langs.ValueKind == JsonValueKind.Array)
+            {
+                var list = langs.EnumerateArray()
+                    .Where(v => v.ValueKind == JsonValueKind.String)
+                    .Select(v => v.GetString());
+                languages = string.Join(", ", list) is { Length: > 0 } l ? l : null;
+            }
+
+            AddSection(root, "traits", "Traits");
+            if (root.TryGetProperty("actions", out var actions) && actions.ValueKind == JsonValueKind.Object)
+            {
+                AddSection(actions, "list", "Actions");
+            }
+            AddSection(root, "reactions", "Reactions");
+            AddSection(root, "legendaryActions", "Legendary Actions");
+        }
+        catch (JsonException)
+        {
+            // Header vitals (from columns) still render; detail sections just stay empty.
+        }
+    }
+
+    private void AddSection(JsonElement parent, string property, string heading)
+    {
+        if (parent.TryGetProperty(property, out var array) && array.ValueKind == JsonValueKind.Array)
+        {
+            var entries = array.EnumerateArray()
+                .Where(v => v.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(v.GetString()))
+                .Select(v => v.GetString()!)
+                .ToList();
+
+            if (entries.Count > 0)
+            {
+                sections.Add((heading, entries));
+            }
+        }
+    }
+
+    private static string? NonZeroBonuses(JsonElement root, string property)
+    {
+        if (!root.TryGetProperty(property, out var obj) || obj.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        var parts = obj.EnumerateObject()
+            .Where(p => p.Value.ValueKind == JsonValueKind.Number && p.Value.GetInt32() != 0)
+            .Select(p => $"{Capitalize(p.Name)} +{p.Value.GetInt32()}")
+            .ToList();
+
+        return parts.Count > 0 ? string.Join(", ", parts) : null;
+    }
+
+    private static int? GetInt(JsonElement el, string prop) =>
+        el.TryGetProperty(prop, out var v) && v.ValueKind == JsonValueKind.Number && v.TryGetInt32(out var i) ? i : null;
+
+    private static string Capitalize(string s) =>
+        s.Length == 0 ? s : char.ToUpperInvariant(s[0]) + s[1..];
+}

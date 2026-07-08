@@ -598,6 +598,71 @@ a.wm-card:hover { text-decoration: none; transform: translateY(-2px); border-col
 /* listing cards reuse .wm-card; the buy panel */
 .buy-panel { border-top: 1px dashed var(--line); margin-top: 0.6rem; padding-top: 0.6rem; }
 
+/* ---------- monster stat blocks & encounters ---------- */
+
+.statblock {
+    background: var(--ink); border: 1px solid var(--line); border-left: 3px solid var(--blood);
+    border-radius: var(--radius); padding: 0.9rem 1.1rem; font-family: var(--font-ui); font-size: 0.85rem;
+}
+.statblock-head { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
+.statblock-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--blood-bright); }
+.statblock-abilities { display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 0.4rem 0; color: var(--parchment-dim); }
+.statblock-abilities .ability b { color: var(--gold-bright); font-weight: 600; }
+.statblock-line { margin: 0.2rem 0; color: var(--parchment-dim); }
+.statblock-line b { color: var(--parchment); font-weight: 600; }
+.statblock-section {
+    font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--blood-bright);
+    border-bottom: 1px solid var(--line-soft); margin: 0.7rem 0 0.3rem; padding-bottom: 0.15rem;
+}
+.statblock-entry { margin: 0 0 0.45rem; line-height: 1.45; }
+
+/* "read this aloud" treatment */
+.read-aloud {
+    background: rgba(201, 162, 39, 0.06); border: 1px solid rgba(201, 162, 39, 0.3);
+    border-left: 3px solid var(--gold); border-radius: var(--radius);
+    padding: 0.9rem 1.1rem; margin: 0.6rem 0;
+    font-family: var(--font-body); font-style: italic; font-size: 1.05rem; color: var(--parchment);
+}
+.read-aloud::before {
+    content: "Read aloud"; display: block;
+    font-family: var(--font-ui); font-style: normal; font-size: 0.62rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); margin-bottom: 0.35rem;
+}
+
+/* encounter tabs (DM screen) — order is presentation only; adventures may be non-linear */
+.enc-tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.enc-tab {
+    font-family: var(--font-ui); font-size: 0.85rem; font-weight: 600;
+    padding: 0.45rem 0.95rem; border-radius: var(--radius) var(--radius) 0 0; cursor: pointer;
+    border: 1px solid var(--line); border-bottom: none; background: var(--ink); color: var(--parchment-dim);
+}
+.enc-tab:hover { color: var(--parchment); }
+.enc-tab.active {
+    background: var(--ink-raised); color: var(--gold-bright);
+    box-shadow: inset 0 2px 0 var(--gold);
+}
+
+.npc-card {
+    border: 1px solid var(--line-soft); border-left: 3px solid var(--arcane); border-radius: var(--radius);
+    padding: 0.6rem 0.9rem; margin-bottom: 0.5rem; background: rgba(75, 143, 130, 0.05);
+}
+.npc-card .npc-name { font-family: var(--font-display); font-weight: 600; color: var(--arcane); }
+.npc-card .npc-stats { font-family: var(--font-ui); font-size: 0.8rem; color: var(--parchment-dim); }
+
+/* monster picker (encounter builder) */
+.monster-picker {
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--ink);
+    max-height: 230px; overflow-y: auto; margin-top: 0.3rem;
+}
+.monster-picker button {
+    display: flex; width: 100%; gap: 0.6rem; align-items: baseline;
+    padding: 0.4rem 0.7rem; background: none; border: none; border-bottom: 1px solid var(--line-soft);
+    color: var(--parchment); font-family: var(--font-ui); font-size: 0.85rem; cursor: pointer; text-align: left;
+}
+.monster-picker button:hover { background: var(--ink-hover); }
+.monster-picker .cr { color: var(--gold-bright); min-width: 3.4rem; }
+.monster-picker .kind { color: var(--parchment-faint); margin-left: auto; }
+
 /* ---------- misc ---------- */
 
 .empty-state {

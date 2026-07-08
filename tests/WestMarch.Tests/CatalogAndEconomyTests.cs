@@ -29,7 +29,8 @@ public class CatalogAndEconomyTests : IDisposable
 
     private IAdventureService AdventureSvc() =>
         new AdventureService(new AdventureRepository(_t.Db), new TagRepository(_t.Db),
-            new CatalogRepository(_t.Db), _t.Db, _t.CurrentUser);
+            new CatalogRepository(_t.Db), new WestMarch.Infrastructure.Bestiary.MonsterRepository(_t.Db),
+            _t.Db, _t.CurrentUser);
 
     private ICharacterService CharacterSvc() =>
         new CharacterService(new CharacterRepository(_t.Db), _t.Db, _t.CurrentUser);
@@ -166,14 +167,15 @@ public class CatalogAndEconomyTests : IDisposable
         // DM authors an adventure: 100 gp guaranteed + choose-1-of-2 (catalog item or free text).
         _t.CurrentUser.BecomeDm(TestDb.DmId);
         var adventure = await AdventureSvc().CreateAsync(new AdventureInput(
-            "The Radiant Vault", 3, 5, 4, 6, "s", "l", null, null,
+            "The Radiant Vault", 3, 5, 4, 6, "s", "l", null,
             DateTimeOffset.Now.AddDays(-1), null, [],
             [new RewardComponentInput(Domain.Adventures.RewardKind.Gold, 100, "100 gp bounty")],
             [new RewardOptionSetInput("Pick a prize",
             [
                 new RewardOptionInput("", null, sunBlade.Id),
                 new RewardOptionInput("A heartfelt letter", null),
-            ])]));
+            ])],
+            []));
         await AdventureSvc().SubmitForReviewAsync(adventure.Id);
         _t.CurrentUser.BecomeCa(TestDb.CaId);
         await AdventureSvc().ApproveAsync(adventure.Id);

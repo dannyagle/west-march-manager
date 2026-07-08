@@ -59,6 +59,11 @@ public static class DependencyInjection
         services.AddScoped<Application.Items.IMarketplaceService, Application.Items.MarketplaceService>();
         services.AddScoped<Application.Items.IRewardClaimService, Application.Items.RewardClaimService>();
 
+        // Bestiary + encounters (Phase 3)
+        services.AddScoped<Application.Bestiary.IMonsterRepository, Bestiary.MonsterRepository>();
+        services.AddScoped<Application.Bestiary.IMonsterFileParser, Bestiary.MonsterJsonParser>();
+        services.AddScoped<Application.Bestiary.IMonsterService, Application.Bestiary.MonsterService>();
+
         // Feature flags + optional DDB adapter (isolated; returns null on any failure)
         services.Configure<FeatureFlags>(configuration.GetSection(FeatureFlags.SectionName));
         services.Configure<DdbAdapterOptions>(configuration.GetSection(DdbAdapterOptions.SectionName));

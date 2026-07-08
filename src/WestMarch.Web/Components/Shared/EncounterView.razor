@@ -1,0 +1,51 @@
+@* One encounter, rendered for DM eyes: read-aloud, notes, NPCs, monsters with stat blocks. *@
+
+<div>
+    @if (Encounter.ReadAloud is not null)
+    {
+        <div class="read-aloud">@Encounter.ReadAloud</div>
+    }
+
+    @if (Encounter.Description is not null)
+    {
+        <p style="white-space:pre-wrap">@Encounter.Description</p>
+    }
+
+    @foreach (var npc in Encounter.Npcs)
+    {
+        <div class="npc-card">
+            <div class="npc-name">@npc.Name</div>
+            @if (npc.Stats is not null)
+            {
+                <div class="npc-stats">@npc.Stats</div>
+            }
+            @if (npc.Description is not null)
+            {
+                <div style="font-size:0.92rem">@npc.Description</div>
+            }
+        </div>
+    }
+
+    @foreach (var em in Encounter.Monsters)
+    {
+        <details style="margin-bottom:0.5rem" open="@OpenStatBlocks">
+            <summary style="cursor:pointer">
+                <b>@em.Count ×</b> <span class="statblock-name" style="font-size:0.95rem">@em.Monster.Name</span>
+                <span class="meta">CR @em.Monster.ChallengeRating · AC @em.Monster.ArmorClass · @em.Monster.MaxHitPoints HP each</span>
+            </summary>
+            <MonsterStatBlock Monster="em.Monster" />
+        </details>
+    }
+
+    @if (Encounter.ReadAloud is null && Encounter.Description is null && Encounter.Npcs.Count == 0 && Encounter.Monsters.Count == 0)
+    {
+        <p class="meta">This encounter has no details yet.</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public Encounter Encounter { get; set; } = default!;
+
+    /// <summary>Expand all monster stat blocks by default (used on the DM screen).</summary>
+    [Parameter] public bool OpenStatBlocks { get; set; }
+}
