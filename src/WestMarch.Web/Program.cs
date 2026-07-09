@@ -98,6 +98,12 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 // --- Authorization: policy-based, keyed on the additive role set -----------
 builder.Services.AddAuthorization(AuthPolicies.Configure);
 
+// Demo mode: Development, or the hosted test/demo site (SeedDemoData=true). Gates the
+// CA "reset demo data" tool — never available against a real campaign database.
+builder.Services.AddSingleton(new DemoMode(
+    builder.Environment.IsDevelopment() || builder.Configuration.GetValue<bool>("SeedDemoData")));
+builder.Services.AddScoped<IDemoResetService, DemoResetService>();
+
 // Web-layer glue: current-user accessor and the SignalR broadcast seam.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUserService>();
@@ -129,9 +135,17 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // Apply migrations and bootstrap the first Campaign Admin from configuration.
-    // Reference data (items, bestiary) is imported in-app by a CA after first sign-in.
-    await ProductionInitializer.InitializeAsync(app.Services, app.Logger);
+    // SeedDemoData=true (used by the hosted test/demo site) loads the full demo campaign —
+    // reference data plus users, adventures, sessions, and economy. Otherwise, just apply
+    // migrations and bootstrap the first Campaign Admin from configuration.
+    if (builder.Configuration.GetValue<bool>("SeedDemoData"))
+    {
+        await DevDataSeeder.SeedAsync(app.Services);
+    }
+    else
+    {
+        await ProductionInitializer.InitializeAsync(app.Services, app.Logger);
+    }
 
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();

@@ -1,7 +1,9 @@
+@using WestMarch.Infrastructure.Seeding
 @using WestMarch.Web.Services
 @implements IDisposable
 
 @inject NavigationManager NavigationManager
+@inject DemoMode DemoMode
 
 <header class="topbar">
     <div class="topbar-inner">
@@ -50,6 +52,10 @@
                         <NavLink class="topnav-link" href="admin/people" onclick="this.closest('details').removeAttribute('open')">People</NavLink>
                         <NavLink class="topnav-link" href="admin/audit" onclick="this.closest('details').removeAttribute('open')">Audit Ledger</NavLink>
                         <NavLink class="topnav-link" href="catalog/import" onclick="this.closest('details').removeAttribute('open')">Import Items</NavLink>
+                        @if (DemoMode.Enabled)
+                        {
+                            <NavLink class="topnav-link" style="color:var(--blood-bright)" href="admin/reset" onclick="this.closest('details').removeAttribute('open')">Reset Demo Data</NavLink>
+                        }
                     </div>
                 </details>
             </AuthorizeView>

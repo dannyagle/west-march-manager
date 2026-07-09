@@ -189,11 +189,15 @@ tier can't run Blazor Server), **Azure SQL serverless** (auto-pauses when idle; 
 may cover light testing), and **Blob Storage** for images. Azure SignalR Service and Key Vault
 are intentionally skipped at this scale.
 
-**How the app boots in production** (differs from the Dev demo seed):
-- On non-dev startup, `ProductionInitializer` applies EF migrations, ensures roles, and — if
+**How the app boots in production** — two modes:
+- **Default:** `ProductionInitializer` applies EF migrations, ensures roles, and — if
   `InitialAdmin:*` is set and that email is unused — creates one bootstrap Campaign Admin.
-- **No demo data is seeded.** After first sign-in, the CA loads reference data through the
-  in-app import screens (Import Items / Monsters), uploading the three files from `/data`.
+  No demo data; the CA loads reference data via the in-app import screens.
+- **`SeedDemoData=true`** (for the hosted test/demo site): seeds the full demo campaign —
+  reference data plus users, characters, adventures, sessions, and economy. The reference
+  JSON files ship in the publish output (`data/`), so no manual import is needed. Demo logins
+  use password `Passw0rd!` (e.g. `admin@westmarch.local`). Leave `InitialAdmin:*` unset in
+  this mode.
 
 **One-time provisioning** (Azure CLI; replace names/region):
 
@@ -224,12 +228,17 @@ az webapp config appsettings set -g westmarch-rg -n <APP-NAME> --settings \
   InitialAdmin__DisplayName="Campaign Admin"
 ```
 
-**CI/CD:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds, tests, and deploys
-on every push to `main`. Set `AZURE_WEBAPP_NAME` in the workflow, and add the App Service publish
-profile as the repo secret `AZURE_WEBAPP_PUBLISH_PROFILE` (Portal → Web App → *Get publish profile*).
+**Deploying:** run [`./deploy.ps1`](deploy.ps1) (requires `az login`). It publishes a Release
+build, packages it correctly for Linux, uploads it to blob storage, and restarts the app
+(run-from-package). Edit the parameter defaults at the top of the script for other resource names.
 
-After the first deploy: sign in as the InitialAdmin, open **Campaign Admin → Import Items** and
-**Import Monsters**, upload the three `/data` files, then use the People manager to promote DMs.
+**CI:** [.github/workflows/ci.yml](.github/workflows/ci.yml) builds and runs the test suite on
+every push and PR to `main`. (Deployment is intentionally a separate manual step via `deploy.ps1`;
+push-to-deploy CI can be added later with an Azure service principal.)
+
+After a non-seeded first deploy: sign in as the InitialAdmin, open **Campaign Admin → Import
+Items** and **Import Monsters**, upload the three `/data` files, then use the People manager to
+promote DMs. (With `SeedDemoData=true`, all of this is already populated.)
 Clear the `InitialAdmin__Password` setting once you're in if you prefer.
 
 ## Phase roadmap

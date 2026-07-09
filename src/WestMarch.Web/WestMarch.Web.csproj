@@ -20,4 +20,13 @@
     <ProjectReference Include="..\WestMarch.Infrastructure\WestMarch.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- Ship the reference data files (items, equipment, bestiary) next to the app so the
+       seeder and first-run imports can find them in a deployed environment. -->
+  <ItemGroup>
+    <Content Include="..\..\data\*.json" Link="data\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

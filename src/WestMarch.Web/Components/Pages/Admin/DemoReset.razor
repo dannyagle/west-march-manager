@@ -1,0 +1,107 @@
+@page "/admin/reset"
+@attribute [Authorize(Policy = AuthPolicies.RequireCa)]
+@rendermode InteractiveServer
+
+@using WestMarch.Infrastructure.Seeding
+
+@inject DemoMode DemoMode
+@inject IDemoResetService Reset
+
+<PageTitle>Reset Demo Data</PageTitle>
+
+<div class="wm-panel" style="max-width:640px;margin:0 auto;border-color:var(--blood)">
+    <h1 style="color:var(--blood-bright)">Burn the map</h1>
+
+    @if (!DemoMode.Enabled)
+    {
+        <p>
+            The demo reset is only available in development or when the site runs in demo
+            mode (<code>SeedDemoData=true</code>). This environment has it disabled.
+        </p>
+    }
+    else if (done)
+    {
+        <div class="alert alert-success">
+            The march has been reset. Reference data and the demo campaign were reseeded
+            with fresh dates.
+        </div>
+        <p>
+            <b>Your account no longer exists</b> — it went into the fire with everything else.
+            Sign out and log back in with a seed account
+            (e.g. <code>admin@westmarch.local</code> / <code>Passw0rd!</code>).
+        </p>
+        <form action="Account/Logout" method="post">
+            <AntiforgeryToken />
+            <input type="hidden" name="ReturnUrl" value="" />
+            <button type="submit" class="btn btn-primary">Sign out now</button>
+        </form>
+    }
+    else
+    {
+        <p>
+            This erases <b>everything</b> — every user (including you), character, adventure,
+            session, message, item, and ledger line — and reseeds the demo campaign from
+            scratch with dates relative to today. Use it when the demo data has gone stale
+            (e.g. "recently run" sessions have drifted out of their windows) or after a
+            test has mangled things.
+        </p>
+        <p><b>There is no undo.</b> You will be signed out, because your account will no longer exist.</p>
+
+        @if (error is not null)
+        {
+            <div class="alert alert-danger">@error</div>
+        }
+
+        <div class="field">
+            <label>Type <b style="color:var(--blood-bright)">@ConfirmPhrase</b> to confirm</label>
+            <input type="text" @bind="confirmText" @bind:event="oninput"
+                   placeholder="Speak the words" autocomplete="off" />
+        </div>
+
+        <label style="display:flex;align-items:center;text-transform:none;letter-spacing:normal;margin-bottom:1rem">
+            <input type="checkbox" @bind="acknowledged" />
+            I understand this destroys all current data, including my own account.
+        </label>
+
+        <button class="btn btn-danger" disabled="@(!CanReset || resetting)" @onclick="DoResetAsync">
+            @(resetting ? "Burning… (this takes a minute)" : "Reset everything")
+        </button>
+    }
+</div>
+
+@code {
+    private const string ConfirmPhrase = "BURN THE MAP";
+
+    private string confirmText = "";
+    private bool acknowledged;
+    private bool resetting;
+    private bool done;
+    private string? error;
+
+    private bool CanReset =>
+        acknowledged && string.Equals(confirmText.Trim(), ConfirmPhrase, StringComparison.OrdinalIgnoreCase);
+
+    private async Task DoResetAsync()
+    {
+        if (!CanReset)
+        {
+            return;
+        }
+
+        resetting = true;
+        error = null;
+        try
+        {
+            await Reset.ResetAsync();
+            done = true;
+        }
+        catch (Exception ex) when (ex is ForbiddenAccessException or AppValidationException)
+        {
+            error = ex.Message;
+        }
+        finally
+        {
+            resetting = false;
+        }
+    }
+}

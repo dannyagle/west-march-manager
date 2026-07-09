@@ -1,0 +1,30 @@
+name: Build & test
+
+# Validates every push and PR to main. Deployment to Azure is done with ./deploy.ps1
+# (see README "Deploying to Azure") — the reliable run-from-package path.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore WestMarch.slnx
+
+      - name: Build
+        run: dotnet build WestMarch.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test WestMarch.slnx --configuration Release --no-build

@@ -34,3 +34,7 @@ Thumbs.db
 
 ## Claude Code local tooling (machine-specific paths)
 .claude/
+
+## Deploy artifacts (local only)
+publish/
+*.zip
